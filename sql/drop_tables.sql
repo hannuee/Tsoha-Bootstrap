@@ -1,1 +1,6 @@
 -- Lisää DROP TABLE lauseet tähän tiedostoon
+DROP TABLE IF EXISTS Yritysasiakas CASCADE;
+DROP TABLE IF EXISTS Olutera CASCADE;
+DROP TABLE IF EXISTS Pakkaustyyppi CASCADE;
+DROP TABLE IF EXISTS Tilaus CASCADE;
+DROP TABLE IF EXISTS TilausPakkaustyyppi CASCADE;
