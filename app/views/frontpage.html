@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block content %}
+  <h1>Myytävät oluterät</h1>
+
+  <table class="table table-striped table-bordered">
+    <thead>
+      <tr>
+        <th>Oluen nimi</th>
+        <th>Valmistuminen</th>
+        <th>Erän koko</th>
+        <th>Erästä vapaana</th>
+        <th>Hinta</th>
+        <th></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr>
+        <td>Pale Ale</td>
+        <td>1.3.2018</td>
+        <td>2000 litraa</td>
+        <td>700 litraa</td>
+        <td>8,75 €/litra</td>
+        <th><a class="btn btn-success" href="#">Siirry tilaamaan</a></th>
+      </tr>
+    </tbody>
+  </table>
+{% endblock %}

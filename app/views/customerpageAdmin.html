@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block content %}
+  <h1>Yritysasiakkaiden tiedot</h1>
+
+  <div class="form-group">
+    <select class="form-control">
+        <option value="uusi">Luo uusi tunnus</option> <!--Jos tämän valitsee niin kaikki muuut lomakkeen kentät tyhjenee-->
+      <optgroup label="Muokkaa yritysasiakkaiden tietoja">
+        <option value="id">Moi Oy</option> <!--Jos näitä valitsee niin lomakkeen kentät täytetään kyseisen yrityksen tiedoilla-->
+        <option value="id">Jees Oy</option>
+      </optgroup>
+    </select>
+  </div>
+  
+  <form>
+    <div class="form-group">
+      <label>Yrityksen nimi</label>
+      <input class="form-control" value="Moi Oy" type="text">
+    </div>
+    <div class="form-group">
+      <label>Y-tunnus</label>
+      <input class="form-control" value="123456-7" type="text">
+    </div>
+    <div class="form-group">
+      <label>Osoite</label>
+      <input class="form-control" value="Koodikatu 1, 11010 Helsinki" type="text">
+    </div>
+    <div class="form-group">
+      <label>Toimitusosoite</label>
+      <input class="form-control" value="Koodikatu 1, 11010 Helsinki" type="text">
+    </div>
+    <div class="form-group">
+      <label>Laskutusosoite</label>
+      <input class="form-control" value="Koodikatu 1, 11010 Helsinki" type="text">
+    </div>
+    <div class="form-group">
+      <label>Puhelinnumero</label>
+      <input class="form-control" value="050 5550888" type="text">
+    </div>
+    <div class="form-group">
+      <label>Sähköposti</label>
+      <input class="form-control" value="se@on.se" type="text">
+    </div>
+    <div class="form-group">
+      <label>Salasana</label>
+      <input class="form-control" value="passu1" type="text">
+    </div>
+    <div class="checkbox">
+      <label>
+        <input type="checkbox"> <!--Jos muokataan niin default sen mukaan mikä tunnuksen aktiivisuus on-->
+        Tunnus aktiivinen?
+      </label>
+    </div>
+    <div class="form-group">
+      <button type="submit" class="btn btn-primary">Tallenna</button>
+    </div>
+  </form>
+{% endblock %}

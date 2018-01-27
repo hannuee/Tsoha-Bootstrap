@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Tilauksen koostaminen</h1>
+  
+  <table class="table table-striped table-bordered">
+    <thead>
+      <tr>
+        <th>Pakkaustyyppi</th>
+        <th>Pantin hinta</th>
+        <th>Pakkauksen hinta</th>
+        <th>Vetoisuus</th> <!--KOROSTA JOTENKIN?-->
+        <th>Määrä</th> <!--Asiakas täyttää-->
+        <th>Pantit yhteensä</th> <!--Javascript? laskee-->
+        <th>Pakkaukset yhteensä</th> <!--Javascript? laskee-->    
+        <th>Olut yhteensä</th> <!--Javascript? laskee-->  
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr>
+        <td>Keg</td>
+        <td>20 €/kpl</td>
+        <td>10 €/kpl</td>
+        <td>20 litraa</td> <!--KOROSTA JOTENKIN?-->
+        <td>3</td> <!--Asiakas täyttää-->
+        <th>60 €</th> <!--Javascript? laskee-->
+        <th>30 €</th> <!--Javascript? laskee-->
+        <th>525 €</th> <!--Javascript? laskee-->  
+      </tr>
+    </tbody>
+  </table>
+
+  <!--YHTEENSÄ SUMMAT-->
+  <table class="table table-striped table-bordered">
+    <tbody>
+      <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td> 
+        <th>60 €</th> <!--KAIKKI Pantit--> <!--Javascript? laskee-->
+        <th>30 €</th> <!--KAIKKI Pakkaukset--> <!--Javascript? laskee-->
+        <th>525 €</th> <!--KAIKKI Oluet--> <!--Javascript? laskee-->  
+      </tr>
+    </tbody>
+  </table>
+  
+  <!--LOPPUSUMMA-->
+  <table class="table table-striped table-bordered">
+    <tbody>
+      <tr>
+        <td>615 €</td> <!--LOPPUSUMMA--> <!--Javascript? laskee--> <!--LOPPUSUMMA--> <!--ALIGN RIGHT-->  
+      </tr>
+      <tr>
+        <td><a class="btn btn-success" href="#">Lähetä tilaus</a></td> <!--LOMAKKEEN LÄHETYS-->
+      </tr>
+    </tbody>
+  </table>
+{% endblock %}
