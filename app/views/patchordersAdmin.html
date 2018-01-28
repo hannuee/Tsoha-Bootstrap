@@ -1,7 +1,129 @@
 {% extends "base.html" %}
 {% block content %}  
-<h1>Oluterän kaikki tilaukset</h1>
+<h1>Oluterä</h1>
 
+  <table class="table table-striped table-bordered"> 
+    <thead>
+      <tr>
+        <th>Oluen nimi</th>
+        <th>Valmistuminen</th>
+        <th>Erän koko</th>
+        <th>Erästä vapaana</th>
+        <th>Hinta</th>
+        <th></th>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Pale Ale</td>
+        <td>1.3.2018</td>
+        <td>2000 litraa</td>
+        <td>700 litraa</td>
+        <td>8,75 €/litra</td>
+        <th><a class="btn btn-danger" href="#">Poista oluterä</a></th>
+        <td><form><input class="form-control" value="1.3.2018" type="text"> <button type="submit" class="btn btn-primary">Muuta pvm</button></form></td>
+      </tr>
+    </tbody>
+  </table>
 
+<br/>
+
+<h2>Oluterän kaikki tilaukset</h2>
+
+  <table class="table table-striped table-bordered"> 
+    <thead>
+      <tr>
+        <th>Tilaaja</th>
+        <th>Tilauksen tiedot</th>
+        <th>Tilauksen sisältö</th>
+        <th></th>
+    </thead>
+
+    <tbody>
+      <tr>
+          <td>
+              
+                  <table class="table table-striped table-bordered">
+                    <tbody>
+                      <tr>
+                        <td>Moi Oy</td> 
+                      </tr>
+                      <tr>
+                        <td>123456-7</td>
+                      </tr>
+                      <tr>
+                        <td>Koodikatu 1, 11010 Helsinki</td>
+                      </tr>
+                      <tr>
+                        <td>Koodikatu 1, 11010 Helsinki</td>
+                      </tr>
+                      <tr>
+                        <td>Koodikatu 1, 11010 Helsinki</td>
+                      </tr>
+                      <tr>
+                        <td>050 5550888</td>
+                      </tr>
+                      <tr>
+                        <td>se@on.se</td>
+                      </tr>
+                    </tbody>
+                  </table>
+              
+          </td>
+          <td>
+              
+                  <table class="table table-striped table-bordered">
+                    <tbody>
+                      <tr>
+                        <td>1.1.2018</td> 
+                      </tr>
+                      <tr>
+                        <td>Ei toimitettu</td>
+                      </tr>
+                      <tr>
+                        <td>Soita baarimikolle kun saavut paikalle.</td>
+                      </tr>
+                    </tbody>
+                  </table>              
+              
+          </td>
+          <td>
+              
+                  <table class="table table-striped table-bordered">
+                    <tbody>
+                      <tr>
+                        <td>Keg</td> 
+                      </tr>
+                      <tr>
+                        <td>20 €/kpl</td>
+                      </tr>
+                      <tr>
+                        <td>10 €/kpl</td>
+                      </tr>
+                      <tr>
+                        <td>20 litraa</td>
+                      </tr>
+                      <tr>
+                        <td>3 kpl</td>
+                      </tr>
+                      <tr>
+                        <td>60 €</td>
+                      </tr>
+                      <tr>
+                        <td>30 €</td>
+                      </tr>
+                      <tr>
+                        <td>525 €</td>
+                      </tr>                      
+                    </tbody>
+                  </table>                 
+              
+          </td>
+        <td><a class="btn btn-danger" href="#">Poista tilaus</a></td>
+      </tr>
+      <tr>
+          <td><a class="btn btn-success" href="#">Tilaus toimitettu!</a></td>
+      </tr>
+    </tbody>
+  </table>
 
 {% endblock %}
