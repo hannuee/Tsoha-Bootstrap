@@ -9,7 +9,10 @@ class Olutera extends BaseModel{
     }
     
     public static function all(){
-        $rows = DB::connection()->prepare('SELECT * FROM Olutera')->execute()->fetchAll();
+        $query = DB::connection()->prepare('SELECT * FROM Olutera');
+        $query->execute();
+        $rows = $query->fetchAll();
+        
         $oluterat = array();
         foreach($rows as $row){
             $oluterat[] = new Olutera($row);
@@ -18,15 +21,15 @@ class Olutera extends BaseModel{
     }
     
     public static function find($id){
-         $row = DB::connection()
-                 ->prepare('SELECT * FROM Olutera WHERE id = :id LIMIT 1')
-                 ->execute(array('id' => $id))
-                 ->fetch();
-         if($row){
-             $olutera = new Olutera($row);
-             return $olutera;
-         }
-         return null;
+        $query = DB::connection()->prepare('SELECT * FROM Olutera WHERE id = :id LIMIT 1');
+        $query->execute(array('id' => $id));
+        $row = $query->fetch();
+        
+        if($row){
+            $olutera = new Olutera($row);
+            return $olutera;
+        }
+        return null;
     }
     
 }
