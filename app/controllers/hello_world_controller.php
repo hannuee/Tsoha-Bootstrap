@@ -10,7 +10,7 @@ require 'app/models/olutera.php';
     }
 
     public static function sandbox(){
-      $oluterat = Olutera::findAll();
+      $oluterat = Olutera::all();
       $olutera = Olutera::find(1);
       
       Kint::dump($oluterat);
