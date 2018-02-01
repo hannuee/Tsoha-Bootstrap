@@ -1,5 +1,7 @@
 <?php
 
+require 'app/models/olutera.php';
+
   class HelloWorldController extends BaseController{
 
     public static function index(){
@@ -8,8 +10,11 @@
     }
 
     public static function sandbox(){
-      // Testaa koodiasi täällä
-      View::make('helloworld.html');
+      $oluterat = Olutera::findAll();
+      $olutera = Olutera::find(1);
+      
+      Kint::dump($oluterat);
+      Kint::dump($olutera);
     }
     
     public static function frontpage(){
