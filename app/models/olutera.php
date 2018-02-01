@@ -9,8 +9,9 @@ class Olutera extends BaseModel{
     }
     
     public static function all(){
+        $rows = DB::connection()->prepare('SELECT * FROM Olutera')->execute()->fetchAll();
         $oluterat = array();
-        foreach(DB::connection()->prepare('SELECT * FROM Olutera')->execute()->fetchAll() as $row){
+        foreach($rows as $row){
             $oluterat[] = new Olutera($row);
         }
         return $oluterat;
