@@ -7,4 +7,9 @@ class FrontController extends BaseController{
         View::make('frontpage.html', array('oluterat' => $oluterat));
     }
     
+    public static function admin(){
+        $oluterat = Olutera::all();
+        View::make('frontpageAdmin.html', array('oluterat' => $oluterat));
+    }
+    
 }

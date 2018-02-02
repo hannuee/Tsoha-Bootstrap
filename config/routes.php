@@ -10,15 +10,15 @@
     FrontController::index();
   });
   
+  $routes->get('/hallinnointi', function() {
+    FrontController::admin();
+  });
+  
   $routes->get('/tilauslomake/:id', function($id) {
     OrderController::index($id);
   });
   
   
-  
-  $routes->get('/hallinnointi', function() {
-    HelloWorldController::frontpageAdmin();
-  });
   
   $routes->get('/omattiedot', function() {
     HelloWorldController::customerpage();
