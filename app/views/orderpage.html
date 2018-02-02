@@ -15,7 +15,7 @@
     </thead>
 
     <tbody>
-      {% for olutera in oluterat %}
+      {% if olutera %}
       <tr>
         <td>{{olutera.oluen_nimi}}</td>
         <td>{{olutera.valmistuminen}}</td>
@@ -23,7 +23,7 @@
         <td>{{olutera.vapaana}} litraa</td>
         <td>{{olutera.hinta}} €/litra</td>
       </tr>
-      {% endfor %}
+      {% endif %}
     </tbody>
   </table>
 
