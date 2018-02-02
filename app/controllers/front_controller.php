@@ -12,4 +12,20 @@ class FrontController extends BaseController{
         View::make('frontpageAdmin.html', array('oluterat' => $oluterat));
     }
     
+    public static function newBeerBatch(){
+        $params = $_POST;
+        
+        $olutera = new Olutera(array(
+            'oluen_nimi' => $params['oluen_nimi'],
+            'valmistuminen' => $params['valmistuminen'],
+            'eran_koko' => $params['eran_koko'],
+            'vapaana' => $params['eran_koko'],  // Koko erä on tietenkin vapaana kun erä luodaan. 
+            'hinta' => $params['hinta_euroa'] * 100 + $params['hinta_senttia']
+        ));
+        
+        $olutera->save();
+        
+        Redirect::to('/hallinnointi');
+    }
+    
 }

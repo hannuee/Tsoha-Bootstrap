@@ -70,4 +70,16 @@ class Olutera extends BaseModel{
         return null;
     }
     
+    public function save(){
+        $query = DB::connection()->prepare(
+                'INSERT INTO Olutera (oluen_nimi, valmistuminen, eran_koko, vapaana, hinta)
+                 VALUES (:oluen_nimi, :valmistuminen, :eran_koko, :vapaana, :hinta)
+                 RETURNING id');
+        $query->execute(array(
+                'oluen_nimi' => $this->oluen_nimi, 'valmistuminen' => $this->valmistuminen, 
+                'eran_koko' => $this->eran_koko, 'vapaana' => $this->vapaana, 'hinta' => $this->hinta));
+        $row = $query->fetch();
+        $this->id = $row['id'];
+    }
+    
 }

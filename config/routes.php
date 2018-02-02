@@ -14,6 +14,10 @@
     FrontController::admin();
   });
   
+  $routes->post('/hallinnointi/uusiera', function() {
+    FrontController::newBeerBatch();
+  });
+  
   $routes->get('/tilauslomake/:id', function($id) {
     OrderController::index($id);
   });
@@ -33,5 +37,5 @@
   });
   
   $routes->get('/tilaukset', function() {
-    HelloWorldController::patchpageAdmin();
+    HelloWorldController::batchpageAdmin();
   });

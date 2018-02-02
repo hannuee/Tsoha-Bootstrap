@@ -32,14 +32,15 @@
   
   <br/>
   
-  <form>
+  <form method="post" action="{{base_path}}/hallinnointi/uusiera">
   <table class="table table-striped table-bordered"> 
     <tbody>
       <tr> <!--integerit ja datet ja valuet himmeiks katoaviks ainakin textissä!-->
-        <td><input class="form-control" value="Oluen nimi" type="text"></td>
-        <td><input class="form-control" value="Valmistuminen" type="text"></td>
-        <td><input class="form-control" value="Erän koko" type="text"></td>
-        <td><input class="form-control" value="Hinta" type="text"></td>
+        <td><input name="oluen_nimi" class="form-control" placeholder="Oluen nimi" type="text"></td>
+        <td><input name="valmistuminen" class="form-control" type="date"></td>
+        <td><input name="eran_koko" class="form-control" placeholder="Erän koko (litraa)" type="number"></td>
+        <td><input name="hinta_euroa" class="form-control" placeholder="euroa" type="number">
+            <input name="hinta_senttia" class="form-control" placeholder="snt" type="number"></td>
         <td><button type="submit" class="btn btn-primary">Luo oluterä!</button></td>
       </tr>
     </tbody>
