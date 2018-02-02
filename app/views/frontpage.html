@@ -15,14 +15,16 @@
     </thead>
 
     <tbody>
+      {% for olutera in oluterat %}
       <tr>
-        <td>Pale Ale</td>
-        <td>1.3.2018</td>
-        <td>2000 litraa</td>
-        <td>700 litraa</td>
-        <td>8,75 €/litra</td>
+        <td>{{olutera.oluen_nimi}}</td>
+        <td>{{olutera.valmistuminen}}</td>
+        <td>{{olutera.eran_koko}}</td>
+        <td>{{olutera.vapaana}}</td>
+        <td>{{olutera.hinta}} €/litra</td>
         <th><a class="btn btn-success" href="#">Siirry tilaamaan</a></th>
       </tr>
+      {% endfor %}
     </tbody>
   </table>
 {% endblock %}

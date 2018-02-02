@@ -8,13 +8,20 @@ class Olutera extends BaseModel{
         parent::__construct($attributes);
     }
     
-    public static function all(){
-        $query = DB::connection()->prepare('SELECT * FROM Olutera');
+    /**
+     * 
+     * @param type $margin Vaadittu oluterän vapaana olevan oluen määrä senttilitroissa
+     * jotta funktio palauttaa oluterän. (Älä salli käyttäjän syötettä tähän parametriin!)
+     * @return \Olutera
+     */
+    public static function allAvailableWithMargin($margin){  
+        $query = DB::connection()->prepare('SELECT * FROM Olutera WHERE vapaana > ' . $margin);
         $query->execute();
         $rows = $query->fetchAll();
         
         $oluterat = array();
         foreach($rows as $row){
+            $row['hinta'] = $row['hinta'] / 100;  // Muutetaan hinta snt/l --> €/l.
             $oluterat[] = new Olutera($row);
         }
         return $oluterat;

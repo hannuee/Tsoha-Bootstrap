@@ -1,17 +1,13 @@
 <?php
 
-  $routes->get('/', function() {
-    HelloWorldController::index();
-  });
-
   $routes->get('/hiekkalaatikko', function() {
     HelloWorldController::sandbox();
   });
   
   
   
-  $routes->get('/etusivu', function() {
-    HelloWorldController::frontpage();
+  $routes->get('/', function() {
+    FrontController::index();
   });
   
   $routes->get('/hallinnointi', function() {

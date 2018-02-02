@@ -17,37 +17,37 @@
     
     public static function frontpage(){
       // Testaa koodiasi täällä
-      View::make('suunnitelmat/frontpage.html');
+      View::make('frontpage.html');
     }
     
     public static function frontpageAdmin(){
       // Testaa koodiasi täällä
-      View::make('suunnitelmat/frontpageAdmin.html');
+      View::make('frontpageAdmin.html');
     }
     
     public static function customerpage(){
       // Testaa koodiasi täällä
-      View::make('suunnitelmat/customerpage.html');
+      View::make('customerpage.html');
     }
     
     public static function customerpageAdmin(){
       // Testaa koodiasi täällä
-      View::make('suunnitelmat/customerpageAdmin.html');
+      View::make('customerpageAdmin.html');
     }
     
     public static function orderpage(){
       // Testaa koodiasi täällä
-      View::make('suunnitelmat/orderpage.html');
+      View::make('orderpage.html');
     }
     
     public static function orderpageAdmin(){
       // Testaa koodiasi täällä
-      View::make('suunnitelmat/orderpageAdmin.html');
+      View::make('orderpageAdmin.html');
     }
     
     public static function patchpageAdmin(){
       // Testaa koodiasi täällä
-      View::make('suunnitelmat/patchpageAdmin.html');
+      View::make('patchpageAdmin.html');
     }
     
   }

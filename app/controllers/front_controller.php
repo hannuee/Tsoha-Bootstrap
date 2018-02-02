@@ -3,8 +3,8 @@
 class FrontController extends BaseController{
     
     public static function index(){
-        $oluterat = Oluterat::all();
-        View::make('');
+        $oluterat = Oluterat::allAvailableWithMargin(400);
+        View::make('frontpage.html', array('oluterat' => $oluterat));
     }
     
 }
