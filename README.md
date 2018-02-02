@@ -7,9 +7,9 @@ Yleisiä linkkejä:
 
 Käyttöliittymä:
 
-* [Asiakkaan etusivu (jossa Oluterä-tietokohteen all-metodi käytössä)](https://hawerala.users.cs.helsinki.fi/tsoha-Tilaussovellus/)
-* [Asiakkaan tilauslomake (jossa Oluterä-tietokohteen one-metodi käytössä)](https://hawerala.users.cs.helsinki.fi/tsoha-Tilaussovellus/tilauslomake/1)
-* [Työntekijän etusivu (jossa Oluterä-tietokohteen all-metodi ja save-metodi käytössä)](https://hawerala.users.cs.helsinki.fi/tsoha-Tilaussovellus/hallinnointi)
+* [Asiakkaan etusivu (jossa Oluterä-tietokohteen all-metodi(listaus) käytössä)](https://hawerala.users.cs.helsinki.fi/tsoha-Tilaussovellus/)
+* [Asiakkaan tilauslomake (jossa Oluterä-tietokohteen one-metodi(esittely) käytössä)](https://hawerala.users.cs.helsinki.fi/tsoha-Tilaussovellus/tilauslomake/1)
+* [Työntekijän etusivu (jossa Oluterä-tietokohteen all-metodi ja save-metodi(listaus ja lisäys) käytössä)](https://hawerala.users.cs.helsinki.fi/tsoha-Tilaussovellus/hallinnointi)
 
 * [Asiakkaan omien tietojen hallinta](https://hawerala.users.cs.helsinki.fi/tsoha-Tilaussovellus/omattiedot)
 * [Työntekijän asiakkaiden tietojen hallinta](https://hawerala.users.cs.helsinki.fi/tsoha-Tilaussovellus/kayttajientiedot)
