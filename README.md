@@ -7,7 +7,7 @@ Yleisiä linkkejä:
 
 Käyttöliittymä:
 
-* [Asiakkaan etusivu](https://hawerala.users.cs.helsinki.fi/tsoha-Tilaussovellus/etusivu)
+* [Asiakkaan etusivu](https://hawerala.users.cs.helsinki.fi/tsoha-Tilaussovellus/)
 * [Työntekijän etusivu](https://hawerala.users.cs.helsinki.fi/tsoha-Tilaussovellus/hallinnointi)
 * [Asiakkaan omien tietojen hallinta](https://hawerala.users.cs.helsinki.fi/tsoha-Tilaussovellus/omattiedot)
 * [Työntekijän asiakkaiden tietojen hallinta](https://hawerala.users.cs.helsinki.fi/tsoha-Tilaussovellus/kayttajientiedot)

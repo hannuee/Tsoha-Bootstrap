@@ -21,7 +21,9 @@ class Olutera extends BaseModel{
         
         $oluterat = array();
         foreach($rows as $row){
-            $row['hinta'] = $row['hinta'] / 100;  // Muutetaan hinta snt/l --> €/l.
+            $row['eran_koko'] = $row['eran_koko'] / 100; // Muutetaan erän koko cl --> l.
+            $row['vapaana'] = $row['vapaana'] / 100;     // Muutetaan vapaana cl --> l.
+            $row['hinta'] = $row['hinta'] / 100;         // Muutetaan hinta snt/l --> €/l.
             $oluterat[] = new Olutera($row);
         }
         return $oluterat;
