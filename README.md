@@ -9,8 +9,8 @@ Käyttöliittymä:
 
 * [Asiakkaan etusivu](https://hawerala.users.cs.helsinki.fi/tsoha-Tilaussovellus/)
 * [Asiakkaan tilauslomake](https://hawerala.users.cs.helsinki.fi/tsoha-Tilaussovellus/tilauslomake/1)
-
 * [Työntekijän etusivu](https://hawerala.users.cs.helsinki.fi/tsoha-Tilaussovellus/hallinnointi)
+
 * [Asiakkaan omien tietojen hallinta](https://hawerala.users.cs.helsinki.fi/tsoha-Tilaussovellus/omattiedot)
 * [Työntekijän asiakkaiden tietojen hallinta](https://hawerala.users.cs.helsinki.fi/tsoha-Tilaussovellus/kayttajientiedot)
 * [Työntekijän tilauslomake](https://hawerala.users.cs.helsinki.fi/tsoha-Tilaussovellus/tilauslomakkeet)

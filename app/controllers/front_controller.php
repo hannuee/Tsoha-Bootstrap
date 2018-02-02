@@ -18,9 +18,9 @@ class FrontController extends BaseController{
         $olutera = new Olutera(array(
             'oluen_nimi' => $params['oluen_nimi'],
             'valmistuminen' => $params['valmistuminen'],
-            'eran_koko' => $params['eran_koko'],
-            'vapaana' => $params['eran_koko'],  // Koko erä on tietenkin vapaana kun erä luodaan. 
-            'hinta' => $params['hinta_euroa'] * 100 + $params['hinta_senttia']
+            'eran_koko' => $params['eran_koko'] * 100, // Muunto senttilitroiksi.
+            'vapaana' => $params['eran_koko'] * 100,  // Muunto senttilitroiksi, koko erä on tietenkin vapaana kun erä luodaan. 
+            'hinta' => $params['hinta_euroa'] * 100 + $params['hinta_senttia']  // Eurojen muunto senteiksi ja yhdistäminen sentteihin.
         ));
         
         $olutera->save();
