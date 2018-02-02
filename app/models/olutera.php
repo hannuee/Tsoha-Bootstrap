@@ -29,8 +29,15 @@ class Olutera extends BaseModel{
         return $oluterat;
     }
     
-    public static function find($id){
-        $query = DB::connection()->prepare('SELECT * FROM Olutera WHERE id = :id LIMIT 1');
+    /**
+     * 
+     * @param type $id
+     * @param type $margin Vaadittu oluterän vapaana olevan oluen määrä senttilitroissa
+     * jotta funktio palauttaa oluterän. (Älä salli käyttäjän syötettä tähän parametriin!)
+     * @return \Olutera
+     */
+    public static function oneAvailableWithMargin($id, $margin){
+        $query = DB::connection()->prepare('SELECT * FROM Olutera WHERE id = :id AND vapaana > ' . $margin . ' LIMIT 1');
         $query->execute(array('id' => $id));
         $row = $query->fetch();
         

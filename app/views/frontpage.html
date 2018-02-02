@@ -19,10 +19,10 @@
       <tr>
         <td>{{olutera.oluen_nimi}}</td>
         <td>{{olutera.valmistuminen}}</td>
-        <td>{{olutera.eran_koko}}</td>
-        <td>{{olutera.vapaana}}</td>
+        <td>{{olutera.eran_koko}} litraa</td>
+        <td>{{olutera.vapaana}} litraa</td>
         <td>{{olutera.hinta}} €/litra</td>
-        <th><a class="btn btn-success" href="#">Siirry tilaamaan</a></th>
+        <th><a class="btn btn-success" href="{{base_path}}/tilauslomake/{{olutera.id}}">Siirry tilaamaan</a></th>
       </tr>
       {% endfor %}
     </tbody>

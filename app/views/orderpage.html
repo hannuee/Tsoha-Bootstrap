@@ -1,8 +1,35 @@
 {% extends "base.html" %}
 {% block content %}
-<h1>Tilauksen koostaminen</h1>
+  <h1>Oluterä</h1>
 
-<!--Tähän vielä oluterän tiedot-->
+  <table class="table table-striped table-bordered">
+    <thead>
+      <tr>
+        <th>Oluen nimi</th>
+        <th>Valmistuminen</th>
+        <th>Erän koko</th>
+        <th>Erästä vapaana</th>
+        <th>Hinta</th>
+        <th></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      {% for olutera in oluterat %}
+      <tr>
+        <td>{{olutera.oluen_nimi}}</td>
+        <td>{{olutera.valmistuminen}}</td>
+        <td>{{olutera.eran_koko}} litraa</td>
+        <td>{{olutera.vapaana}} litraa</td>
+        <td>{{olutera.hinta}} €/litra</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <br/>
+  
+  <h1>Tilauksen koostaminen</h1>
   
   <table class="table table-striped table-bordered">
     <thead>
