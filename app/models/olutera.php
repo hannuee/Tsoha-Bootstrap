@@ -42,6 +42,9 @@ class Olutera extends BaseModel{
         $row = $query->fetch();
         
         if($row){
+            $row['eran_koko'] = $row['eran_koko'] / 100; // Muutetaan erän koko cl --> l.
+            $row['vapaana'] = $row['vapaana'] / 100;     // Muutetaan vapaana cl --> l.
+            $row['hinta'] = $row['hinta'] / 100;         // Muutetaan hinta snt/l --> €/l.
             $olutera = new Olutera($row);
             return $olutera;
         }
