@@ -60,7 +60,7 @@
     
     public static function patchpageAdmin(){
       // Testaa koodiasi täällä
-      View::make('patchpageAdmin.html');
+      View::make('batchpageAdmin.html');
     }
     
   }
