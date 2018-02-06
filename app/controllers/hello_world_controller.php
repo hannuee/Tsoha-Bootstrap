@@ -24,6 +24,7 @@
     'hinta' => 'a'
           ));
       
+      Kint::dump($olutera->errors());
       Kint::dump($olutera2->errors());
     }
     
