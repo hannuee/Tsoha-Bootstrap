@@ -118,7 +118,7 @@ class Olutera extends BaseModel{
         $errors = array();
         
         if(!BaseModel::validate_non_negative_string_integer($this->hinta)){
-          $errors[] = 'Oluen hinnan on oltava ei-negatiivinen!';
+          $errors[] = 'Oluen hinnan on oltava ei-negatiivinen ja pelkkiä numeroita!';
         }
 
         return $errors;
