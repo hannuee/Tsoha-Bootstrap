@@ -58,7 +58,7 @@
       View::make('orderpageAdmin.html');
     }
     
-    public static function patchpageAdmin(){
+    public static function batchpageAdmin(){
       // Testaa koodiasi täällä
       View::make('batchpageAdmin.html');
     }
