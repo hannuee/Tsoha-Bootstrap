@@ -8,11 +8,23 @@
     }
 
     public static function sandbox(){
-      $oluterat = Olutera::all();
-      $olutera = Olutera::find(1);
+      $olutera = new Olutera(array(
+    'oluen_nimi' => '',
+    'valmistuminen' => '2018-08-21',
+    'eran_koko' => '400',
+    'vapaana' => '400',
+    'hinta' => '555'
+          ));
       
-      Kint::dump($oluterat);
-      Kint::dump($olutera);
+      $olutera2 = new Olutera(array(
+    'oluen_nimi' => 'Olvi',
+    'valmistuminen' => '2018-08-21',
+    'eran_koko' => '-400',
+    'vapaana' => '400',
+    'hinta' => 'a'
+          ));
+      
+      Kint::dump($olutera2->errors());
     }
     
     public static function frontpage(){
