@@ -12,17 +12,23 @@
         <th>Hinta</th>
         <th></th>
     </thead>
+    {% if olutera %}
     <tbody>
       <tr>
-        <td>Pale Ale</td>
-        <td>1.3.2018</td>
-        <td>2000 litraa</td>
-        <td>700 litraa</td>
-        <td>8,75 €/litra</td>
+        <td>{{olutera.oluen_nimi}}</td>
+        <td>{{olutera.valmistuminen}}</td>
+        <td>{{olutera.eran_koko}} litraa</td>
+        <td>{{olutera.vapaana}} litraa</td>
+        <td>{{olutera.hinta}} €/litra</td>
         <td><a class="btn btn-danger" href="#">Poista oluterä</a></td>
-        <td><form><input class="form-control" value="1.3.2018" type="text"> <button type="submit" class="btn btn-primary">Muuta pvm</button></form></td>
+        <td><form method="post" action="{{base_path}}/tilaukset/uusipvm">
+                <input name="id" class="form-control" type="text" value="{{olutera.id}}" hidden="true">
+                <input name="valmistuminen" class="form-control" type="date"> 
+                <button type="submit" class="btn btn-primary">Muuta pvm</button>
+            </form></td>
       </tr>
     </tbody>
+    {% endif %}
   </table>
 
 <br/>

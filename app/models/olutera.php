@@ -71,6 +71,26 @@ class Olutera extends BaseModel{
         return null;
     }
     
+    /**
+     * 
+     * @param type $id
+     * @return \Olutera
+     */
+    public static function one($id){
+        $query = DB::connection()->prepare('SELECT * FROM Olutera WHERE id = :id LIMIT 1');
+        $query->execute(array('id' => $id));
+        $row = $query->fetch();
+        
+        if($row){
+            $row['eran_koko'] = $row['eran_koko'] / 100; // Muutetaan erän koko cl --> l.
+            $row['vapaana'] = $row['vapaana'] / 100;     // Muutetaan vapaana cl --> l.
+            $row['hinta'] = $row['hinta'] / 100;         // Muutetaan hinta snt/l --> €/l.
+            $olutera = new Olutera($row);
+            return $olutera;
+        }
+        return null;
+    }
+    
     public function save(){
         $query = DB::connection()->prepare(
                 'INSERT INTO Olutera (oluen_nimi, valmistuminen, eran_koko, vapaana, hinta)
@@ -81,6 +101,18 @@ class Olutera extends BaseModel{
                 'eran_koko' => $this->eran_koko, 'vapaana' => $this->vapaana, 'hinta' => $this->hinta));
         $row = $query->fetch();
         $this->id = $row['id'];
+    }
+    
+    public function updateDate(){
+        $query = DB::connection()->prepare(
+                'UPDATE Olutera SET valmistuminen=:valmistuminen WHERE id=:id');
+        $query->execute(array('valmistuminen' => $this->valmistuminen, 'id' => $this->id));
+    }
+    
+    public function delete(){
+        $query = DB::connection()->prepare(
+                'DELETE FROM Olutera WHERE id=:id');
+        $query->execute(array('id' => $this->id));
     }
     
     public function validate_oluen_nimi(){

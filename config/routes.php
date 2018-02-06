@@ -21,6 +21,14 @@
   $routes->get('/tilauslomake/:id', function($id) {
     OrderController::index($id);
   });
+
+  $routes->post('/tilaukset/uusipvm', function() {
+       BatchController::newDate();
+  });
+  
+  $routes->get('/tilaukset/:id', function($id) {
+       BatchController::admin($id);
+  });
   
   
   
@@ -36,6 +44,3 @@
     HelloWorldController::orderpageAdmin();
   });
   
-  $routes->get('/tilaukset', function() {
-    HelloWorldController::batchpageAdmin();
-  });
