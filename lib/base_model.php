@@ -41,6 +41,15 @@
         }
     }
     
+    public static function validate_upper_bound_of_string_numeric($string, $high){
+        $integer = intval($string);
+        if($high >= $integer){
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
     public static function validate_lower_bound_of_string_numeric($string, $low){
         $integer = intval($string);
         if($low <= $integer){

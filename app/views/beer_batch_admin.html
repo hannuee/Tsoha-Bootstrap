@@ -22,8 +22,8 @@
         <td>{{olutera.valmistuminen}}</td>
         <td>{{olutera.eran_koko}} litraa</td>
         <td>{{olutera.vapaana}} litraa</td>
-        <td>{{olutera.hinta}} €/litra</td>
-        <th><a class="btn btn-primary" href="{{base_path}}/tilaukset/{{olutera.id}}">Näytä tilaukset</a></th>
+        <td>{{olutera.hinta_euroa}},{{olutera.hinta_senttia}} €/litra</td>
+        <th><a class="btn btn-primary" href="{{base_path}}/hallinnointi/{{olutera.id}}">Näytä tilaukset</a></th>
         <th><a class="btn btn-primary" href="#">Siirry tilaamaan</a></th>
       </tr>
       {% endfor %}
@@ -33,7 +33,7 @@
   <br/>
 
 
-  <form method="post" action="{{base_path}}/hallinnointi/uusiera">
+  <form method="post" action="{{base_path}}/hallinnointi/oluterat/uusi">
   <table class="table table-striped table-bordered"> 
     <tbody>
       <tr> 

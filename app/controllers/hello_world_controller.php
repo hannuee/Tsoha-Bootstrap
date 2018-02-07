@@ -43,11 +43,6 @@
       View::make('customerpage.html');
     }
     
-    public static function customerpageAdmin(){
-      // Testaa koodiasi täällä
-      View::make('customerpageAdmin.html');
-    }
-    
     public static function orderpage(){
       // Testaa koodiasi täällä
       View::make('orderpage.html');

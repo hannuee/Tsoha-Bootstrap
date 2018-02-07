@@ -5,42 +5,46 @@
   });
   
 
-  
-  $routes->get('/', function() {
-    FrontController::index();
-  });
-  
-  $routes->get('/hallinnointi', function() {
-    FrontController::admin();
-  });
-  
-  $routes->post('/hallinnointi/uusiera', function() {
-    FrontController::newBeerBatch();
-  });
-  
-  $routes->get('/tilauslomake/:id', function($id) {
-    OrderController::index($id);
-  });
 
-  $routes->post('/tilaukset/uusipvm', function() {
-       BatchController::newDate();
+  $routes->get('/', function() {
+      BeerBatchController::index();
   });
   
-  $routes->get('/tilaukset/:id', function($id) {
-       BatchController::admin($id);
+  $routes->get('/tilaukset/uusi/:id', function($id) {
+      OrderController::index($id);
   });
-  
-  
   
   $routes->get('/omattiedot', function() {
-    HelloWorldController::customerpage();
+      CorporateCustomer::index();
+  }); 
+  
+  
+  
+  $routes->get('/hallinnointi/oluterat', function() {
+      BeerBatchController::admin();
   });
   
-  $routes->get('/kayttajientiedot', function() {
-    HelloWorldController::customerpageAdmin();
+  $routes->post('/hallinnointi/oluterat/uusi', function() {
+      BeerBatchController::newBeerBatch();
   });
   
-  $routes->get('/tilauslomakkeet', function() {
-    HelloWorldController::orderpageAdmin();
+  $routes->post('/hallinnointi/oluterat/uusipvm', function() {
+      BeerBatchController::updateDate();
+  });
+  
+  $routes->get('/hallinnointi/oluterat/:id', function($id) {
+      BeerBatchController::show($id);
+  });
+  
+  $routes->get('/hallinnointi/tilaukset/uusi/:id', function($id) {
+      OrderController::admin($id);
+  });
+  
+  $routes->get('/hallinnointi/pakkaustyypit', function() {
+      PackageTypeController::admin();
+  });
+  
+  $routes->get('/hallinnointi/yritysasiakkaat', function() {
+      CorporateCustomer::admin();
   });
   
