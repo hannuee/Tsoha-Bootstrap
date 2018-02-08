@@ -3,21 +3,29 @@
 class BeerBatchController extends BaseController{
     
     public static function index(){
+        self::check_user_logged_in();
+        
         $oluterat = Olutera::allAvailableWithMargin(400);
         View::make('beer_batch.html', array('oluterat' => $oluterat));
     }
     
     public static function admin(){
+        self::check_admin_logged_in();
+        
         $oluterat = Olutera::all();
         View::make('beer_batch_admin.html', array('oluterat' => $oluterat));
     }
 
     public static function show($id){
+        self::check_admin_logged_in();
+        
         $olutera = Olutera::one($id);  // Entä jos ei löydy, esim. virheellinen id? sitten ei renderöidä batchpagea!
         View::make('batchpageAdmin.html', array('olutera' => $olutera));
     }
     
     public static function newBeerBatch(){
+        self::check_admin_logged_in();     
+        
         $params = $_POST;
         
         $olutera = new Olutera(array(
@@ -46,6 +54,8 @@ class BeerBatchController extends BaseController{
     }
     
     public static function updateDate(){
+        self::check_admin_logged_in();
+        
         $params = $_POST;
         
         $olutera = Olutera::one($params['id']);
@@ -61,6 +71,8 @@ class BeerBatchController extends BaseController{
     }
     
     public static function delete(){
+        self::check_admin_logged_in();
+        
         $params = $_POST;
         
         $olutera = Olutera::one($params['id']);

@@ -3,8 +3,18 @@
   $routes->get('/hiekkalaatikko', function() {
     HelloWorldController::sandbox();
   });
-  
 
+  
+  
+  $routes->get('/kirjautuminen', function() {
+    CorporateCustomerController::login();
+  });
+  
+  $routes->post('/kirjautuminen', function() {
+    CorporateCustomerController::handle_login();
+  });
+  
+  
 
   $routes->get('/', function() {
       BeerBatchController::index();

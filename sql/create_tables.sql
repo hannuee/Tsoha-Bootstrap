@@ -9,7 +9,8 @@ CREATE TABLE Yritysasiakas (
     puhelinnumero varchar(20),
     sahkoposti varchar(100),
     salasana varchar(100) NOT NULL,
-    aktiivinen boolean DEFAULT TRUE
+    aktiivinen boolean DEFAULT TRUE,
+    tyontekija boolean DEFAULT FALSE
 );
 
 CREATE TABLE Olutera (
