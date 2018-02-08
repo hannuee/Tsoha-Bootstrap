@@ -10,7 +10,7 @@ class Olutera extends BaseModel{
     
     public function __construct($attributes){   
         parent::__construct($attributes);
-        $this->validators = array('validate_oluen_nimi', 'validate_valmistuminen', 'validate_eran_koko', 'validate_hinta');
+        $this->validators = array('validate_oluen_nimi', 'validate_valmistuminen', 'validate_eran_koko', 'validate_hinta_euroa', 'validate_hinta_senttia');
     }
     
     /**

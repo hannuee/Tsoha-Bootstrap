@@ -15,7 +15,7 @@
   });
   
   $routes->get('/omattiedot', function() {
-      CorporateCustomer::index();
+      CorporateCustomerController::index();
   }); 
   
   
@@ -45,6 +45,6 @@
   });
   
   $routes->get('/hallinnointi/yritysasiakkaat', function() {
-      CorporateCustomer::admin();
+      CorporateCustomerController::admin();
   });
   
