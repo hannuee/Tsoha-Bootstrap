@@ -30,12 +30,6 @@ class Yritysasiakas extends BaseModel{
         
         if($row){
           $yritysasiakas = new Yritysasiakas($row);
-          
-          if($yritysasiakas->tyontekija == 'true'){
-              $yritysasiakas->tyontekija = TRUE;
-          } else {
-              $yritysasiakas->tyontekija = FALSE;
-          }
             
           return $yritysasiakas;
         }

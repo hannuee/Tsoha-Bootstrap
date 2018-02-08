@@ -1,8 +1,8 @@
 -- Lisää INSERT INTO lauseet tähän tiedostoon
-INSERT INTO Yritysasiakas (yrityksen_nimi, y_tunnus, osoite, sahkoposti, salasana)
-VALUES ('Moi Oy', '123456-7', 'Koodikuja 1, 01011 Helsinki', 'se@on.se', 'passu');
 INSERT INTO Yritysasiakas (yrityksen_nimi, y_tunnus, osoite, sahkoposti, salasana, tyontekija)
-VALUES ('Pienpanimo', '123456-8', 'Koodikuja 1, 01011 Helsinki', 'admin@pani.mo', 'passu', true);
+VALUES ('Moi Oy', '123456-7', 'Koodikuja 1, 01011 Helsinki', 'se@on.se', 'passu', 0);
+INSERT INTO Yritysasiakas (yrityksen_nimi, y_tunnus, osoite, sahkoposti, salasana, tyontekija)
+VALUES ('Pienpanimo', '123456-8', 'Koodikuja 1, 01011 Helsinki', 'admin@pani.mo', 'passu', 1);
 
 INSERT INTO Olutera (oluen_nimi, valmistuminen, eran_koko, vapaana, hinta)
 VALUES ('Pale Ale', NOW(), 100000, 96000, 675);

@@ -10,7 +10,7 @@ CREATE TABLE Yritysasiakas (
     sahkoposti varchar(100),
     salasana varchar(100) NOT NULL,
     aktiivinen boolean DEFAULT TRUE,
-    tyontekija boolean DEFAULT FALSE
+    tyontekija INTEGER
 );
 
 CREATE TABLE Olutera (

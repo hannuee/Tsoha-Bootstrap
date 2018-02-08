@@ -25,10 +25,10 @@ class CorporateCustomerController extends BaseController{
         
         if(!$corporate_customer){
             View::make('login.html', array('error' => 'Väärä käyttäjätunnus tai salasana!', 'email' => $params['email']));
-        } elseif ($corporate_customer->tyontekija == true) {  // Jos kyseessä työntekijä.
+        } elseif ($corporate_customer->tyontekija == 1) {  // Jos kyseessä työntekijä.
             $_SESSION['admin'] = $corporate_customer->id;
             Redirect::to('/hallinnointi/oluterat', array('message' => 'Tervetuloa takaisin ' . $corporate_customer->yrityksen_nimi . '!'));
-        } elseif ($corporate_customer->tyontekija == false) {  // Jos kyseessä normaali yritysasiakas.
+        } elseif ($corporate_customer->tyontekija == 0) {  // Jos kyseessä normaali yritysasiakas.
             $_SESSION['user'] = $corporate_customer->id;
             Redirect::to('/', array('message' => 'Tervetuloa takaisin ' . $corporate_customer->yrityksen_nimi . '!'));
         }
