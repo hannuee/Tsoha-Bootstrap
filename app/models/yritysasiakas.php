@@ -24,12 +24,18 @@ class Yritysasiakas extends BaseModel{
     }
     
     public static function authenticate($email, $password){
-        $query = DB::connection()->prepare('SELECT * FROM Yritysasiakas WHERE sahkoposti = :sahkoposti AND salasana = :password LIMIT 1');
-        $query->execute(array('sahkoposti' => $email, 'password' => $password));
+        $query = DB::connection()->prepare('SELECT * FROM Yritysasiakas WHERE sahkoposti = :email AND salasana = :password LIMIT 1');
+        $query->execute(array('email' => $email, 'password' => $password));
         $row = $query->fetch();
         
         if($row){
           $yritysasiakas = new Yritysasiakas($row);
+          
+          if($yritysasiakas->tyontekija == 'true'){
+              $yritysasiakas->tyontekija = TRUE;
+          } else {
+              $yritysasiakas->tyontekija = FALSE;
+          }
             
           return $yritysasiakas;
         }
