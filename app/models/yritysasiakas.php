@@ -24,7 +24,7 @@ class Yritysasiakas extends BaseModel{
     }
     
     public static function authenticate($email, $password){
-        $query = DB::connection()->prepare('SELECT * FROM Yritysasiakas WHERE sahkoposti = :sahkoposti AND password = :password LIMIT 1');
+        $query = DB::connection()->prepare('SELECT * FROM Yritysasiakas WHERE sahkoposti = :sahkoposti AND salasana = :password LIMIT 1');
         $query->execute(array('sahkoposti' => $email, 'password' => $password));
         $row = $query->fetch();
         
