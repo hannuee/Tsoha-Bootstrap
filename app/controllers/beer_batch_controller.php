@@ -60,4 +60,13 @@ class BeerBatchController extends BaseController{
         }
     }
     
+    public static function delete(){
+        $params = $_POST;
+        
+        $olutera = Olutera::one($params['id']);
+        $olutera->delete();
+ 
+        Redirect::to('/hallinnointi/oluterat', array('message' => 'Oluterä ja sen tilaukset on poistettu onnistuneesti!'));
+    }
+    
 }

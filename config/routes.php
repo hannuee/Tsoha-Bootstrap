@@ -32,6 +32,10 @@
       BeerBatchController::updateDate();
   });
   
+  $routes->post('/hallinnointi/oluterat/poisto', function() {
+      BeerBatchController::delete();
+  });
+  
   $routes->get('/hallinnointi/oluterat/:id', function($id) {
       BeerBatchController::show($id);
   });
