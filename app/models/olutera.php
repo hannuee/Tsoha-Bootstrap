@@ -114,7 +114,7 @@ class Olutera extends BaseModel{
                  RETURNING id');
         $query->execute(array(
                 'oluen_nimi' => $this->oluen_nimi, 'valmistuminen' => $this->valmistuminen, 
-                'eran_koko' => $this->eran_koko, 'vapaana' => $this->vapaana, 'hinta' => $hinta));
+                'eran_koko' => intval($this->eran_koko) * 100, 'vapaana' => intval($this->vapaana) * 100, 'hinta' => $hinta));
         $row = $query->fetch();
         $this->id = $row['id'];
     }
