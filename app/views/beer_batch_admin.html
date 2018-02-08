@@ -73,49 +73,5 @@
       {{message}}
     </div>
   {% endif %}
-  
-  
-  <br/>
-  
-  <h1>Kaikki pakkaustyypit</h1>
-  <table class="table table-striped table-bordered"> 
-    <thead>
-      <tr>
-        <th>Pakkaustyypin nimi</th>
-        <th>Vetoisuus</th>
-        <th>Hinta</th>
-        <th>Pantti</th>
-        <th>Saatavilla</th>
-        <th></th>
-      </tr>
-    </thead>
 
-    <tbody>
-      <tr>
-        <td>Keg</td>
-        <td>20 litraa</td>
-        <td>10 €/kpl</td>
-        <td>20 €/kpl</td>
-        <td>Kyllä</td>
-        <td><a class="btn btn-primary" href="#">Vaihda saatavuusstatusta</a></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  <br/>
-  
-  <form>
-  <table class="table table-striped table-bordered"> 
-    <tbody>
-      <tr> <!--integerit ja datet ja valuet himmeiks katoaviks ainakin textissä!-->
-        <td><input class="form-control" value="Pakkaustyypin nimi" type="text"></td>
-        <td><input class="form-control" value="Vetoisuus" type="text"></td>
-        <td><input class="form-control" value="Hinta" type="text"></td>
-        <td><input class="form-control" value="Pantti" type="text"></td>
-        <td></td>
-        <td><button type="submit" class="btn btn-primary">Lisää pakkaustyyppi!</button></td>
-      </tr>
-    </tbody>
-  </table>
-  </form>
 {% endblock %}
