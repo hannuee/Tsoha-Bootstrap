@@ -22,7 +22,7 @@
         <td>{{olutera.hinta}} €/litra</td>
         <td><a class="btn btn-danger" href="#">Poista oluterä</a></td>
         <td><form method="post" action="{{base_path}}/hallinnointi/oluterat/uusipvm">
-                <input name="id" class="form-control" type="text" value="{{olutera.id}}" hidden="true">
+                <input name="id" class="form-control" type="hidden" value="{{olutera.id}}">
                 <input name="valmistuminen" class="form-control" type="date"> 
                 <button type="submit" class="btn btn-primary">Muuta pvm</button>
             </form></td>

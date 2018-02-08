@@ -9,12 +9,13 @@ Käyttöliittymä:
 
 * [Asiakkaan etusivu (jossa Oluterä-tietokohteen all-metodi(listaus) käytössä)](https://hawerala.users.cs.helsinki.fi/tsoha-Tilaussovellus/)
 * [Asiakkaan tilauslomake (jossa Oluterä-tietokohteen one-metodi(esittely) käytössä)](https://hawerala.users.cs.helsinki.fi/tsoha-Tilaussovellus/tilauslomake/1)
-* [Työntekijän etusivu (jossa Oluterä-tietokohteen all-metodi ja save-metodi(listaus ja lisäys) käytössä)](https://hawerala.users.cs.helsinki.fi/tsoha-Tilaussovellus/hallinnointi)
-
 * [Asiakkaan omien tietojen hallinta](https://hawerala.users.cs.helsinki.fi/tsoha-Tilaussovellus/omattiedot)
-* [Työntekijän asiakkaiden tietojen hallinta](https://hawerala.users.cs.helsinki.fi/tsoha-Tilaussovellus/kayttajientiedot)
-* [Työntekijän tilauslomake](https://hawerala.users.cs.helsinki.fi/tsoha-Tilaussovellus/tilauslomakkeet)
-* [Työntekijän oluterän tilausten näkeminen](https://hawerala.users.cs.helsinki.fi/tsoha-Tilaussovellus/tilaukset)
+
+* [Työntekijän etusivu (jossa Oluterä-tietokohteen all-metodi ja save-metodi(listaus ja lisäys) käytössä)](https://hawerala.users.cs.helsinki.fi/tsoha-Tilaussovellus/hallinnointi/oluterat)
+* [Työntekijän oluterän tilausten näkeminen (jossa Oluterä-tietokohteen one-metodi(esittely) käytössä)](https://hawerala.users.cs.helsinki.fi/tsoha-Tilaussovellus/hallinnointi/oluterat/1)
+* [Työntekijän pakkaustyyppien listaus](https://hawerala.users.cs.helsinki.fi/tsoha-Tilaussovellus/hallinnointi/pakkaustyypit)
+* [Työntekijän tilauslomake](https://hawerala.users.cs.helsinki.fi/tsoha-Tilaussovellus/hallinnointi/tilaukset/uusi/1)
+* [Työntekijän asiakkaiden tietojen hallinta](https://hawerala.users.cs.helsinki.fi/tsoha-Tilaussovellus/hallinnointi/yritysasiakkaat)
 
 ## Työn aihe
 
