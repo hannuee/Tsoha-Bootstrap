@@ -17,21 +17,6 @@ class BeerBatchController extends BaseController{
         View::make('batchpageAdmin.html', array('olutera' => $olutera));
     }
     
-    public static function updateDate(){
-        $params = $_POST;
-        
-        $olutera = Olutera::one($params['id']);
-        $olutera->valmistuminen = $params['valmistuminen'];
-        $errors = $olutera->errors();
- 
-        if(count($errors) == 0){  // Syötteet valideja.
-            $olutera->updateDate();
-            Redirect::to('/hallinnointi/oluterat/' . $olutera->id, array('message' => 'Valmistumispäivämäärä muutettu onnistuneesti!'));
-        } else {                  // Syötteet ei-valideja.
-            Redirect::to('/hallinnointi/oluterat/' . $olutera->id, array('errors' => $errors));
-        }
-    }
-    
     public static function newBeerBatch(){
         $params = $_POST;
         
@@ -57,6 +42,21 @@ class BeerBatchController extends BaseController{
             'hinta_euroa' => $params['hinta_euroa'],
             'hinta_senttia' => $params['hinta_senttia'])
                 ));
+        }
+    }
+    
+    public static function updateDate(){
+        $params = $_POST;
+        
+        $olutera = Olutera::one($params['id']);
+        $olutera->valmistuminen = $params['valmistuminen'];
+        $errors = $olutera->errors();
+ 
+        if(count($errors) == 0){  // Syötteet valideja.
+            $olutera->updateDate();
+            Redirect::to('/hallinnointi/oluterat/' . $olutera->id, array('message' => 'Valmistumispäivämäärä muutettu onnistuneesti!'));
+        } else {                  // Syötteet ei-valideja.
+            Redirect::to('/hallinnointi/oluterat/' . $olutera->id, array('errors' => $errors));
         }
     }
     
