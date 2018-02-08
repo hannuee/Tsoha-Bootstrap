@@ -95,8 +95,8 @@ class Olutera extends BaseModel{
         if($row){
             $row['eran_koko'] = $row['eran_koko'] / 100; // Muutetaan erän koko cl --> l.
             $row['vapaana'] = $row['vapaana'] / 100;     // Muutetaan vapaana cl --> l.
-            $row['hinta_euroa'] = intval(intval($row['hinta']) / 100);
-            $row['hinta_senttia'] = intval($row['hinta']) - intval(intval($row['hinta']) / 100) * 100;  // esim. 875 - 800
+            $row['hinta_euroa'] = strval(intval(intval($row['hinta']) / 100));
+            $row['hinta_senttia'] = strval(intval($row['hinta']) - intval(intval($row['hinta']) / 100) * 100);  // esim. 875 - 800
             
             $olutera = new Olutera($row);
             
