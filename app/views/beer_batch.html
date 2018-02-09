@@ -27,4 +27,11 @@
       {% endfor %}
     </tbody>
   </table>
+  
+  {% if message %}
+    <div class="alert alert-success">
+      {{message}}
+    </div>
+  {% endif %}
+  
 {% endblock %}
