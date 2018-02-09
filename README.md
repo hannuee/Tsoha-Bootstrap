@@ -7,7 +7,7 @@ Yleisiä linkkejä:
 
 Käyttöliittymä:
 
-* [MOLEMMILLE: Kirjautuminen](https://hawerala.users.cs.helsinki.fi/tsoha-Tilaussovellus/kirjautuminen)
+* [MOLEMMILLE: Kirjautuminen (Asiakastunnus: se@on.se/passu  Admin: admin@pani.mo/passu)](https://hawerala.users.cs.helsinki.fi/tsoha-Tilaussovellus/kirjautuminen)
 
 * [Asiakkaan etusivu (jossa Oluterä-tietokohteen all-metodi(listaus) käytössä)](https://hawerala.users.cs.helsinki.fi/tsoha-Tilaussovellus/)
 * [Asiakkaan tilauslomake (jossa Oluterä-tietokohteen one-metodi(esittely) käytössä)](https://hawerala.users.cs.helsinki.fi/tsoha-Tilaussovellus/tilaukset/uusi/1)
