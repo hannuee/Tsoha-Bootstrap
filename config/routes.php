@@ -14,6 +14,10 @@
     CorporateCustomerController::handle_login();
   });
   
+  $routes->post('/ulos', function() {
+    CorporateCustomerController::logout();
+  });  
+  
   
 
   $routes->get('/', function() {
