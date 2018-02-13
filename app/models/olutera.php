@@ -109,8 +109,6 @@ class Olutera extends BaseModel{
      * ja että oliomuuttujien arvot on validoitu.
      */
     public function instanceVariablesToDatabaseForm(){
-        // Valmistuminen:
-        $this->valmistuminen = date_create($this->valmistuminen);
         // Erän koko:
         $this->eran_koko = str_replace(' ', '', $this->eran_koko);
         $this->eran_koko = intval($this->eran_koko)*100;  // Muunto senttilitroiksi.
