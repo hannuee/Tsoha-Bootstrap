@@ -22,7 +22,7 @@ class Olutera extends BaseModel{
         foreach($rows as $row){
             $olutera = new Olutera($row);
             $olutera->instanceVariablesToViewForm();
-            $oluterat[] = new Olutera($row);
+            $oluterat[] = $olutera;
         }
         return $oluterat;
     }
@@ -36,7 +36,7 @@ class Olutera extends BaseModel{
         foreach($rows as $row){
             $olutera = new Olutera($row);
             $olutera->instanceVariablesToViewForm();
-            $oluterat[] = new Olutera($row);
+            $oluterat[] = $olutera;
         }
         return $oluterat;
     }
