@@ -55,7 +55,8 @@
     public static function validate_non_negative_string_float($string){
         $string = str_replace(' ', '', $string);
         $string = str_replace(',', '.', $string);
-        $string = str_replace('.', '0', $string, 1);
+        $count = 1;
+        $string = str_replace('.', '0', $string, $count);
         if(ctype_digit($string)){
             return true;
         } else {
