@@ -167,8 +167,8 @@ class Olutera extends BaseModel{
     public function validate_hinta(){
         $errors = array();
         
-        if(!BaseModel::validate_non_negative_string_float($this->hinta_euroa) ||
-           !BaseModel::validate_upper_bound_of_non_negative_string_float($this->hinta_euroa, 1000)){
+        if(!BaseModel::validate_non_negative_string_float($this->hinta) ||
+           !BaseModel::validate_upper_bound_of_non_negative_string_float($this->hinta, 1000)){
           $errors[] = 'Oluen €/litra hinnan on oltava kokonais- tai desimaaliluku väliltä 0 ja 1000!';
         }
 
