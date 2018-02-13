@@ -33,8 +33,7 @@ class BeerBatchController extends BaseController{
             'valmistuminen' => $params['valmistuminen'],
             'eran_koko' => $params['eran_koko'],
             'vapaana' => $params['eran_koko'],  // vapaana = eran_koko, koska koko erä on tietenkin vapaana kun erä luodaan. 
-            'hinta_euroa' => $params['hinta_euroa'],
-            'hinta_senttia' => $params['hinta_senttia']
+            'hinta' => $params['hinta']
         ));
         $errors = $olutera->errors();
         
@@ -47,8 +46,7 @@ class BeerBatchController extends BaseController{
             'oluen_nimi' => $params['oluen_nimi'],
             'valmistuminen' => $params['valmistuminen'],
             'eran_koko' => $params['eran_koko'],
-            'hinta_euroa' => $params['hinta_euroa'],
-            'hinta_senttia' => $params['hinta_senttia'])
+            'hinta' => $params['hinta'])
                 ));
         }
     }

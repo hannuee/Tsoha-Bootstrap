@@ -2,22 +2,16 @@
 
 class Olutera extends BaseModel{
     
-    // Mallin tietokantatauluista poikkeavat oliomuuttujien tiedon säilytysmuodot:
-    // eran_koko (litraa, EI senttilitraa)
-    // vapaana (litraa, EI senttilitraa)
-    // hinta_euroa JA hinta_senttia (EI pelkkiä senttejä)
-    public $id, $oluen_nimi, $valmistuminen, $eran_koko, $vapaana, $hinta_euroa, $hinta_senttia;
+    public $id, $oluen_nimi, $valmistuminen, $eran_koko, $vapaana, $hinta;
     
-    public function __construct($attributes){   
+    public function __construct($attributes){
         parent::__construct($attributes);
-        $this->validators = array('validate_oluen_nimi', 'validate_valmistuminen', 'validate_eran_koko', 'validate_hinta_euroa', 'validate_hinta_senttia');
+        $this->validators = array('validate_oluen_nimi', 'validate_valmistuminen', 'validate_eran_koko', 'validate_hinta');
     }
     
     /**
-     * 
      * @param type $margin Vaadittu oluterän vapaana olevan oluen määrä senttilitroissa
      * jotta funktio palauttaa oluterän. (Älä salli käyttäjän syötettä tähän parametriin!)
-     * @return \Olutera
      */
     public static function allAvailableWithMargin($margin){  
         $query = DB::connection()->prepare('SELECT * FROM Olutera WHERE vapaana >= ' . $margin);
@@ -26,20 +20,13 @@ class Olutera extends BaseModel{
         
         $oluterat = array();
         foreach($rows as $row){
-            $row['eran_koko'] = $row['eran_koko'] / 100; // Muutetaan erän koko cl --> l.
-            $row['vapaana'] = $row['vapaana'] / 100;     // Muutetaan vapaana cl --> l.
-            $row['hinta_euroa'] = intval(intval($row['hinta']) / 100);
-            $row['hinta_senttia'] = intval($row['hinta']) - intval(intval($row['hinta']) / 100) * 100;  // esim. 875 - 800
-            
+            $olutera = new Olutera($row);
+            $olutera->instanceVariablesToViewForm();
             $oluterat[] = new Olutera($row);
         }
         return $oluterat;
     }
-    
-    /**
-     * 
-     * @return \Olutera
-     */
+
     public static function all(){
         $query = DB::connection()->prepare('SELECT * FROM Olutera');
         $query->execute();
@@ -47,22 +34,16 @@ class Olutera extends BaseModel{
         
         $oluterat = array();
         foreach($rows as $row){
-            $row['eran_koko'] = $row['eran_koko'] / 100; // Muutetaan erän koko cl --> l.
-            $row['vapaana'] = $row['vapaana'] / 100;     // Muutetaan vapaana cl --> l.
-            $row['hinta_euroa'] = intval(intval($row['hinta']) / 100);
-            $row['hinta_senttia'] = intval($row['hinta']) - intval(intval($row['hinta']) / 100) * 100;  // esim. 875 - 800
-            
+            $olutera = new Olutera($row);
+            $olutera->instanceVariablesToViewForm();
             $oluterat[] = new Olutera($row);
         }
         return $oluterat;
     }
     
     /**
-     * 
-     * @param type $id
      * @param type $margin Vaadittu oluterän vapaana olevan oluen määrä senttilitroissa
      * jotta funktio palauttaa oluterän. (Älä salli käyttäjän syötettä tähän parametriin!)
-     * @return \Olutera
      */
     public static function oneAvailableWithMargin($id, $margin){
         $query = DB::connection()->prepare('SELECT * FROM Olutera WHERE id = :id AND vapaana > ' . $margin . ' LIMIT 1');
@@ -70,51 +51,39 @@ class Olutera extends BaseModel{
         $row = $query->fetch();
         
         if($row){
-            $row['eran_koko'] = $row['eran_koko'] / 100; // Muutetaan erän koko cl --> l.
-            $row['vapaana'] = $row['vapaana'] / 100;     // Muutetaan vapaana cl --> l.
-            $row['hinta_euroa'] = intval(intval($row['hinta']) / 100);
-            $row['hinta_senttia'] = intval($row['hinta']) - intval(intval($row['hinta']) / 100) * 100;  // esim. 875 - 800
-            
             $olutera = new Olutera($row);
-            
+            $olutera->instanceVariablesToViewForm();
             return $olutera;
         }
         return null;
     }
     
-    /**
-     * 
-     * @param type $id
-     * @return \Olutera
-     */
     public static function one($id){
         $query = DB::connection()->prepare('SELECT * FROM Olutera WHERE id = :id LIMIT 1');
         $query->execute(array('id' => $id));
         $row = $query->fetch();
         
         if($row){
-            $row['eran_koko'] = $row['eran_koko'] / 100; // Muutetaan erän koko cl --> l.
-            $row['vapaana'] = $row['vapaana'] / 100;     // Muutetaan vapaana cl --> l.
-            $row['hinta_euroa'] = strval(intval(intval($row['hinta']) / 100));
-            $row['hinta_senttia'] = strval(intval($row['hinta']) - intval(intval($row['hinta']) / 100) * 100);  // esim. 875 - 800
-            
             $olutera = new Olutera($row);
-            
+            $olutera->instanceVariablesToViewForm();
             return $olutera;
         }
         return null;
     }
     
     public function save(){
-        $hinta = $this->hinta_euroa * 100 + $this->hinta_senttia;
+        $this->instanceVariablesToDatabaseForm();
         
         $query = DB::connection()->prepare(
                 'INSERT INTO Olutera (oluen_nimi, valmistuminen, eran_koko, vapaana, hinta)
                  VALUES (:oluen_nimi, :valmistuminen, :eran_koko, :vapaana, :hinta)
                  RETURNING id');
         $query->execute(array(
-                'oluen_nimi' => $this->oluen_nimi, 'valmistuminen' => $this->valmistuminen, 
-                'eran_koko' => intval($this->eran_koko) * 100, 'vapaana' => intval($this->vapaana) * 100, 'hinta' => $hinta));
+                'oluen_nimi' => $this->oluen_nimi,
+                'valmistuminen' => $this->valmistuminen, 
+                'eran_koko' => $this->eran_koko,
+                'vapaana' => $this->vapaana,
+                'hinta' => $this->hinta));
         $row = $query->fetch();
         $this->id = $row['id'];
     }
@@ -129,6 +98,36 @@ class Olutera extends BaseModel{
         $query = DB::connection()->prepare(
                 'DELETE FROM Olutera WHERE id=:id');
         $query->execute(array('id' => $this->id));
+    }
+    
+
+    // Oliomuuttujien muuntajat:
+    
+    /**
+     * Muuntaa oliomuuttujien arvot oikeaan muotoon tietokannan näkökulmasta.
+     * Olettaa että oliomuuttujat ovat siinä muodossa missä ne on HTML lomakkeesta saatu
+     * ja että oliomuuttujien arvot on validoitu.
+     */
+    public function instanceVariablesToDatabaseForm(){
+        // Valmistuminen:
+        $this->valmistuminen = date_create($this->valmistuminen);
+        // Erän koko:
+        $this->eran_koko = str_replace(' ', '', $this->eran_koko);
+        $this->eran_koko = intval($this->eran_koko)*100;  // Muunto senttilitroiksi.
+        // Vapaana:
+        $this->vapaana = str_replace(' ', '', $this->vapaana);
+        $this->vapaana = intval($this->vapaana)*100;  // Muunto senttilitroiksi.
+        // Hinnan muutos:
+        $this->hinta = str_replace(' ', '', $this->hinta);
+        $this->hinta = str_replace(',', '.', $this->hinta);  // Muutetaan , -> . jotta käyttäjä voi käyttää kumpaa tahansa.
+        $this->hinta = floatval($this->hinta);
+        $this->hinta = intval($this->hinta*100);  // Muutetaan hinta senteiksi ja katkaistaan mahdolliset sentin murto-osat pois muuttamalla integeriksi.
+    }
+    
+    public function instanceVariablesToViewForm(){
+            $this->eran_koko = $this->eran_koko / 100;  // Muutetaan erän koko cl --> l.
+            $this->vapaana = $this->vapaana / 100;      // Muutetaan vapaana cl --> l.
+            $this->hinta = $this->hinta / 100;          // Muutetaan senttihinta "eurot,sentit"-muotoiseksi desimaalihinnaksi.
     }
     
     
@@ -158,29 +157,19 @@ class Olutera extends BaseModel{
         $errors = array();
         
         if(!BaseModel::validate_non_negative_string_integer($this->eran_koko) ||
-           !BaseModel::validate_lower_bound_of_string_numeric($this->eran_koko, 4)){
-          $errors[] = 'Erän koon on oltava kokonaisluku ja vähintään 4!';
+           !BaseModel::validate_bounds_of_string_integer($this->eran_koko, 4, 1000000)){
+          $errors[] = 'Erän koon on oltava kokonaisluku väliltä 4 ja 1 000 000!';
         }
 
         return $errors;
     }
     
-    public function validate_hinta_euroa(){
+    public function validate_hinta(){
         $errors = array();
         
-        if(!BaseModel::validate_non_negative_string_integer($this->hinta_euroa)){
-          $errors[] = 'Oluen euroa/litra hinnan on oltava ei-negatiivinen kokonaisluku!';
-        }
-
-        return $errors;
-    }
-    
-    public function validate_hinta_senttia(){
-        $errors = array();
-        
-        if(!BaseModel::validate_non_negative_string_integer($this->hinta_senttia) ||
-           !BaseModel::validate_upper_bound_of_string_numeric($this->hinta_senttia, 99)     ){
-          $errors[] = 'Oluen senttiä/litra hinnan on oltava kokonaisluku välillä 0-99!';
+        if(!BaseModel::validate_non_negative_string_float($this->hinta_euroa) ||
+           !BaseModel::validate_upper_bound_of_non_negative_string_float($this->hinta_euroa, 1000)){
+          $errors[] = 'Oluen €/litra hinnan on oltava kokonais- tai desimaaliluku väliltä 0 ja 1000!';
         }
 
         return $errors;

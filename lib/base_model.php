@@ -33,7 +33,8 @@
         }
     }
     
-    public static function validate_non_negative_string_integer($string){  
+    public static function validate_non_negative_string_integer($string){
+        $string = str_replace(' ', '', $string);
         if(ctype_digit($string)){
             return true;
         } else {
@@ -41,18 +42,31 @@
         }
     }
     
-    public static function validate_upper_bound_of_string_numeric($string, $high){
+    public static function validate_bounds_of_string_integer($string, $low, $high){
+        $string = str_replace(' ', '', $string);
         $integer = intval($string);
-        if($high >= $integer){
+        if($low <= $integer && $integer <= $high){
             return true;
         } else {
             return false;
         }
     }
     
-    public static function validate_lower_bound_of_string_numeric($string, $low){
-        $integer = intval($string);
-        if($low <= $integer){
+    public static function validate_non_negative_string_float($string){
+        $string = str_replace(' ', '', $string);
+        $string = str_replace(',', '.', $string);
+        $string = str_replace('.', '0', $string, 1);
+        if(ctype_digit($string)){
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    public static function validate_upper_bound_of_non_negative_string_float($string, $high){
+        $string = str_replace(' ', '', $string);
+        $string = str_replace(',', '.', $string);
+        if(floatval($string) <= $high){
             return true;
         } else {
             return false;

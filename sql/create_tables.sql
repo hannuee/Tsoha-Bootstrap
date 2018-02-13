@@ -9,8 +9,8 @@ CREATE TABLE Yritysasiakas (
     puhelinnumero varchar(20),
     sahkoposti varchar(100),
     salasana varchar(100) NOT NULL,
-    aktiivinen boolean DEFAULT TRUE,
-    tyontekija INTEGER
+    aktiivinen INTEGER DEFAULT 1,
+    tyontekija INTEGER DEFAULT 0
 );
 
 CREATE TABLE Olutera (
@@ -28,13 +28,13 @@ CREATE TABLE Pakkaustyyppi (
     vetoisuus INTEGER NOT NULL,
     hinta INTEGER NOT NULL,
     pantti INTEGER NOT NULL,
-    saatavilla boolean DEFAULT TRUE
+    saatavilla INTEGER DEFAULT 1
 );
 
 CREATE TABLE Tilaus (
     id SERIAL PRIMARY KEY,
     tilausajankohta date,
-    toimitettu boolean DEFAULT FALSE,
+    toimitettu INTEGER DEFAULT 0,
     toimitusohjeet text,
     olutera_id INTEGER REFERENCES Olutera(id) ON DELETE CASCADE,
     yritysasiakas_id INTEGER REFERENCES Yritysasiakas(id)

@@ -22,7 +22,7 @@
         <td>{{olutera.valmistuminen}}</td>
         <td>{{olutera.eran_koko}} litraa</td>
         <td>{{olutera.vapaana}} litraa</td>
-        <td>{{olutera.hinta_euroa}},{{olutera.hinta_senttia}} €/litra</td>
+        <td>{{olutera.hinta}} €/litra</td>
         <th><a class="btn btn-primary" href="{{base_path}}/hallinnointi/oluterat/{{olutera.id}}">Näytä tilaukset</a></th>
         <th><a class="btn btn-primary" href="#">Siirry tilaamaan</a></th>
       </tr>
@@ -40,16 +40,14 @@
   {% if attributes %}  <!--Virheellisen lomakkeen lähetyksen jälkeen täytetään lomake käyttäjän lähettämillä syötteillä-->
         <td><input name="oluen_nimi" class="form-control" value="{{attributes.oluen_nimi}}" type="text"></td>
         <td><input name="valmistuminen" class="form-control" value="{{attributes.valmistuminen}}" type="date"></td>
-        <td><input name="eran_koko" class="form-control" value="{{attributes.eran_koko}}" type="number"></td>
-        <td><input name="hinta_euroa" class="form-control" value="{{attributes.hinta_euroa}}" type="number">
-            <input name="hinta_senttia" class="form-control" value="{{attributes.hinta_senttia}}" type="number"></td>
+        <td><input name="eran_koko" class="form-control" value="{{attributes.eran_koko}}" type="text"></td>
+        <td><input name="hinta" class="form-control" value="{{attributes.hinta}}" type="text"></td>
         <td><button type="submit" class="btn btn-primary">Luo oluterä!</button></td>
   {% else %} <!--Muuten uusi puhdas lomake-->
         <td><input name="oluen_nimi" class="form-control" placeholder="Oluen nimi" type="text"></td>
         <td><input name="valmistuminen" class="form-control" type="date"></td>
-        <td><input name="eran_koko" class="form-control" placeholder="Erän koko (litraa)" type="number"></td>
-        <td><input name="hinta_euroa" class="form-control" placeholder="euroa" type="number">
-            <input name="hinta_senttia" class="form-control" placeholder="snt" type="number"></td>
+        <td><input name="eran_koko" class="form-control" placeholder="Kokonaisina litroina" type="text"></td>
+        <td><input name="hinta" class="form-control" placeholder="€/litra" type="text"></td>
         <td><button type="submit" class="btn btn-primary">Luo oluterä!</button></td>
   {% endif %}
         </tr>
