@@ -62,6 +62,14 @@
       PackageTypeController::admin();
   });
   
+  $routes->post('/hallinnointi/pakkaustyypit/uusi', function() {
+      PackageTypeController::newPackageType();
+  });
+  
+  $routes->post('/hallinnointi/pakkaustyypit/muutasaatavilla', function() {
+      PackageTypeController::switchAvailability();
+  });
+  
   $routes->get('/hallinnointi/yritysasiakkaat', function() {
       CorporateCustomerController::admin();
   });

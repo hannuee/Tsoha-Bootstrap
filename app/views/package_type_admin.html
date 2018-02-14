@@ -13,32 +13,62 @@
       </tr>
     </thead>
 
-    <tbody>
+    <tbody> 
+      {% for pakkaustyyppi in pakkaustyypit %}
       <tr>
-        <td>Keg</td>
-        <td>20 litraa</td>
-        <td>10 €/kpl</td>
-        <td>20 €/kpl</td>
-        <td>Kyllä</td>
-        <td><a class="btn btn-primary" href="#">Vaihda saatavuusstatusta</a></td>
+        <td>{{pakkaustyyppi.pakkaustyypin_nimi}}</td>
+        <td>{{pakkaustyyppi.vetoisuus}} litraa</td>
+        <td>{{pakkaustyyppi.hinta}} €/kpl</td>
+        <td>{{pakkaustyyppi.pantti}} €/kpl</td>
+        <td>{{pakkaustyyppi.saatavilla}}</td>
+        <td><form method="post" action="{{base_path}}/hallinnointi/pakkaustyypit/muutasaatavilla">
+                <input name="id" class="form-control" type="hidden" value="{{pakkaustyyppi.id}}">
+                <button type="submit" class="btn btn-danger">Vaihda saatavuusstatusta</button>
+                </form><td>
       </tr>
+      {% endfor %}
     </tbody>
   </table>
   
   <br/>
   
-  <form>
+  <form method="post" action="{{base_path}}/hallinnointi/pakkaustyypit/uusi">
   <table class="table table-striped table-bordered"> 
     <tbody>
-      <tr> <!--integerit ja datet ja valuet himmeiks katoaviks ainakin textissä!-->
-        <td><input class="form-control" value="Pakkaustyypin nimi" type="text"></td>
-        <td><input class="form-control" value="Vetoisuus" type="text"></td>
-        <td><input class="form-control" value="Hinta" type="text"></td>
-        <td><input class="form-control" value="Pantti" type="text"></td>
-        <td></td>
+      <tr>
+        {% if attributes %}  <!--Virheellisen lomakkeen lähetyksen jälkeen täytetään lomake käyttäjän lähettämillä syötteillä-->
+        <td><input class="form-control" name="pakkaustyypin_nimi" value="{{attributes.pakkaustyypin_nimi}}" type="text"></td>
+        <td><input class="form-control" name="vetoisuus" value="{{attributes.vetoisuus}}" type="text"></td>
+        <td><input class="form-control" name="hinta" value="{{attributes.hinta}}" type="text"></td>
+        <td><input class="form-control" name="pantti" value="{{attributes.pantti}}" type="text"></td>
         <td><button type="submit" class="btn btn-primary">Lisää pakkaustyyppi!</button></td>
+        {% else %} <!--Muuten uusi puhdas lomake-->
+        <td><input class="form-control" name="pakkaustyypin_nimi" placeholder="Pakkaustyypin nimi" type="text"></td>
+        <td><input class="form-control" name="vetoisuus" placeholder="Vetoisuus" type="text"></td>
+        <td><input class="form-control" name="hinta" placeholder="Hinta" type="text"></td>
+        <td><input class="form-control" name="pantti" placeholder="Pantti" type="text"></td>
+        <td><button type="submit" class="btn btn-primary">Lisää pakkaustyyppi!</button></td>
+        {% endif %}
       </tr>
     </tbody>
   </table>
   </form>
+  
+  
+  {% if errors %}
+    <div class="alert alert-danger">
+      <ul>
+        {% for error in errors %}
+          <li>{{error}}</li>
+        {% endfor %}
+      </ul>
+    </div>
+  {% endif %}
+  
+  {% if message %}
+    <div class="alert alert-success">
+      {{message}}
+    </div>
+  {% endif %}
+  
 {% endblock %}

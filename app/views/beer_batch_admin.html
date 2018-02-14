@@ -38,16 +38,16 @@
     <tbody>
       <tr> 
   {% if attributes %}  <!--Virheellisen lomakkeen lähetyksen jälkeen täytetään lomake käyttäjän lähettämillä syötteillä-->
-        <td><input name="oluen_nimi" class="form-control" value="{{attributes.oluen_nimi}}" type="text"></td>
-        <td><input name="valmistuminen" class="form-control" value="{{attributes.valmistuminen}}" type="date"></td>
-        <td><input name="eran_koko" class="form-control" value="{{attributes.eran_koko}}" type="text"></td>
-        <td><input name="hinta" class="form-control" value="{{attributes.hinta}}" type="text"></td>
+        <td><input class="form-control" name="oluen_nimi" value="{{attributes.oluen_nimi}}" type="text"></td>
+        <td><input class="form-control" name="valmistuminen" value="{{attributes.valmistuminen}}" type="date"></td>
+        <td><input class="form-control" name="eran_koko" value="{{attributes.eran_koko}}" type="text"></td>
+        <td><input class="form-control" name="hinta" value="{{attributes.hinta}}" type="text"></td>
         <td><button type="submit" class="btn btn-primary">Luo oluterä!</button></td>
   {% else %} <!--Muuten uusi puhdas lomake-->
-        <td><input name="oluen_nimi" class="form-control" placeholder="Oluen nimi" type="text"></td>
-        <td><input name="valmistuminen" class="form-control" type="date"></td>
-        <td><input name="eran_koko" class="form-control" placeholder="litraa" type="text"></td>
-        <td><input name="hinta" class="form-control" placeholder="€/litra" type="text"></td>
+        <td><input class="form-control" name="oluen_nimi" placeholder="Oluen nimi" type="text"></td>
+        <td><input class="form-control" name="valmistuminen" type="date"></td>
+        <td><input class="form-control" name="eran_koko" placeholder="litraa" type="text"></td>
+        <td><input class="form-control" name="hinta" placeholder="€/litra" type="text"></td>
         <td><button type="submit" class="btn btn-primary">Luo oluterä!</button></td>
   {% endif %}
         </tr>

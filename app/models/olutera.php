@@ -133,9 +133,9 @@ class Olutera extends BaseModel{
     }
     
     public function instanceVariablesToViewForm(){
-            $this->eran_koko = $this->eran_koko / 100;  // Muutetaan erän koko cl --> l.
-            $this->vapaana = $this->vapaana / 100;      // Muutetaan vapaana cl --> l.
-            $this->hinta = $this->hinta / 100;          // Muutetaan senttihinta "eurot,sentit"-muotoiseksi desimaalihinnaksi.
+        $this->eran_koko = $this->eran_koko / 100;  // Muutetaan erän koko cl --> l.
+        $this->vapaana = $this->vapaana / 100;      // Muutetaan vapaana cl --> l.
+        $this->hinta = $this->hinta / 100;          // Muutetaan senttihinta "eurot,sentit"-muotoiseksi desimaalihinnaksi.
     }
     
     
