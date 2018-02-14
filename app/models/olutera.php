@@ -154,9 +154,8 @@ class Olutera extends BaseModel{
     public function validate_eran_koko(){  // Minimi erän koko final oliomuuttujaks?
         $errors = array();
         
-        if(!BaseModel::validate_non_negative_string_integer($this->eran_koko) ||
-           !BaseModel::validate_bounds_of_string_integer($this->eran_koko, 4, 1000000)){
-          $errors[] = 'Erän koon on oltava kokonaisluku väliltä 4 ja 1 000 000!';
+        if(!BaseModel::validate_non_negative_string_float_and_its_bounds($this->eran_koko, 4, 1000000)){
+          $errors[] = 'Erän koon on oltava kokonais- tai desimaaliluku väliltä 4 ja 1 000 000!';
         }
 
         return $errors;
@@ -165,8 +164,7 @@ class Olutera extends BaseModel{
     public function validate_hinta(){
         $errors = array();
         
-        if(!BaseModel::validate_non_negative_string_float($this->hinta) ||
-           !BaseModel::validate_upper_bound_of_non_negative_string_float($this->hinta, 1000)){
+        if(!BaseModel::validate_non_negative_string_float_and_its_bounds($this->hinta, 0, 1000)){
           $errors[] = 'Oluen €/litra hinnan on oltava kokonais- tai desimaaliluku väliltä 0 ja 1000!';
         }
 

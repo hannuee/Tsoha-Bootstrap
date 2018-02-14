@@ -46,8 +46,7 @@ class BeerBatchController extends BaseController{
             'oluen_nimi' => $params['oluen_nimi'],
             'valmistuminen' => $params['valmistuminen'],
             'eran_koko' => $params['eran_koko'],
-            'hinta' => $params['hinta'])
-                ));
+            'hinta' => $params['hinta'])));
         }
     }
     

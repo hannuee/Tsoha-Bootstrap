@@ -52,22 +52,18 @@
         }
     }
     
-    public static function validate_non_negative_string_float($string){
+    public static function validate_non_negative_string_float_and_its_bounds($string, $low, $high){
         $string = str_replace(' ', '', $string);
         $string = str_replace(',', '.', $string);
+        
         $count = 1;
-        $string = str_replace('.', '0', $string, $count);
-        if(ctype_digit($string)){
-            return true;
-        } else {
+        $string2 = str_replace('.', '0', $string, $count);
+        if(!ctype_digit($string2)){
             return false;
         }
-    }
-    
-    public static function validate_upper_bound_of_non_negative_string_float($string, $high){
-        $string = str_replace(' ', '', $string);
-        $string = str_replace(',', '.', $string);
-        if(floatval($string) <= $high){
+        
+        $asFloat = floatval($string);
+        if($low <= $asFloat && $asFloat <= $high){
             return true;
         } else {
             return false;
