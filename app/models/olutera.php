@@ -86,12 +86,18 @@ class Olutera extends BaseModel{
                 'hinta' => $this->hinta));
         $row = $query->fetch();
         $this->id = $row['id'];
+        
+        $this->instanceVariablesToViewForm();  // Selkeyden vuoksi pidetään oliomuuttujat aina esitysmuodossa vaikka niitä ei käytettäisikään enää.
     }
     
     public function updateDate(){
+        $this->instanceVariablesToDatabaseForm();  // Turha, mutta selkeyden vuoksi.
+        
         $query = DB::connection()->prepare(
                 'UPDATE Olutera SET valmistuminen=:valmistuminen WHERE id=:id');
         $query->execute(array('valmistuminen' => $this->valmistuminen, 'id' => $this->id));
+        
+        $this->instanceVariablesToViewForm();  // Selkeyden vuoksi pidetään oliomuuttujat aina esitysmuodossa vaikka niitä ei käytettäisikään enää.
     }
     
     public function delete(){

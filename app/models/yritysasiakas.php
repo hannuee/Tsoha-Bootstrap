@@ -17,7 +17,6 @@ class Yritysasiakas extends BaseModel{
         
         if($row){
             $yritysasiakas = new Yritysasiakas($row);
-            
             return $yritysasiakas;
         }
         return null;
