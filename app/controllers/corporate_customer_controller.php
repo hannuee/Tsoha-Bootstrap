@@ -13,7 +13,7 @@ class CorporateCustomerController extends BaseController{
     public static function admin(){
         self::check_admin_logged_in();
         
-        View::make('corporate_customer.html');
+        View::make('corporate_customer_admin.html');
     }
     
     

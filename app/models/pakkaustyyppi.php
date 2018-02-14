@@ -148,7 +148,7 @@ class Pakkaustyyppi extends BaseModel{
         $errors = array();
         
         if(!BaseModel::validate_non_negative_string_float_and_its_bounds($this->pantti, 0, 1000000)){
-          $errors[] = 'Pantin on oltava kokonais- tai desimaaliluku väliltä 0 ja 1000000!';
+          $errors[] = 'Pantin on oltava kokonais- tai desimaaliluku väliltä 0 ja 1 000 000!';
         }
 
         return $errors;

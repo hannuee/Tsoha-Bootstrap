@@ -20,7 +20,11 @@
         <td>{{pakkaustyyppi.vetoisuus}} litraa</td>
         <td>{{pakkaustyyppi.hinta}} €/kpl</td>
         <td>{{pakkaustyyppi.pantti}} €/kpl</td>
-        <td>{{pakkaustyyppi.saatavilla}}</td>
+        <td>{% if pakkaustyyppi.saatavilla == 1 %}
+            Kyllä
+            {% elseif pakkaustyyppi.saatavilla == 0 %}
+            Ei
+            {% endif %}</td>
         <td><form method="post" action="{{base_path}}/hallinnointi/pakkaustyypit/muutasaatavilla">
                 <input name="id" class="form-control" type="hidden" value="{{pakkaustyyppi.id}}">
                 <button type="submit" class="btn btn-danger">Vaihda saatavuusstatusta</button>
