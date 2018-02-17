@@ -15,7 +15,7 @@ Käyttöliittymä:
 
 * [Työntekijän etusivu (jossa Oluterä-tietokohteen all-metodi ja save-metodi(listaus ja lisäys) käytössä)](https://hawerala.users.cs.helsinki.fi/tsoha-Tilaussovellus/hallinnointi/oluterat)
 * [Työntekijän oluterän tilausten näkeminen (jossa Oluterä-tietokohteen one-metodi, update-metodi ja delete-metodi(esittely, muokkaus ja poisto) käytössä)](https://hawerala.users.cs.helsinki.fi/tsoha-Tilaussovellus/hallinnointi/oluterat/1)
-* [Työntekijän pakkaustyyppien listaus](https://hawerala.users.cs.helsinki.fi/tsoha-Tilaussovellus/hallinnointi/pakkaustyypit)
+* [Työntekijän pakkaustyyppien listaus (jossa Pakkaustyyppi-tietokohteen all-metodi, save-metodi ja update-metodi(listaus, lisäys ja muokkaus) käytössä)](https://hawerala.users.cs.helsinki.fi/tsoha-Tilaussovellus/hallinnointi/pakkaustyypit)
 * [Työntekijän tilauslomake](https://hawerala.users.cs.helsinki.fi/tsoha-Tilaussovellus/hallinnointi/tilaukset/uusi/1)
 * [Työntekijän asiakkaiden tietojen hallinta](https://hawerala.users.cs.helsinki.fi/tsoha-Tilaussovellus/hallinnointi/yritysasiakkaat)
 
