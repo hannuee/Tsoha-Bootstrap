@@ -74,3 +74,15 @@
       CorporateCustomerController::admin();
   });
   
+  $routes->post('/hallinnointi/yritysasiakkaat/muokkaa', function() {
+      CorporateCustomerController::update();
+  });
+  
+  $routes->get('/hallinnointi/yritysasiakkaat/muokkaa/:id', function($id) {
+      CorporateCustomerController::edit($id);
+  });
+  
+  $routes->get('/hallinnointi/yritysasiakkaat/:id', function($id) {
+      CorporateCustomerController::show($id);
+  });
+  

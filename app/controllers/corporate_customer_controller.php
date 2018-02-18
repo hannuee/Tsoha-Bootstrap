@@ -13,7 +13,70 @@ class CorporateCustomerController extends BaseController{
     public static function admin(){
         self::check_admin_logged_in();
         
-        View::make('corporate_customer_admin.html');
+        $yritysasiakkaat = Yritysasiakas::all();
+        View::make('corporate_customer_admin.html', array('yritysasiakkaat' => $yritysasiakkaat));
+    }
+    
+    public static function show($id){
+        self::check_admin_logged_in();
+        
+        $yritysasiakas = Yritysasiakas::one($id);
+        View::make('corporate_customer_show.html', array('yritysasiakas' => $yritysasiakas));
+    }
+    
+    public static function edit($id){
+        self::check_admin_logged_in();
+        
+        $yritysasiakas = Yritysasiakas::one($id);
+        View::make('corporate_customer_edit.html', array('yritysasiakas' => $yritysasiakas));
+    }
+    
+    public static function update(){
+        self::check_admin_logged_in();
+        
+        $params = $_POST;
+        
+        $yritysasiakas = Yritysasiakas::one($params['id']);
+        
+        $yritysasiakas->yrityksen_nimi = $params['yrityksen_nimi'];
+        $yritysasiakas->y_tunnus = $params['y_tunnus'];
+        $yritysasiakas->osoite = $params['osoite'];
+        $yritysasiakas->toimitusosoite = $params['toimitusosoite'];
+        $yritysasiakas->laskutusosoite = $params['laskutusosoite'];
+        $yritysasiakas->puhelinnumero = $params['puhelinnumero'];
+        $yritysasiakas->sahkoposti = $params['sahkoposti'];
+        $yritysasiakas->salasana = $params['salasana'];
+        if(isset($params['aktiivinen'])){
+            $yritysasiakas->aktiivinen = 1;
+        } else {
+            $yritysasiakas->aktiivinen = 0;
+        }
+        if(isset($params['tyontekija'])){
+            $yritysasiakas->tyontekija = 1;
+        } else {
+            $yritysasiakas->tyontekija = 0;
+        }
+
+        $errors = $yritysasiakas->errors();
+ 
+        if(count($errors) == 0){  // Syötteet valideja.
+            $yritysasiakas->update();
+            Redirect::to('/hallinnointi/yritysasiakkaat/' . $yritysasiakas->id, array('message' => 'Tiedot päivitetty onnistuneesti'));
+        } else {                  // Syötteet ei-valideja.
+            Redirect::to('/hallinnointi/yritysasiakkaat/muokkaa/' . $yritysasiakas->id, array('errors' => $errors, 'attributes' => 
+                array(
+            'id' => $params['id'],
+            'yrityksen_nimi' => $params['yrityksen_nimi'],
+            'y_tunnus' => $params['y_tunnus'],
+            'osoite' => $params['osoite'],
+            'toimitusosoite' => $params['toimitusosoite'],
+            'laskutusosoite' => $params['laskutusosoite'],
+            'puhelinnumero' => $params['puhelinnumero'],
+            'sahkoposti' => $params['sahkoposti'],
+            'salasana' => $params['salasana'],
+            'aktiivinen' => $params['aktiivinen'],
+            'tyontekija' => $params['tyontekija'])));
+        }
     }
     
     
