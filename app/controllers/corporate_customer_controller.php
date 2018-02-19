@@ -31,6 +31,62 @@ class CorporateCustomerController extends BaseController{
         View::make('corporate_customer_edit.html', array('yritysasiakas' => $yritysasiakas));
     }
     
+    public static function makeNew(){
+        self::check_admin_logged_in();
+        
+        View::make('corporate_customer_new.html');
+    }
+    
+    public static function saveNew(){
+        self::check_admin_logged_in();
+        
+        $params = $_POST;
+        
+        $aktiivinen;
+        $tyontekija;
+        if(isset($params['aktiivinen'])){
+            $aktiivinen = 1;
+        } else {
+            $aktiivinen = 0;
+        }
+        if(isset($params['tyontekija'])){
+            $tyontekija = 1;
+        } else {
+            $tyontekija = 0;
+        }
+        $yritysasiakas =  new Yritysasiakas(array(
+            'yrityksen_nimi' => $params['yrityksen_nimi'],
+            'y_tunnus' => $params['y_tunnus'],
+            'osoite' => $params['osoite'],
+            'toimitusosoite' => $params['toimitusosoite'],
+            'laskutusosoite' => $params['laskutusosoite'],
+            'puhelinnumero' => $params['puhelinnumero'],
+            'sahkoposti' => $params['sahkoposti'],
+            'salasana' => $params['salasana'],
+            'aktiivinen' => $aktiivinen,
+            'tyontekija' => $tyontekija));
+
+        $errors = $yritysasiakas->errors();
+ 
+        if(count($errors) == 0){  // Syötteet valideja.
+            $yritysasiakas->save();
+            Redirect::to('/hallinnointi/yritysasiakkaat/' . $yritysasiakas->id, array('message' => 'Tiedot päivitetty onnistuneesti'));
+        } else {                  // Syötteet ei-valideja.
+            Redirect::to('/hallinnointi/yritysasiakkaat/uusi', array('errors' => $errors, 'attributes' => 
+                array(
+            'yrityksen_nimi' => $params['yrityksen_nimi'],
+            'y_tunnus' => $params['y_tunnus'],
+            'osoite' => $params['osoite'],
+            'toimitusosoite' => $params['toimitusosoite'],
+            'laskutusosoite' => $params['laskutusosoite'],
+            'puhelinnumero' => $params['puhelinnumero'],
+            'sahkoposti' => $params['sahkoposti'],
+            'salasana' => $params['salasana'],
+            'aktiivinen' => $params['aktiivinen'],
+            'tyontekija' => $params['tyontekija'])));
+        }
+    }
+    
     public static function update(){
         self::check_admin_logged_in();
         
