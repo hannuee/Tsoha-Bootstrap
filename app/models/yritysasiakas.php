@@ -8,7 +8,7 @@ class Yritysasiakas extends BaseModel{
     public function __construct($attributes){   
         parent::__construct($attributes);
         $this->validators = array('validate_yrityksen_nimi', 'validate_y_tunnus', 'validate_osoite', 'validate_toimitusosoite', 
-                                  'validate_laskukutusosoite', 'validate_puhelinnumero', 'validate_sahkoposti', 'validate_salasana');
+                                  'validate_laskutusosoite', 'validate_puhelinnumero', 'validate_sahkoposti', 'validate_salasana');
     }
     
     public static function all(){
@@ -16,13 +16,13 @@ class Yritysasiakas extends BaseModel{
         $query->execute();
         $rows = $query->fetchAll();
         
-        $yritysasiakas = array();
+        $yritysasiakkaat = array();
         foreach($rows as $row){
             $yritysasiakas = new Yritysasiakas($row);
             //$yritysasiakas->instanceVariablesToViewForm();
-            $yritysasiakas[] = $yritysasiakas;
+            $yritysasiakkaat[] = $yritysasiakas;
         }
-        return $yritysasiakas;
+        return $yritysasiakkaat;
     }
     
     public static function one($id){
@@ -124,10 +124,10 @@ class Yritysasiakas extends BaseModel{
         return $errors;
     }
     
-    public function validate_validate_osoite(){
+    public function validate_osoite(){
         $errors = array();
         
-        if(!BaseModel::validate_string_length($this->validate_osoite, 1, 250)){
+        if(!BaseModel::validate_string_length($this->osoite, 1, 250)){
           $errors[] = 'Osoitteen on oltava 1 - 250 merkkiä!';
         }
 
@@ -144,10 +144,10 @@ class Yritysasiakas extends BaseModel{
         return $errors;
     }
     
-    public function validate_laskukutusosoite(){
+    public function validate_laskutusosoite(){
         $errors = array();
         
-        if(!BaseModel::validate_string_length($this->laskukutusosoite, 1, 250)){
+        if(!BaseModel::validate_string_length($this->laskutusosoite, 1, 250)){
           $errors[] = 'Laskutusosoitteen on oltava 1 - 250 merkkiä!';
         }
 
