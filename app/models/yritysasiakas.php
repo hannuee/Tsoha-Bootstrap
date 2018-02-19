@@ -42,7 +42,7 @@ class Yritysasiakas extends BaseModel{
         $query = DB::connection()->prepare(
                 'INSERT INTO Yritysasiakas (yrityksen_nimi, y_tunnus, osoite, toimitusosoite, laskutusosoite, 
                                             puhelinnumero, sahkoposti, salasana, aktiivinen, tyontekija)
-                 VALUES (:yrityksen_nimi, :y_tunnus, :osoite, :toimitusosoite, :laskutusosoite
+                 VALUES (:yrityksen_nimi, :y_tunnus, :osoite, :toimitusosoite, :laskutusosoite,
                          :puhelinnumero, :sahkoposti, :salasana, :aktiivinen, :tyontekija)
                  RETURNING id');
         $query->execute(array(
