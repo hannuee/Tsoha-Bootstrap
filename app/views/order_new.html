@@ -31,6 +31,12 @@
   
   <h1>Tilauksen koostaminen</h1>
   
+  <form method="post" action="{{base_path}}/tilaukset/uusi" oninput="
+        {% for pakkaustyyppi in pakkaustyypit %}  
+        result{{pakkaustyyppi.id}}.value=parseFloat({{pakkaustyyppi.id}}.value)+parseFloat({{pakkaustyyppi.pantti}});
+        {% endfor %}
+        ">
+      
   <table class="table table-striped table-bordered">
     <thead>
       <tr>
@@ -44,7 +50,7 @@
         <th>Olut yhteensä</th> 
       </tr>
     </thead>
-
+    
     <tbody>
       {% for pakkaustyyppi in pakkaustyypit %}  
       <tr>
@@ -52,10 +58,10 @@
         <td>{{pakkaustyyppi.pantti}} €/kpl</td>
         <td>{{pakkaustyyppi.hinta}} €/kpl</td>
         <td>{{pakkaustyyppi.vetoisuus}} litraa</td>
-        <td>3</td>
-        <td>60 €</td> 
-        <td>30 €</td> 
-        <td>525 €</td>  
+        <td><input class="form-control" id="{{pakkaustyyppi.id}}" value="0" type="number"></td>
+        <td><output name="result{{pakkaustyyppi.id}}" for="{{pakkaustyyppi.id}}"></output></td>
+        <td>0 €</td> 
+        <td>0 €</td>  
       </tr>
       {% endfor %}
       <tr>
@@ -65,22 +71,24 @@
         <td></td>
         <td></td>
         <!--RIVIN LOPPUSUMMA-->
-        <td>60 €</td> 
-        <td>30 €</td> 
-        <td>525 €</td>  
+        <td>0 €</td> 
+        <td>0 €</td> 
+        <td>0 €</td> 
       </tr>
     </tbody>
   </table>
-
+   
   <!--LOPPUSUMMA-->
   <table class="table table-striped table-bordered">
     <tbody>
       <tr>
-        <td>615 €</td> <!--LOPPUSUMMA--> <!--Javascript? laskee--> <!--LOPPUSUMMA--> <!--ALIGN RIGHT-->  
+        <td>0 €</td>
       </tr>
       <tr>
-        <td><a class="btn btn-success" href="#">Lähetä tilaus</a></td> <!--LOMAKKEEN LÄHETYS-->
+        <td><button type="submit" name="order" value="set" class="btn btn-success">Lähetä tilaus</button></td>
       </tr>
     </tbody>
   </table>
+  
+  </form>
 {% endblock %}

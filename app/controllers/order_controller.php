@@ -16,4 +16,10 @@ class OrderController extends BaseController{
         
         View::make('order_new_admin.html');
     }
+    
+    public static function saveNew(){
+        self::check_user_logged_in();
+        
+        
+    }
 }

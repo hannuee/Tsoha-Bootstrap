@@ -28,6 +28,10 @@
       OrderController::index($id);
   });
   
+  $routes->post('/tilaukset/uusi', function() {
+      OrderController::saveNew();
+  });
+  
   $routes->get('/omattiedot', function() {
       CorporateCustomerController::show();
   });
