@@ -4,10 +4,51 @@ class CorporateCustomerController extends BaseController{
     
     // ASIAKASTIETOSIVUT:
     
-    public static function index(){
+    public static function index(){  
         self::check_user_logged_in();
         
-        View::make('customerpage.html');
+        $yritysasiakas = self::get_user_logged_in();
+        View::make('corporate_customer_user.html', array('yritysasiakas' => $yritysasiakas));
+    }
+    
+    public static function edit_user(){
+        self::check_user_logged_in();
+        
+        $yritysasiakas = self::get_user_logged_in();
+        View::make('corporate_customer_edit_user.html', array('yritysasiakas' => $yritysasiakas));
+    }
+    
+    public static function update_user(){
+        self::check_user_logged_in();
+        
+        $params = $_POST;
+        
+        $yritysasiakas = self::get_user_logged_in();
+        
+        $yritysasiakas->osoite = $params['osoite'];
+        $yritysasiakas->toimitusosoite = $params['toimitusosoite'];
+        $yritysasiakas->laskutusosoite = $params['laskutusosoite'];
+        $yritysasiakas->puhelinnumero = $params['puhelinnumero'];
+        $yritysasiakas->sahkoposti = $params['sahkoposti'];
+        $yritysasiakas->salasana = $params['salasana'];
+
+        $errors = $yritysasiakas->errors();
+ 
+        if(count($errors) == 0){  // Syötteet valideja.
+            $yritysasiakas->update();
+            Redirect::to('/omattiedot' . $yritysasiakas->id, array('message' => 'Tiedot päivitetty onnistuneesti'));
+        } else {                  // Syötteet ei-valideja.
+            Redirect::to('/omattiedot/muokkaa/' . $yritysasiakas->id, array('errors' => $errors, 'attributes' => 
+                array(
+            'yrityksen_nimi' => $params['yrityksen_nimi'],
+            'y_tunnus' => $params['y_tunnus'],
+            'osoite' => $params['osoite'],
+            'toimitusosoite' => $params['toimitusosoite'],
+            'laskutusosoite' => $params['laskutusosoite'],
+            'puhelinnumero' => $params['puhelinnumero'],
+            'sahkoposti' => $params['sahkoposti'],
+            'salasana' => $params['salasana'])));
+        }
     }
     
     public static function admin(){

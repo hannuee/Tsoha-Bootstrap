@@ -30,6 +30,14 @@
   
   $routes->get('/omattiedot', function() {
       CorporateCustomerController::index();
+  });
+  
+  $routes->get('/omattiedot/muokkaa', function() {
+      CorporateCustomerController::edit_user();
+  }); 
+  
+  $routes->post('/omattiedot/tallenna', function() {
+      CorporateCustomerController::update_user();
   }); 
   
   
