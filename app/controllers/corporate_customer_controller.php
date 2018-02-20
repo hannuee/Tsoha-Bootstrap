@@ -36,9 +36,9 @@ class CorporateCustomerController extends BaseController{
  
         if(count($errors) == 0){  // Syötteet valideja.
             $yritysasiakas->update();
-            Redirect::to('/omattiedot' . $yritysasiakas->id, array('message' => 'Tiedot päivitetty onnistuneesti'));
+            Redirect::to('/omattiedot', array('message' => 'Tiedot päivitetty onnistuneesti'));
         } else {                  // Syötteet ei-valideja.
-            Redirect::to('/omattiedot/muokkaa/' . $yritysasiakas->id, array('errors' => $errors, 'attributes' => 
+            Redirect::to('/omattiedot/muokkaa', array('errors' => $errors, 'attributes' => 
                 array(
             'yrityksen_nimi' => $params['yrityksen_nimi'],
             'y_tunnus' => $params['y_tunnus'],
