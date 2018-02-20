@@ -33,7 +33,7 @@
   
   <form method="post" action="{{base_path}}/tilaukset/uusi" oninput="
         {% for pakkaustyyppi in pakkaustyypit %}  
-        result{{pakkaustyyppi.id}}.value=parseInt({{pakkaustyyppi.id}}.value)+parseInt({{pakkaustyyppi.pantti}})
+        result{{pakkaustyyppi.id}}.value=parseInt(field{{pakkaustyyppi.id}}.value)+parseInt({{pakkaustyyppi.pantti}})
         {% endfor %}
         ">
       
@@ -58,8 +58,8 @@
         <td>{{pakkaustyyppi.pantti}} €/kpl</td>
         <td>{{pakkaustyyppi.hinta}} €/kpl</td>
         <td>{{pakkaustyyppi.vetoisuus}} litraa</td>
-        <td><input class="form-control" id="{{pakkaustyyppi.id}}" value="0" type="number"></td>
-        <td><output name="result{{pakkaustyyppi.id}}" for="{{pakkaustyyppi.id}}"></output></td>
+        <td><input class="form-control" id="field{{pakkaustyyppi.id}}" value="0" type="number"></td>
+        <td><output name="result{{pakkaustyyppi.id}}" for="field{{pakkaustyyppi.id}}"></output></td>
         <td>0 €</td> 
         <td>0 €</td>  
       </tr>
