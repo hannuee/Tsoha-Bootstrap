@@ -40,8 +40,6 @@ class CorporateCustomerController extends BaseController{
         } else {                  // Syötteet ei-valideja.
             Redirect::to('/omattiedot/muokkaa', array('errors' => $errors, 'attributes' => 
                 array(
-            'yrityksen_nimi' => $params['yrityksen_nimi'],
-            'y_tunnus' => $params['y_tunnus'],
             'osoite' => $params['osoite'],
             'toimitusosoite' => $params['toimitusosoite'],
             'laskutusosoite' => $params['laskutusosoite'],
