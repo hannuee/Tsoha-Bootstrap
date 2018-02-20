@@ -6,24 +6,24 @@ class BeerBatchController extends BaseController{
         self::check_user_logged_in();
         
         $oluterat = Olutera::allAvailableWithMargin(400);
-        View::make('beer_batch.html', array('oluterat' => $oluterat));
+        View::make('beer_batch_list.html', array('oluterat' => $oluterat));
     }
     
-    public static function admin(){
+    public static function indexAdmin(){
         self::check_admin_logged_in();
         
         $oluterat = Olutera::all();
-        View::make('beer_batch_admin.html', array('oluterat' => $oluterat));
+        View::make('beer_batch_list_admin.html', array('oluterat' => $oluterat));
     }
 
-    public static function show($id){
+    public static function showAdmin($id){
         self::check_admin_logged_in();
         
         $olutera = Olutera::one($id);  // Entä jos ei löydy, esim. virheellinen id? sitten ei renderöidä batchpagea!
-        View::make('batchpageAdmin.html', array('olutera' => $olutera));
+        View::make('beer_batch_show_admin.html', array('olutera' => $olutera));
     }
     
-    public static function newBeerBatch(){
+    public static function saveNewAdmin(){
         self::check_admin_logged_in();     
         
         $params = $_POST;
@@ -50,7 +50,7 @@ class BeerBatchController extends BaseController{
         }
     }
     
-    public static function updateDate(){
+    public static function updateDateAdmin(){
         self::check_admin_logged_in();
         
         $params = $_POST;
@@ -67,7 +67,7 @@ class BeerBatchController extends BaseController{
         }
     }
     
-    public static function delete(){
+    public static function deleteAdmin(){
         self::check_admin_logged_in();
         
         $params = $_POST;

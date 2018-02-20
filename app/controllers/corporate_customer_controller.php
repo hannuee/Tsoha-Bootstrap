@@ -4,21 +4,21 @@ class CorporateCustomerController extends BaseController{
     
     // ASIAKASTIETOSIVUT:
     
-    public static function index(){  
+    public static function show(){  
         self::check_user_logged_in();
         
         $yritysasiakas = self::get_user_logged_in();
-        View::make('corporate_customer_user.html', array('yritysasiakas' => $yritysasiakas));
+        View::make('corporate_customer_show.html', array('yritysasiakas' => $yritysasiakas));
     }
     
-    public static function edit_user(){
+    public static function edit(){
         self::check_user_logged_in();
         
         $yritysasiakas = self::get_user_logged_in();
-        View::make('corporate_customer_edit_user.html', array('yritysasiakas' => $yritysasiakas));
+        View::make('corporate_customer_edit.html', array('yritysasiakas' => $yritysasiakas));
     }
     
-    public static function update_user(){
+    public static function update(){
         self::check_user_logged_in();
         
         $params = $_POST;
@@ -49,34 +49,34 @@ class CorporateCustomerController extends BaseController{
         }
     }
     
-    public static function admin(){
+    public static function indexAdmin(){
         self::check_admin_logged_in();
         
         $yritysasiakkaat = Yritysasiakas::all();
-        View::make('corporate_customer_admin.html', array('yritysasiakkaat' => $yritysasiakkaat));
+        View::make('corporate_customer_list_admin.html', array('yritysasiakkaat' => $yritysasiakkaat));
     }
     
-    public static function show($id){
+    public static function showAdmin($id){
         self::check_admin_logged_in();
         
         $yritysasiakas = Yritysasiakas::one($id);
-        View::make('corporate_customer_show.html', array('yritysasiakas' => $yritysasiakas));
+        View::make('corporate_customer_show_admin.html', array('yritysasiakas' => $yritysasiakas));
     }
     
-    public static function edit($id){
+    public static function editAdmin($id){
         self::check_admin_logged_in();
         
         $yritysasiakas = Yritysasiakas::one($id);
-        View::make('corporate_customer_edit.html', array('yritysasiakas' => $yritysasiakas));
+        View::make('corporate_customer_edit_admin.html', array('yritysasiakas' => $yritysasiakas));
     }
     
-    public static function makeNew(){
+    public static function newAdmin(){
         self::check_admin_logged_in();
         
-        View::make('corporate_customer_new.html');
+        View::make('corporate_customer_new_admin.html');
     }
     
-    public static function saveNew(){
+    public static function saveNewAdmin(){
         self::check_admin_logged_in();
         
         $params = $_POST;
@@ -126,7 +126,7 @@ class CorporateCustomerController extends BaseController{
         }
     }
     
-    public static function update(){
+    public static function updateAdmin(){
         self::check_admin_logged_in();
         
         $params = $_POST;

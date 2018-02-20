@@ -2,14 +2,14 @@
 
 class PackageTypeController extends BaseController{
     
-    public static function admin(){
+    public static function indexAdmin(){
         self::check_admin_logged_in();
         
         $pakkaustyypit = Pakkaustyyppi::all();
-        View::make('package_type_admin.html', array('pakkaustyypit' => $pakkaustyypit));
+        View::make('package_type_list_admin', array('pakkaustyypit' => $pakkaustyypit));
     }
     
-    public static function newPackageType(){
+    public static function saveNewAdmin(){
         self::check_admin_logged_in();     
         
         $params = $_POST;
@@ -36,7 +36,7 @@ class PackageTypeController extends BaseController{
         }
     }
     
-    public static function switchAvailability(){
+    public static function updateAvailabilityAdmin(){
         self::check_admin_logged_in();
         
         $params = $_POST;

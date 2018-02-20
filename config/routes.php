@@ -29,37 +29,37 @@
   });
   
   $routes->get('/omattiedot', function() {
-      CorporateCustomerController::index();
+      CorporateCustomerController::show();
   });
   
   $routes->get('/omattiedot/muokkaa', function() {
-      CorporateCustomerController::edit_user();
+      CorporateCustomerController::edit();
   }); 
   
   $routes->post('/omattiedot/tallenna', function() {
-      CorporateCustomerController::update_user();
+      CorporateCustomerController::update();
   }); 
   
   
   
   $routes->get('/hallinnointi/oluterat', function() {
-      BeerBatchController::admin();
+      BeerBatchController::indexAdmin();
   });
   
   $routes->post('/hallinnointi/oluterat/uusi', function() {
-      BeerBatchController::newBeerBatch();
+      BeerBatchController::saveNewAdmin();
   });
   
   $routes->post('/hallinnointi/oluterat/uusipvm', function() {
-      BeerBatchController::updateDate();
+      BeerBatchController::updateDateAdmin();
   });
   
   $routes->post('/hallinnointi/oluterat/poisto', function() {
-      BeerBatchController::delete();
+      BeerBatchController::deleteAdmin();
   });
   
   $routes->get('/hallinnointi/oluterat/:id', function($id) {
-      BeerBatchController::show($id);
+      BeerBatchController::showAdmin($id);
   });
   
   $routes->get('/hallinnointi/tilaukset/uusi/:id', function($id) {
@@ -67,38 +67,38 @@
   });
   
   $routes->get('/hallinnointi/pakkaustyypit', function() {
-      PackageTypeController::admin();
+      PackageTypeController::indexAdmin();
   });
   
   $routes->post('/hallinnointi/pakkaustyypit/uusi', function() {
-      PackageTypeController::newPackageType();
+      PackageTypeController::saveNewAdmin();
   });
   
   $routes->post('/hallinnointi/pakkaustyypit/muutasaatavilla', function() {
-      PackageTypeController::switchAvailability();
+      PackageTypeController::updateAvailabilityAdmin();
   });
   
   $routes->get('/hallinnointi/yritysasiakkaat', function() {
-      CorporateCustomerController::admin();
+      CorporateCustomerController::indexAdmin();
   });
   
   $routes->get('/hallinnointi/yritysasiakkaat/teeuusi', function() {
-      CorporateCustomerController::makeNew();
+      CorporateCustomerController::newAdmin();
   });
   
   $routes->post('/hallinnointi/yritysasiakkaat/uusi', function() {
-      CorporateCustomerController::saveNew();
+      CorporateCustomerController::saveNewAdmin();
   });
   
   $routes->post('/hallinnointi/yritysasiakkaat/muokkaa', function() {
-      CorporateCustomerController::update();
+      CorporateCustomerController::updateAdmin();
   });
   
   $routes->get('/hallinnointi/yritysasiakkaat/muokkaa/:id', function($id) {
-      CorporateCustomerController::edit($id);
+      CorporateCustomerController::editAdmin($id);
   });
   
   $routes->get('/hallinnointi/yritysasiakkaat/:id', function($id) {
-      CorporateCustomerController::show($id);
+      CorporateCustomerController::showAdmin($id);
   });
   

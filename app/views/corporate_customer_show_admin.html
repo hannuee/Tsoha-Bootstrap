@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>{{yritysasiakas.yrityksen_nimi}}</h2>&nbsp;&nbsp;
+<a class="btn btn-default btn-sm" href="{{base_path}}/hallinnointi/yritysasiakkaat/muokkaa/{{yritysasiakas.id}}">Muokkaa</a><br/>
+
+<label>Y-tunnus: </label>{{yritysasiakas.y_tunnus}}<br/>
+<label>Osoite: </label>{{yritysasiakas.osoite}}<br/>
+<label>Toimitusosoite: </label>{{yritysasiakas.toimitusosoite}}<br/>
+<label>Laskutusosoite: </label>{{yritysasiakas.laskutusosoite}}<br/>
+<label>Puhelinnumero: </label>{{yritysasiakas.puhelinnumero}}<br/>
+<label>Sähköposti: </label>{{yritysasiakas.sahkoposti}}<br/>
+<label>Salasana: </label>{{yritysasiakas.salasana}}<br/>
+<label>Voimassaolo: </label>
+        {% if yritysasiakas.aktiivinen == 1 %}
+            <label class="label label-success">Kyllä</label>
+        {% elseif yritysasiakas.aktiivinen == 0 %}
+            <label class="label label-danger">Ei</label>
+        {% endif %}<br/>
+<label>Oikeudet: </label>
+        {% if yritysasiakas.tyontekija == 1 %}
+            <label class="label label-info">Työntekijä</label>
+        {% elseif yritysasiakas.tyontekija == 0 %}
+            <label class="label label-success">Asiakas</label>
+        {% endif %}<br/>
+        
+        
+  {% if message %}
+    <div class="alert alert-success">
+      {{message}}
+    </div>
+  {% endif %}
+
+{% endblock %}
