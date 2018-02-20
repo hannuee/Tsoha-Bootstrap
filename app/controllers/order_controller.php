@@ -6,12 +6,14 @@ class OrderController extends BaseController{
         self::check_user_logged_in();
         
         $olutera = Olutera::oneAvailableWithMargin($id, 400);
-        View::make('order.html', array('olutera' => $olutera));
+        $pakkaustyypit = Pakkaustyyppi::allAvailable();
+        
+        View::make('order_new.html', array('olutera' => $olutera, 'pakkaustyypit' => $pakkaustyypit));
     }
  
     public static function admin($id){
         self::check_admin_logged_in();
         
-        View::make('orderpageAdmin.html');
+        View::make('order_new_admin.html');
     }
 }

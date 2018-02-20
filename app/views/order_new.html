@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
+ 
   <h1>Oluterä</h1>
 
   <table class="table table-striped table-bordered">
@@ -36,44 +37,41 @@
         <th>Pakkaustyyppi</th>
         <th>Pantin hinta</th>
         <th>Pakkauksen hinta</th>
-        <th>Vetoisuus</th> <!--KOROSTA JOTENKIN?-->
-        <th>Määrä</th> <!--Asiakas täyttää-->
-        <th>Pantit yhteensä</th> <!--Javascript? laskee-->
-        <th>Pakkaukset yhteensä</th> <!--Javascript? laskee-->    
-        <th>Olut yhteensä</th> <!--Javascript? laskee-->  
+        <th>Vetoisuus</th>
+        <th>Määrä</th>
+        <th>Pantit yhteensä</th> 
+        <th>Pakkaukset yhteensä</th>  
+        <th>Olut yhteensä</th> 
       </tr>
     </thead>
 
     <tbody>
+      {% for pakkaustyyppi in pakkaustyypit %}  
       <tr>
-        <td>Keg</td>
-        <td>20 €/kpl</td>
-        <td>10 €/kpl</td>
-        <td>20 litraa</td> <!--KOROSTA JOTENKIN?-->
-        <td>3</td> <!--Asiakas täyttää-->
-        <td>60 €</td> <!--Javascript? laskee-->
-        <td>30 €</td> <!--Javascript? laskee-->
-        <td>525 €</td> <!--Javascript? laskee-->  
+        <td>{{pakkaustyyppi.pakkaustyypin_nimi}}</td>
+        <td>{{pakkaustyyppi.pantti}} €/kpl</td>
+        <td>{{pakkaustyyppi.hinta}} €/kpl</td>
+        <td>{{pakkaustyyppi.vetoisuus}} litraa</td>
+        <td>3</td>
+        <td>60 €</td> 
+        <td>30 €</td> 
+        <td>525 €</td>  
+      </tr>
+      {% endfor %}
+      <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <!--RIVIN LOPPUSUMMA-->
+        <td>60 €</td> 
+        <td>30 €</td> 
+        <td>525 €</td>  
       </tr>
     </tbody>
   </table>
 
-  <!--YHTEENSÄ SUMMAT-->
-  <table class="table table-striped table-bordered">
-    <tbody>
-      <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td> 
-        <td>60 €</td> <!--KAIKKI Pantit--> <!--Javascript? laskee-->
-        <td>30 €</td> <!--KAIKKI Pakkaukset--> <!--Javascript? laskee-->
-        <td>525 €</td> <!--KAIKKI Oluet--> <!--Javascript? laskee-->  
-      </tr>
-    </tbody>
-  </table>
-  
   <!--LOPPUSUMMA-->
   <table class="table table-striped table-bordered">
     <tbody>
