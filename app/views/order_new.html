@@ -33,7 +33,7 @@
   
   <form method="post" action="{{base_path}}/tilaukset/uusi" oninput="
         {% for pakkaustyyppi in pakkaustyypit %}  
-        result{{pakkaustyyppi.id}}.value=parseFloat({{pakkaustyyppi.id}}.value)+parseFloat({{pakkaustyyppi.pantti}});
+        result{{pakkaustyyppi.id}}.value=parseInt({{pakkaustyyppi.id}}.value)+parseInt({{pakkaustyyppi.pantti}})
         {% endfor %}
         ">
       
