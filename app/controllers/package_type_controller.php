@@ -6,7 +6,7 @@ class PackageTypeController extends BaseController{
         self::check_admin_logged_in();
         
         $pakkaustyypit = Pakkaustyyppi::all();
-        View::make('package_type_list_admin', array('pakkaustyypit' => $pakkaustyypit));
+        View::make('package_type_list_admin.html', array('pakkaustyypit' => $pakkaustyypit));
     }
     
     public static function saveNewAdmin(){
