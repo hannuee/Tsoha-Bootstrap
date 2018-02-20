@@ -33,7 +33,9 @@
   
   <form method="post" action="{{base_path}}/tilaukset/uusi" oninput="
         {% for pakkaustyyppi in pakkaustyypit %}  
-        result{{pakkaustyyppi.id}}.value=parseInt(field{{pakkaustyyppi.id}}.value)+parseInt({{pakkaustyyppi.pantti}})
+        resultPantti{{pakkaustyyppi.id}}.value=parseFloat(field{{pakkaustyyppi.id}}.value)*parseFloat({{pakkaustyyppi.pantti}});
+        resultHinta{{pakkaustyyppi.id}}.value=parseFloat(field{{pakkaustyyppi.id}}.value)*parseFloat({{pakkaustyyppi.hinta}});
+        resultOlut{{pakkaustyyppi.id}}.value=parseFloat(field{{pakkaustyyppi.id}}.value)*parseFloat({{olutera.hinta}})*parseFloat({{pakkaustyyppi.vetoisuus}});
         {% endfor %}
         ">
       
@@ -59,9 +61,9 @@
         <td>{{pakkaustyyppi.hinta}} €/kpl</td>
         <td>{{pakkaustyyppi.vetoisuus}} litraa</td>
         <td><input class="form-control" id="field{{pakkaustyyppi.id}}" value="0" type="number"></td>
-        <td><output name="result{{pakkaustyyppi.id}}" for="field{{pakkaustyyppi.id}}"></output></td>
-        <td>0 €</td> 
-        <td>0 €</td>  
+        <td><output name="resultPantti{{pakkaustyyppi.id}}" for="field{{pakkaustyyppi.id}}"> €</output></td>
+        <td><output name="resultHinta{{pakkaustyyppi.id}}" for="field{{pakkaustyyppi.id}}"> €</td> 
+        <td><output name="resultOlut{{pakkaustyyppi.id}}" for="field{{pakkaustyyppi.id}}"> €</td>  
       </tr>
       {% endfor %}
       <tr>
