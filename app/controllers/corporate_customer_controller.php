@@ -60,14 +60,14 @@ class CorporateCustomerController extends BaseController{
         self::check_admin_logged_in();
         
         $yritysasiakas = Yritysasiakas::one($id);
-        View::make('corporate_customer_show_admin.html', array('yritysasiakas' => $yritysasiakas));
+        View::make('corporate_customer_show.html', array('yritysasiakas' => $yritysasiakas));
     }
     
     public static function editAdmin($id){
         self::check_admin_logged_in();
         
         $yritysasiakas = Yritysasiakas::one($id);
-        View::make('corporate_customer_edit_admin.html', array('yritysasiakas' => $yritysasiakas));
+        View::make('corporate_customer_edit.html', array('yritysasiakas' => $yritysasiakas));
     }
     
     public static function newAdmin(){

@@ -13,7 +13,7 @@ class BeerBatchController extends BaseController{
         self::check_admin_logged_in();
         
         $oluterat = Olutera::all();
-        View::make('beer_batch_list_admin.html', array('oluterat' => $oluterat));
+        View::make('beer_batch_list.html', array('oluterat' => $oluterat));
     }
 
     public static function showAdmin($id){
