@@ -32,11 +32,27 @@
   <h1>Tilauksen koostaminen</h1>
   
   <form method="post" action="{{base_path}}/tilaukset/uusi" oninput="
+        function parseFloatNoNan(str) {
+            var num = parseFloat(str);
+            if(isNaN(num)){
+                num = 0.0;
+            }
+            return num;
+        }
+        
         {% for pakkaustyyppi in pakkaustyypit %}  
-        resultPantti{{pakkaustyyppi.id}}.value=parseFloat(field{{pakkaustyyppi.id}}.value)*parseFloat({{pakkaustyyppi.pantti}});
-        resultHinta{{pakkaustyyppi.id}}.value=parseFloat(field{{pakkaustyyppi.id}}.value)*parseFloat({{pakkaustyyppi.hinta}});
-        resultOlut{{pakkaustyyppi.id}}.value=parseFloat(field{{pakkaustyyppi.id}}.value)*parseFloat({{olutera.hinta}})*parseFloat({{pakkaustyyppi.vetoisuus}});
+        resultPantti{{pakkaustyyppi.id}}.value=parseFloatNoNan(quantity{{pakkaustyyppi.id}}.value)*parseFloatNoNan({{pakkaustyyppi.pantti}});
+        resultPakkaus{{pakkaustyyppi.id}}.value=parseFloatNoNan(quantity{{pakkaustyyppi.id}}.value)*parseFloatNoNan({{pakkaustyyppi.hinta}});
+        resultOlut{{pakkaustyyppi.id}}.value=parseFloatNoNan(quantity{{pakkaustyyppi.id}}.value)*parseFloatNoNan({{olutera.hinta}})*parseFloatNoNan({{pakkaustyyppi.vetoisuus}});
+        resultLitrat{{pakkaustyyppi.id}}.value=parseFloatNoNan(quantity{{pakkaustyyppi.id}}.value)*parseFloatNoNan({{pakkaustyyppi.vetoisuus}});
         {% endfor %}
+        
+        resultKaikkiPantit.value={% for pakkaustyyppi in pakkaustyypit %}parseFloat(resultPantti{{pakkaustyyppi.id}}.value) + {% endfor %}0.0;
+        resultKaikkiPakkaukset.value={% for pakkaustyyppi in pakkaustyypit %}parseFloat(resultPakkaus{{pakkaustyyppi.id}}.value) + {% endfor %}0.0;
+        resultKaikkiOluet.value={% for pakkaustyyppi in pakkaustyypit %}parseFloat(resultOlut{{pakkaustyyppi.id}}.value) + {% endfor %}0.0;
+        resultKaikkiLitrat.value={% for pakkaustyyppi in pakkaustyypit %}parseFloat(resultLitrat{{pakkaustyyppi.id}}.value) + {% endfor %}0.0;
+        
+        resultKaikki.value=parseFloat(resultKaikkiPantit.value) + parseFloat(resultKaikkiPakkaukset.value) + parseFloat(resultKaikkiOluet.value);
         ">
       
   <table class="table table-striped table-bordered">
@@ -50,20 +66,22 @@
         <th>Pantit yhteensä</th> 
         <th>Pakkaukset yhteensä</th>  
         <th>Olut yhteensä</th> 
+        <th>Litrat yhteensä</th>
       </tr>
     </thead>
     
     <tbody>
-      {% for pakkaustyyppi in pakkaustyypit %}  
+      {% for pakkaustyyppi in pakkaustyypit %}
       <tr>
         <td>{{pakkaustyyppi.pakkaustyypin_nimi}}</td>
         <td>{{pakkaustyyppi.pantti}} €/kpl</td>
         <td>{{pakkaustyyppi.hinta}} €/kpl</td>
         <td>{{pakkaustyyppi.vetoisuus}} litraa</td>
-        <td><input class="form-control" id="field{{pakkaustyyppi.id}}" value="0" type="number"></td>
-        <td><output name="resultPantti{{pakkaustyyppi.id}}" for="field{{pakkaustyyppi.id}}"> €</output></td>
-        <td><output name="resultHinta{{pakkaustyyppi.id}}" for="field{{pakkaustyyppi.id}}"> €</td> 
-        <td><output name="resultOlut{{pakkaustyyppi.id}}" for="field{{pakkaustyyppi.id}}"> €</td>  
+        <td><input class="form-control" id="quantity{{pakkaustyyppi.id}}" value="0" type="number"></td>
+        <td><output id="resultPantti{{pakkaustyyppi.id}}" for="quantity{{pakkaustyyppi.id}}"></output>&nbsp;€</td>
+        <td><output id="resultPakkaus{{pakkaustyyppi.id}}" for="quantity{{pakkaustyyppi.id}}"></output>&nbsp;€</td> 
+        <td><output id="resultOlut{{pakkaustyyppi.id}}" for="quantity{{pakkaustyyppi.id}}"></output>&nbsp;€</td>
+        <td><output id="resultLitrat{{pakkaustyyppi.id}}" for="quantity{{pakkaustyyppi.id}}"></output>&nbsp;litraa</td> 
       </tr>
       {% endfor %}
       <tr>
@@ -73,9 +91,10 @@
         <td></td>
         <td></td>
         <!--RIVIN LOPPUSUMMA-->
-        <td>0 €</td> 
-        <td>0 €</td> 
-        <td>0 €</td> 
+        <td><output id="resultKaikkiPantit" for="{% for pakkaustyyppi in pakkaustyypit %}resultPantti{{pakkaustyyppi.id}} {% endfor %}"></output>&nbsp;€</td> 
+        <td><output id="resultKaikkiPakkaukset" for="{% for pakkaustyyppi in pakkaustyypit %}resultPakkaus{{pakkaustyyppi.id}} {% endfor %}"></output>&nbsp;€</td> 
+        <td><output id="resultKaikkiOluet" for="{% for pakkaustyyppi in pakkaustyypit %}resultOlut{{pakkaustyyppi.id}} {% endfor %}"></output>&nbsp;€</td>
+        <td><output id="resultKaikkiLitrat" for="{% for pakkaustyyppi in pakkaustyypit %}resultLitrat{{pakkaustyyppi.id}} {% endfor %}"></output>&nbsp;litraa</td> 
       </tr>
     </tbody>
   </table>
@@ -84,7 +103,7 @@
   <table class="table table-striped table-bordered">
     <tbody>
       <tr>
-        <td>0 €</td>
+        <td><output id="resultKaikki" for="resultKaikkiPantit resultKaikkiPakkaukset resultKaikkiOluet"></output>&nbsp;€</td></td>
       </tr>
       <tr>
         <td><button type="submit" name="order" value="set" class="btn btn-success">Lähetä tilaus</button></td>
