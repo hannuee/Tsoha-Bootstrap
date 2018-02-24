@@ -37,6 +37,8 @@ class BeerBatchController extends BaseController{
             $tilausrivit[] = $tilausrivi;
         }
         
+        Kint::dump($tilausrivit);
+        
         View::make('beer_batch_show_admin.html', array('olutera' => $olutera, 'tilaurivit' => $tilausrivit));
     }
     
