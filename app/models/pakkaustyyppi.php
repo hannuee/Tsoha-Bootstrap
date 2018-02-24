@@ -37,7 +37,6 @@ class Pakkaustyyppi extends BaseModel{
         $pakkaustyypitMaarilla = array();
         foreach($rows as $row){
             $pakkaustyyppi = self::one($row['pakkaustyyppi_id']);
-            $pakkaustyyppi->instanceVariablesToViewForm();
             
             $pakkaustyyppiMaaralla = array();
             $pakkaustyyppiMaaralla[] = $pakkaustyyppi;
