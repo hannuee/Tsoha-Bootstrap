@@ -22,6 +22,31 @@ class Pakkaustyyppi extends BaseModel{
         }
         return $pakkaustyypit;
     }
+    
+    /**
+     * 
+     * @param type $id Tilauksen id johon liittyvät pakkaustyypit ja niiden lukumäärät halutaan.
+     * @return 2-ulotteinen taulukko jossa sisemmän taulukon ensimmäinen alkio on
+     * pakkaustyyppi-olio ja toinen alkio kertoo näiden pakkaustyypin pakkausten lukumäärän.
+     */
+    public static function allForOrder($id){
+        $query = DB::connection()->prepare('SELECT * FROM TilausPakkaustyyppi WHERE tilaus_id = ' . $id);
+        $query->execute();
+        $rows = $query->fetchAll();
+        
+        $pakkaustyypitMaarilla = array();
+        foreach($rows as $row){
+            $pakkaustyyppi = self::one($row['pakkaustyyppi_id']);
+            $pakkaustyyppi->instanceVariablesToViewForm();
+            
+            $pakkaustyyppiMaaralla = array();
+            $pakkaustyyppiMaaralla[] = $pakkaustyyppi;
+            $pakkaustyyppiMaaralla[] = $row['lukumaara'];
+                    
+            $pakkaustyypitMaarilla[] = $pakkaustyyppiMaaralla;
+        }
+        return $pakkaustyypitMaarilla;
+    }
 
     public static function all(){
         $query = DB::connection()->prepare('SELECT * FROM Pakkaustyyppi');

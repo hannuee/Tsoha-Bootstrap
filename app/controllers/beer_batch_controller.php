@@ -20,7 +20,24 @@ class BeerBatchController extends BaseController{
         self::check_admin_logged_in();
         
         $olutera = Olutera::one($id);  // Entä jos ei löydy, esim. virheellinen id? sitten ei renderöidä batchpagea!
-        View::make('beer_batch_show_admin.html', array('olutera' => $olutera));
+        
+        $tilausrivit = array();
+        
+        // Haetaan ensin Oluterään liittyvät tilaukset.
+        $tilaukset = Tilaus::allForBeerBatch($id);
+        
+        // Sitten liitetään jokaiseen tilaukseen tieto tilaajasta ja tilauksen sisällöstä.
+        foreach($tilaukset as $tilaus){
+            $tilausrivi = array();
+            
+            $tilausrivi[] = Yritysasiakas::one($tilaus->yritysasiakas_id);
+            $tilausrivi[] = $tilaus;
+            $tilausrivi[] = Pakkaustyyppi::allForOrder($tilaus->id);
+            
+            $tilausrivit[] = $tilausrivi;
+        }
+        
+        View::make('beer_batch_show_admin.html', array('olutera' => $olutera, 'tilaurivit' => $tilausrivit));
     }
     
     public static function saveNewAdmin(){
