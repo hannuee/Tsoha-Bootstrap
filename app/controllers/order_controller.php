@@ -22,7 +22,7 @@ class OrderController extends BaseController{
         
         $params = $_POST;
         
-        $osatilaukset = array();
+        $osatilaukset = array();   // Muuta nimi tilauspakkaustyypiksi????????????????????
         $allErrors = array();
         
         // Otetaan talteen lomakkeen tiedot: pakkaustyyppien id:t ja kyseisten pakkaustyyppien määrät.
@@ -91,7 +91,7 @@ class OrderController extends BaseController{
         // Tarkistetaan että oluterän ID ok ja että oluterässä riittävästi vapaana olutta.
         $oluteraErrors = array();
         $olutera = Olutera::one($tilaus->olutera_id);
-        $olutera->vapaana = $olutera->vapaana * 100;
+        $olutera->vapaana = $olutera->vapaana * 100;  // OLUTERÄ NYT SENTTILITROISSA!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         if(is_null($olutera)){
             $oluteraErrors = array_merge($oluteraErrors, array("Virheellinen oluterän ID!"));  // REDIRECT EI-LOMAKKEESEEN!!!??
         } elseif($olutera->vapaana < $senttilitroja){
@@ -106,6 +106,7 @@ class OrderController extends BaseController{
         
         
         // Tallennetaan Tilaus-olio, TilausPakkaustyyppi-oliot(ja tallennetaan niihin tilaus_id) sekä vähennetään kyseisen oluterän vapaana olevan oluen määrää.
+        Kint::dump($senttilitroja);
         $olutera->vapaana -= $senttilitroja;
         $olutera->updateAmountAvailable();
         
