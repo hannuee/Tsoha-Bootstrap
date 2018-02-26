@@ -77,11 +77,11 @@ class OrderController extends BaseController{
         // Lasketaan samalla paljonko olutta on senttilitroissa tilattu.
         $pakkausErrors = array();
         foreach($osatilaukset as $osatilaus){
+            $debugInfo = array_merge($debugInfo, array("testi"));
             $pakkaustyyppi = Pakkaustyyppi::one($osatilaus->pakkaustyyppi_id);
             if(is_null($pakkaustyyppi)){
                 $pakkausErrors = array_merge($pakkausErrors, array("Lomake sisälsi virheellisen pakkaustyypin ID:n: " . $osatilaus->pakkaustyyppi_id));
             } elseif($pakkaustyyppi->saatavilla == 0){
-                $debugInfo = array_merge($debugInfo, array("testi"));
                 $pakkausErrors = array_merge($pakkausErrors, array("Pakkaustyyppi " . $pakkaustyyppi->pakkaustyypin_nimi . " ei valitettavasti enää ole saatavilla."));
             } else {
                 $senttilitroja += $osatilaus->lukumaara * $pakkaustyyppi->vetoisuus * 100;
