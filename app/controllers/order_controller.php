@@ -31,7 +31,7 @@ class OrderController extends BaseController{
         
         // Otetaan talteen lomakkeen tiedot: pakkaustyyppien id:t ja kyseisten pakkaustyyppien määrät.
         foreach($params as $key => $value){
-            $debugInfo = array_merge($debugInfo, array("POST iteraatio"));
+            $debugInfo = array_merge($debugInfo, array("POST iteraatio: " . $key));
             if(strpos($key, "quantity")){
                 $debugInfo = array_merge($debugInfo, array("POST quantity"));
                 $pakkaustyyppi_id = str_replace("quantity", "", $key);
