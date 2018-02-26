@@ -12,8 +12,7 @@ class TilausPakkaustyyppi extends BaseModel{
     public function save(){
         $query = DB::connection()->prepare(
                 'INSERT INTO TilausPakkaustyyppi (tilaus_id, pakkaustyyppi_id, lukumaara)
-                 VALUES (:tilaus_id, :pakkaustyyppi_id, :lukumaara)
-                 RETURNING id');
+                 VALUES (:tilaus_id, :pakkaustyyppi_id, :lukumaara)');
         $query->execute(array(
                 'tilaus_id' => $this->tilaus_id,
                 'pakkaustyyppi_id' => $this->pakkaustyyppi_id, 
