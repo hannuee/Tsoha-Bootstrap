@@ -18,6 +18,10 @@ class OrderController extends BaseController{
     }
     
     public static function saveNew(){
+        $debugInfo = array();
+        
+        
+        
         self::check_user_logged_in();
         
         $params = $_POST;
@@ -80,6 +84,7 @@ class OrderController extends BaseController{
                 $pakkausErrors = array_merge($pakkausErrors, array("Pakkaustyyppi " . $pakkaustyyppi->pakkaustyypin_nimi . " ei valitettavasti enää ole saatavilla."));
             } else {
                 $senttilitroja += $osatilaus->lukumaara * $pakkaustyyppi->vetoisuus * 100;
+                $debugInfo = array_merge($debugInfo, array("" . $senttilitroja));
             }
         }
         
@@ -117,6 +122,6 @@ class OrderController extends BaseController{
             $osatilaus->save();
         }
         
-        Redirect::to('/', array('message' => 'Senttilitrat: ' . $senttilitroja));
+        Redirect::to('/', array('message' => 'Tilaus lähetetty onnistuneesti!', 'errors' => $debugInfo));
     }
 }
