@@ -78,7 +78,7 @@ class OrderController extends BaseController{
             } elseif($pakkaustyyppi->saatavilla == 0){
                 $pakkausErrors = array_merge($pakkausErrors, array("Pakkaustyyppi " . $pakkaustyyppi->pakkaustyypin_nimi . " ei valitettavasti enää ole saatavilla."));
             } else {
-                $senttilitroja += $osatilaus->lukumaara * $pakkaustyyppi->vetoisuus*100;  // NYT VETOISUUS JOUDUTAAN TÄSSÄ MUUTTAAN TAKAS DATABASEFORMIIN!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                $senttilitroja += $osatilaus->lukumaara * $pakkaustyyppi->vetoisuus;
             }
         }
         
