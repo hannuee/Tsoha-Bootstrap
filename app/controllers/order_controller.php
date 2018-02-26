@@ -81,6 +81,7 @@ class OrderController extends BaseController{
             if(is_null($pakkaustyyppi)){
                 $pakkausErrors = array_merge($pakkausErrors, array("Lomake sisälsi virheellisen pakkaustyypin ID:n: " . $osatilaus->pakkaustyyppi_id));
             } elseif($pakkaustyyppi->saatavilla == 0){
+                $debugInfo = array_merge($debugInfo, array("testi"));
                 $pakkausErrors = array_merge($pakkausErrors, array("Pakkaustyyppi " . $pakkaustyyppi->pakkaustyypin_nimi . " ei valitettavasti enää ole saatavilla."));
             } else {
                 $senttilitroja += $osatilaus->lukumaara * $pakkaustyyppi->vetoisuus * 100;
@@ -120,7 +121,7 @@ class OrderController extends BaseController{
             $osatilaus->tilaus_id = $tilaus->id;
             $osatilaus->save();
         }
-        $debugInfo = array_merge($debugInfo, array("testi"));
+        
         Redirect::to('/', array('message' => 'Tilaus lähetetty onnistuneesti!', 'errors' => $debugInfo));
     }
 }
