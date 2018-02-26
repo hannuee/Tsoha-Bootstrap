@@ -34,8 +34,6 @@ class OrderController extends BaseController{
                 $pakkaustyyppi_id = str_replace("quantity", "", $key);
                 $lukumaara = $value;
                 
-                $allErrors[] = "testi: " . $pakkaustyyppi_id . " " . $lukumaara;
-                
                 $osatilaus = new TilausPakkaustyyppi(array(
                     'pakkaustyyppi_id' => $pakkaustyyppi_id,
                     'lukumaara' => $lukumaara
