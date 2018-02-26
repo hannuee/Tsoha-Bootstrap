@@ -78,7 +78,7 @@ class OrderController extends BaseController{
             } elseif($pakkaustyyppi->saatavilla == 0){
                 $pakkausErrors = array_merge($pakkausErrors, array("Pakkaustyyppi " . $pakkaustyyppi->pakkaustyypin_nimi . " ei valitettavasti enää ole saatavilla."));
             } else {
-                $senttilitroja += $osatilaus->lukumaara * $pakkaustyyppi->vetoisuus;
+                $senttilitroja += $osatilaus->lukumaara * $pakkaustyyppi->vetoisuus * 100;
             }
         }
         
@@ -91,6 +91,7 @@ class OrderController extends BaseController{
         // Tarkistetaan että oluterän ID ok ja että oluterässä riittävästi vapaana olutta.
         $oluteraErrors = array();
         $olutera = Olutera::one($tilaus->olutera_id);
+        $olutera->vapaana = $olutera->vapaana * 100;
         if(is_null($olutera)){
             $oluteraErrors = array_merge($oluteraErrors, array("Virheellinen oluterän ID!"));  // REDIRECT EI-LOMAKKEESEEN!!!??
         } elseif($olutera->vapaana < $senttilitroja){
@@ -105,7 +106,7 @@ class OrderController extends BaseController{
         
         
         // Tallennetaan Tilaus-olio, TilausPakkaustyyppi-oliot(ja tallennetaan niihin tilaus_id) sekä vähennetään kyseisen oluterän vapaana olevan oluen määrää.
-        $olutera->vapaana = $olutera->vapaana * 100 - $senttilitroja;
+        $olutera->vapaana -= $senttilitroja;
         $olutera->updateAmountAvailable();
         
         $tilaus->save();
