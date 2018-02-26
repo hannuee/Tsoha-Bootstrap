@@ -36,6 +36,7 @@ class OrderController extends BaseController{
                     'lukumaara' => $lukumaara
                 ));
                 $errors = $osatilaus->errors();        // instanceVariablesToDatabaseForm() seuraavaks ???????????????????????????
+                $osatilaus->lukumaara = intval($osatilaus->lukumaara);
                 
                 $osatilaukset = array_merge($osatilaukset, $osatilaus);
                 $allErrors = array_merge($allErrors, $errors);
@@ -106,7 +107,6 @@ class OrderController extends BaseController{
         
         
         // Tallennetaan Tilaus-olio, TilausPakkaustyyppi-oliot(ja tallennetaan niihin tilaus_id) sekä vähennetään kyseisen oluterän vapaana olevan oluen määrää.
-        Kint::dump($senttilitroja);
         $olutera->vapaana -= $senttilitroja;
         $olutera->updateAmountAvailable();
         
