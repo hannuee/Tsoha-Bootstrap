@@ -84,7 +84,6 @@ class OrderController extends BaseController{
                 $pakkausErrors = array_merge($pakkausErrors, array("Pakkaustyyppi " . $pakkaustyyppi->pakkaustyypin_nimi . " ei valitettavasti enää ole saatavilla."));
             } else {
                 $senttilitroja += $osatilaus->lukumaara * $pakkaustyyppi->vetoisuus * 100;
-                $debugInfo = array_merge($debugInfo, array("" . $senttilitroja));
             }
         }
         
@@ -121,7 +120,7 @@ class OrderController extends BaseController{
             $osatilaus->tilaus_id = $tilaus->id;
             $osatilaus->save();
         }
-        
+        $debugInfo = array_merge($debugInfo, array("testi"));
         Redirect::to('/', array('message' => 'Tilaus lähetetty onnistuneesti!', 'errors' => $debugInfo));
     }
 }
