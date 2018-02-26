@@ -100,6 +100,12 @@ class Olutera extends BaseModel{
         $this->instanceVariablesToViewForm();  // Selkeyden vuoksi pidetään oliomuuttujat aina esitysmuodossa vaikka niitä ei käytettäisikään enää.
     }
     
+    public function updateAmountAvailable(){
+        $query = DB::connection()->prepare(
+                'UPDATE Olutera SET vapaana=:vapaana WHERE id=:id');
+        $query->execute(array('vapaana' => $this->vapaana, 'id' => $this->id));
+    }
+    
     public function delete(){
         $query = DB::connection()->prepare(
                 'DELETE FROM Olutera WHERE id=:id');

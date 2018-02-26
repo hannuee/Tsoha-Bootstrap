@@ -6,7 +6,7 @@ class Tilaus extends BaseModel{
     
     public function __construct($attributes) {
         parent::__construct($attributes);
-        $this->validators = array(); // MUISTA VALIDAATTORIT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        $this->validators = array('validate_olutera_id'); // MUISTA VALIDAATTORIT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     }
     
     public static function allForBeerBatch($id){
@@ -20,6 +20,33 @@ class Tilaus extends BaseModel{
             $tilaukset[] = $tilaus;
         }
         return $tilaukset;
+    }
+    
+    public function save(){  //$tilausajankohta, $toimitettu, $toimitusohjeet, $olutera_id, $yritysasiakas_id;
+        $query = DB::connection()->prepare(
+                'INSERT INTO Tilaus (tilausajankohta, toimitettu, toimitusohjeet, olutera_id, yritysasiakas_id)
+                 VALUES (:tilausajankohta, :toimitettu, :toimitusohjeet, :olutera_id, :yritysasiakas_id)
+                 RETURNING id');
+        $query->execute(array(
+                'tilausajankohta' => $this->tilausajankohta,
+                'toimitettu' => $this->toimitettu, 
+                'toimitusohjeet' => $this->toimitusohjeet,
+                'olutera_id' => $this->olutera_id,
+                'yritysasiakas_id' => $this->yritysasiakas_id));
+        $row = $query->fetch();
+        $this->id = $row['id'];
+    }
+    
+    public function validate_olutera_id(){
+        $errors = array();
+        
+        if(!BaseModel::validate_non_negative_string_integer($this->olutera_id)){
+          // Tämä virheilmoitus annetaan vain jos lähetetyn HTML-lomakkeen olutera_id id:tä on muokattu TAI
+          // jos tilauslomakkeen URL:iin on muutettu manuaalisesti numeron paikalle joku muu kuin numero. 
+          $errors[] = 'Tekninen ongelma tilauksen vastaanottamisessa!';
+        }
+
+        return $errors;
     }
     
 }
