@@ -22,13 +22,12 @@ class Tilaus extends BaseModel{
         return $tilaukset;
     }
     
-    public function save(){  //$tilausajankohta, $toimitettu, $toimitusohjeet, $olutera_id, $yritysasiakas_id;
+    public function save(){
         $query = DB::connection()->prepare(
                 'INSERT INTO Tilaus (tilausajankohta, toimitettu, toimitusohjeet, olutera_id, yritysasiakas_id)
-                 VALUES (:tilausajankohta, :toimitettu, :toimitusohjeet, :olutera_id, :yritysasiakas_id)
+                 VALUES (current_date, :toimitettu, :toimitusohjeet, :olutera_id, :yritysasiakas_id)
                  RETURNING id');
         $query->execute(array(
-                'tilausajankohta' => $this->tilausajankohta,
                 'toimitettu' => $this->toimitettu, 
                 'toimitusohjeet' => $this->toimitusohjeet,
                 'olutera_id' => $this->olutera_id,

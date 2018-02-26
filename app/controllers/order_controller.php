@@ -50,7 +50,7 @@ class OrderController extends BaseController{
         
         
         $tilausajankohta = new DateTime();
-        $tilausajankohta->format('Y-m-d');
+        $tilausajankohta->format('Y-m-d');   // TOISTASEKS HOIDETTU SQL NOW():LLA.!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         // Tilausolion teko ja samalla Oluterä id:n syntax check
         $tilaus = new Tilaus(array(
             'tilausajankohta' => $tilausajankohta,
