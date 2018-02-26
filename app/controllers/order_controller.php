@@ -31,7 +31,9 @@ class OrderController extends BaseController{
         
         // Otetaan talteen lomakkeen tiedot: pakkaustyyppien id:t ja kyseisten pakkaustyyppien määrät.
         foreach($params as $key => $value){
+            $debugInfo = array_merge($debugInfo, array("POST iteraatio"));
             if(strpos($key, "quantity")){
+                $debugInfo = array_merge($debugInfo, array("POST quantity"));
                 $pakkaustyyppi_id = str_replace("quantity", "", $key);
                 $lukumaara = $value;
                 
@@ -77,7 +79,6 @@ class OrderController extends BaseController{
         // Lasketaan samalla paljonko olutta on senttilitroissa tilattu.
         $pakkausErrors = array();
         foreach($osatilaukset as $osatilaus){
-            $debugInfo = array_merge($debugInfo, array("testi"));
             $pakkaustyyppi = Pakkaustyyppi::one($osatilaus->pakkaustyyppi_id);
             if(is_null($pakkaustyyppi)){
                 $pakkausErrors = array_merge($pakkausErrors, array("Lomake sisälsi virheellisen pakkaustyypin ID:n: " . $osatilaus->pakkaustyyppi_id));
