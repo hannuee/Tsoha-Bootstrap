@@ -42,7 +42,7 @@ class OrderController extends BaseController{
                 $errors = $osatilaus->errors();        // instanceVariablesToDatabaseForm() seuraavaks ???????????????????????????
                 $osatilaus->lukumaara = intval($osatilaus->lukumaara);
                 
-                $osatilaukset = array_merge($osatilaukset, $osatilaus);
+                $osatilaukset = array_merge($osatilaukset, array($osatilaus));
                 $allErrors = array_merge($allErrors, $errors);
             }
         }
