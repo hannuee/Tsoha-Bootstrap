@@ -19,8 +19,7 @@ class OrderController extends BaseController{
     
     public static function saveNew(){
         $debugInfo = array();
-        
-        
+        $debugInfo = array_merge($debugInfo, array("testi"));
         
         self::check_user_logged_in();
         
@@ -35,14 +34,18 @@ class OrderController extends BaseController{
                 $pakkaustyyppi_id = str_replace("quantity", "", $key);
                 $lukumaara = $value;
                 
+                $debugInfo = array_merge($debugInfo, array("testi" . $pakkaustyyppi_id));
+                $debugInfo = array_merge($debugInfo, array("testi" . $lukumaara));
+                
                 $osatilaus = new TilausPakkaustyyppi(array(
                     'pakkaustyyppi_id' => $pakkaustyyppi_id,
                     'lukumaara' => $lukumaara
                 ));
                 $errors = $osatilaus->errors();        // instanceVariablesToDatabaseForm() seuraavaks ???????????????????????????
+                $osatilaus->pakkaustyyppi_id = intval($osatilaus->pakkaustyyppi_id);
                 $osatilaus->lukumaara = intval($osatilaus->lukumaara);
                 
-                $osatilaukset = array_merge($osatilaukset, array($osatilaus));
+                $osatilaukset = array_merge($osatilaukset, array($osatilaus));   // Voi tehä helpomminkin!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 $allErrors = array_merge($allErrors, $errors);
             }
         }
