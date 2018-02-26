@@ -30,7 +30,7 @@ class OrderController extends BaseController{
         
         // Otetaan talteen lomakkeen tiedot: pakkaustyyppien id:t ja kyseisten pakkaustyyppien määrät.
         foreach($params as $key => $value){
-            if(strpos($key, "quantity") == 0){
+            if(strstr($key, "quantity")){
                 $pakkaustyyppi_id = str_replace("quantity", "", $key);
                 $lukumaara = $value;
                 
