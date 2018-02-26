@@ -105,7 +105,7 @@ class OrderController extends BaseController{
         
         
         // Tallennetaan Tilaus-olio, TilausPakkaustyyppi-oliot(ja tallennetaan niihin tilaus_id) sekä vähennetään kyseisen oluterän vapaana olevan oluen määrää.
-        $olutera->vapaana -= $senttilitroja;
+        $olutera->vapaana = $olutera->vapaana * 100 - $senttilitroja;
         $olutera->updateAmountAvailable();
         
         $tilaus->save();
