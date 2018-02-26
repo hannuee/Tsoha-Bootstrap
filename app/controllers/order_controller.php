@@ -117,6 +117,6 @@ class OrderController extends BaseController{
             $osatilaus->save();
         }
         
-        Redirect::to('/', array('message' => 'Tilaus lähetetty onnistuneesti!'));
+        Redirect::to('/', array('message' => 'Senttilitrat: ' . $senttilitroja));
     }
 }
