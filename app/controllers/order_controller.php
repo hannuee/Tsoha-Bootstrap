@@ -14,16 +14,42 @@ class OrderController extends BaseController{
     public static function admin($id){
         self::check_admin_logged_in();
         
-        View::make('order_new_admin.html');
+        $olutera = Olutera::one($id);
+        $pakkaustyypit = Pakkaustyyppi::allAvailable();
+        
+        $yritysasiakkaatKaikki = Yritysasiakas::all();
+        // Poistetaan kaikki työntekijät, näin sisäänkirjautunut työntekijä voi varata
+        // olutta pienpanimon omaan käyttöön vain omiin tunnuksiinsa
+        // JA ennen kaikkea lista yritysasiakkaista on siistimpi.
+        $yritysasiakkaat = array();
+        foreach($yritysasiakkaatKaikki as $yritysasiakas){
+            if($yritysasiakas->tyontekija == 0){
+                $yritysasiakkaat[] = $yritysasiakas;
+            }
+        }
+        
+        View::make('order_new.html', array('olutera' => $olutera, 'pakkaustyypit' => $pakkaustyypit, 'yritysasiakkaat' => $yritysasiakkaat));
     }
     
     public static function saveNew(){
         $debugInfo = array();
-        $debugInfo = array_merge($debugInfo, array("testi"));
-        
-        self::check_user_logged_in();
+        $debugInfo = array_merge($debugInfo, array("Debug-työkalu:"));
         
         $params = $_POST;
+        
+        
+        // Määritetään kuka tekee tilausta ja kenelle:
+        $yritysasiakas_id;
+        $onkoTyontekija = FALSE;
+        if(isset($_SESSION['user'])){  // Yritysasiakas tekee itselleen.
+            $yritysasiakas_id = $_SESSION['user'];
+        } elseif(isset($_SESSION['admin'])){  // Työntekijä tekee pienpanimolle tai yritysasiakkaalle.
+            $yritysasiakas_id = $params['yritysasiakas_id'];
+            $onkoTyontekija = TRUE;
+        } else {  // Lomakkeen lähetys ei-kirjautuneelta käyttäjältä.
+            View::make('login.html', array('error' => 'Yrittämällesi sivulle pääsee vain sisäänkirjautuneet yritysasiakkaat!'));
+        }
+        
         
         $osatilaukset = array();   // Muuta nimi tilauspakkaustyypiksi????????????????????
         $allErrors = array();
@@ -62,7 +88,7 @@ class OrderController extends BaseController{
             'toimitettu' => 0,
             'toimitusohjeet' => $params['toimitusohjeet'],
             'olutera_id' => $params['olutera_id'],
-            'yritysasiakas_id' => $_SESSION['user']   // JOSTAIN SIISTISTI METODIN KAUTTA????????????????????????????
+            'yritysasiakas_id' => $yritysasiakas_id
         ));
         $tilausErrors = $tilaus->errors();   // instanceVariablesToDatabaseForm() seuraavaks ???????????????????????????
         
@@ -121,7 +147,13 @@ class OrderController extends BaseController{
             $osatilaus->save();
         }
         
-        Redirect::to('/', array('message' => 'Tilaus lähetetty onnistuneesti!', 'errors' => $debugInfo));
+        
+        // Redirect sen mukaan kuka(user vai admin) on käyttänyt lomaketta.
+        if($onkoTyontekija){
+            Redirect::to('/hallinnointi/oluterat', array('message' => 'Tilaus lähetetty onnistuneesti!', 'errors' => $debugInfo));
+        } else {
+            Redirect::to('/', array('message' => 'Tilaus lähetetty onnistuneesti!', 'errors' => $debugInfo));
+        }
     }
     
     public static function updateAsDelivered(){

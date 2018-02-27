@@ -34,7 +34,7 @@
         <td><a class="btn btn-success" href="{{base_path}}/tilaukset/uusi/{{olutera.id}}">Siirry tilaamaan</a></td>
         {% elseif admin_logged_in %}
         <th><a class="btn btn-primary" href="{{base_path}}/hallinnointi/oluterat/{{olutera.id}}">Näytä tilaukset</a></th>
-        <th><a class="btn btn-primary" href="#">Siirry tilaamaan</a></th>
+        <th><a class="btn btn-primary" href="{{base_path}}/hallinnointi/tilaukset/uusi/{{olutera.id}}">Siirry tilaamaan</a></th>
         {% endif %}
       </tr>
       {% endfor %}

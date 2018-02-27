@@ -53,6 +53,19 @@
         resultKaikki.value=parseFloat(resultKaikkiPantit.value) + parseFloat(resultKaikkiPakkaukset.value) + parseFloat(resultKaikkiOluet.value);
         ">
   <input class="form-control" name="olutera_id" value="{{olutera.id}}" type="hidden">
+  
+  {% if admin_logged_in %} 
+  <div class="form-group">
+    <select class="form-control" name="yritysasiakas_id" required="required">
+        <option value="{{get_admin_logged_in.id}}">Varaa olutta pois myynnistä</option>
+      <optgroup label="Kirjaa tilaus yritysasiakkaalle">
+        {% for yritysasiakas in yritysasiakkaat %}
+        <option value="{{yritysasiakas.id}}">{{yritysasiakas.yrityksen_nimi}}</option>
+        {% endfor %}
+      </optgroup>
+    </select>
+  </div>
+ {% endif %}
       
   <table class="table table-striped table-bordered">
     <thead>
