@@ -143,7 +143,7 @@ class OrderController extends BaseController{
         $senttilitraa = 0;
         $pakkaustyypitJaLukumaarat = Pakkaustyyppi::allForOrder($params['tilaus_id']);
         foreach($pakkaustyypitJaLukumaarat as $pakkaustyyppiJalukumaara){
-            $senttilitraa += $pakkaustyyppiJalukumaara[0]->vetoisuus * $pakkaustyyppiJalukumaara[1];
+            $senttilitraa += $pakkaustyyppiJalukumaara[0]->vetoisuus * 100 * $pakkaustyyppiJalukumaara[1];
         }
         
         // Vapautetaan kyseinen litramäärä oluterästä.
