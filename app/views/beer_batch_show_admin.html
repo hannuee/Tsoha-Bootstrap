@@ -72,7 +72,7 @@
       {% for tilausrivi in tilausrivit %}
       
       <tr>
-          {% for solu in tilausrivi %} 
+          {% for solu in tilausrivi %}
           
             {% if solu.yrityksen_nimi %} 
             
@@ -80,7 +80,7 @@
                 <table class="table table-striped table-bordered">
                     <tbody>
                       <tr>
-                        <td>TOIMII: {{solu.yrityksen_nimi}}</td> 
+                        <td>TOIMII: {{tilausrivi[0].yrityksen_nimi}} {{tilausrivi['yritysasiakas'].yrityksen_nimi}}</td> 
                       </tr>
                       <tr>
                         <td>123456-7</td>
