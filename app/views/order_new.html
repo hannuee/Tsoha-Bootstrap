@@ -57,7 +57,7 @@
   {% if admin_logged_in %} 
   <div class="form-group">
     <select class="form-control" name="yritysasiakas_id">
-        <option value="{{get_admin_logged_in.id}}">Varaa olutta pois myynnistä</option>
+        <option value="test{{get_admin_logged_in.id}}">Varaa olutta pois myynnistä</option>
       <optgroup label="Kirjaa tilaus yritysasiakkaalle">
         {% for yritysasiakas in yritysasiakkaat %}
         <option value="{{yritysasiakas.id}}">{{yritysasiakas.yrityksen_nimi}}</option>
