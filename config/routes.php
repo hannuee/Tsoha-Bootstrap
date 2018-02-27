@@ -70,11 +70,11 @@
       OrderController::admin($id);
   });
   
-  $routes->post('/hallinnointi/tilaukset/toimitettu', function($id) {
+  $routes->post('/hallinnointi/tilaukset/toimitettu', function() {
       OrderController::updateAsDelivered();
   });
   
-  $routes->post('/hallinnointi/tilaukset/poista', function($id) {
+  $routes->post('/hallinnointi/tilaukset/poista', function() {
       OrderController::delete();
   });
   
