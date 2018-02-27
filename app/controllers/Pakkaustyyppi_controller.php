@@ -1,12 +1,12 @@
 <?php
 
-class PackageTypeController extends BaseController{
+class PakkaustyyppiController extends BaseController{
     
     public static function indexAdmin(){
         self::check_admin_logged_in();
         
         $pakkaustyypit = Pakkaustyyppi::all();
-        View::make('package_type_list_admin.html', array('pakkaustyypit' => $pakkaustyypit));
+        View::make('Pakkaustyyppi_listaus_tyontekijalle.html', array('pakkaustyypit' => $pakkaustyypit));
     }
     
     public static function saveNewAdmin(){

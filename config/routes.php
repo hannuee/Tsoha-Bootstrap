@@ -7,110 +7,110 @@
   
   
   $routes->get('/kirjautuminen', function() {
-    CorporateCustomerController::login();
+    YritysasiakasController::login();
   });
   
   $routes->post('/kirjautuminen', function() {
-    CorporateCustomerController::handle_login();
+    YritysasiakasController::handle_login();
   });
   
   $routes->post('/ulos', function() {
-    CorporateCustomerController::logout();
+    YritysasiakasController::logout();
   });  
   
   
 
   $routes->get('/', function() {
-      BeerBatchController::index();
+      OluteraController::index();
   });
   
   $routes->get('/tilaukset/uusi/:id', function($id) {
-      OrderController::index($id);
+      TilausController::index($id);
   });
   
   $routes->post('/tilaukset/uusi', function() {
-      OrderController::saveNew();
+      TilausController::saveNew();
   });
   
   $routes->get('/omattiedot', function() {
-      CorporateCustomerController::show();
+      YritysasiakasController::show();
   });
   
   $routes->get('/omattiedot/muokkaa', function() {
-      CorporateCustomerController::edit();
+      YritysasiakasController::edit();
   }); 
   
   $routes->post('/omattiedot/tallenna', function() {
-      CorporateCustomerController::update();
+      YritysasiakasController::update();
   }); 
   
   
   
   $routes->get('/hallinnointi/oluterat', function() {
-      BeerBatchController::indexAdmin();
+      OluteraController::indexAdmin();
   });
   
   $routes->post('/hallinnointi/oluterat/uusi', function() {
-      BeerBatchController::saveNewAdmin();
+      OluteraController::saveNewAdmin();
   });
   
   $routes->post('/hallinnointi/oluterat/uusipvm', function() {
-      BeerBatchController::updateDateAdmin();
+      OluteraController::updateDateAdmin();
   });
   
   $routes->post('/hallinnointi/oluterat/poisto', function() {
-      BeerBatchController::deleteAdmin();
+      OluteraController::deleteAdmin();
   });
   
   $routes->get('/hallinnointi/oluterat/:id', function($id) {
-      BeerBatchController::showAdmin($id);
+      OluteraController::showAdmin($id);
   });
   
   $routes->get('/hallinnointi/tilaukset/uusi/:id', function($id) {
-      OrderController::admin($id);
+      TilausController::admin($id);
   });
   
   $routes->post('/hallinnointi/tilaukset/toimitettu', function() {
-      OrderController::updateAsDelivered();
+      TilausController::updateAsDelivered();
   });
   
   $routes->post('/hallinnointi/tilaukset/poista', function() {
-      OrderController::delete();
+      TilausController::delete();
   });
   
   $routes->get('/hallinnointi/pakkaustyypit', function() {
-      PackageTypeController::indexAdmin();
+      PakkaustyyppiController::indexAdmin();
   });
   
   $routes->post('/hallinnointi/pakkaustyypit/uusi', function() {
-      PackageTypeController::saveNewAdmin();
+      PakkaustyyppiController::saveNewAdmin();
   });
   
   $routes->post('/hallinnointi/pakkaustyypit/muutasaatavilla', function() {
-      PackageTypeController::updateAvailabilityAdmin();
+      PakkaustyyppiController::updateAvailabilityAdmin();
   });
   
   $routes->get('/hallinnointi/yritysasiakkaat', function() {
-      CorporateCustomerController::indexAdmin();
+      YritysasiakasController::indexAdmin();
   });
   
   $routes->get('/hallinnointi/yritysasiakkaat/teeuusi', function() {
-      CorporateCustomerController::newAdmin();
+      YritysasiakasController::newAdmin();
   });
   
   $routes->post('/hallinnointi/yritysasiakkaat/uusi', function() {
-      CorporateCustomerController::saveNewAdmin();
+      YritysasiakasController::saveNewAdmin();
   });
   
   $routes->post('/hallinnointi/yritysasiakkaat/muokkaa', function() {
-      CorporateCustomerController::updateAdmin();
+      YritysasiakasController::updateAdmin();
   });
   
   $routes->get('/hallinnointi/yritysasiakkaat/muokkaa/:id', function($id) {
-      CorporateCustomerController::editAdmin($id);
+      YritysasiakasController::editAdmin($id);
   });
   
   $routes->get('/hallinnointi/yritysasiakkaat/:id', function($id) {
-      CorporateCustomerController::showAdmin($id);
+      YritysasiakasController::showAdmin($id);
   });
   

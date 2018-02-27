@@ -1,6 +1,6 @@
 <?php
 
-class OrderController extends BaseController{
+class TilausController extends BaseController{
     
     public static function index($id){
         self::check_user_logged_in();
@@ -8,7 +8,7 @@ class OrderController extends BaseController{
         $olutera = Olutera::oneAvailableWithMargin($id, 400);
         $pakkaustyypit = Pakkaustyyppi::allAvailable();
         
-        View::make('order_new.html', array('olutera' => $olutera, 'pakkaustyypit' => $pakkaustyypit));
+        View::make('Tilaus_lisays.html', array('olutera' => $olutera, 'pakkaustyypit' => $pakkaustyypit));
     }
  
     public static function admin($id){
@@ -28,7 +28,7 @@ class OrderController extends BaseController{
             }
         }
         
-        View::make('order_new.html', array('olutera' => $olutera, 'pakkaustyypit' => $pakkaustyypit, 'yritysasiakkaat' => $yritysasiakkaat));
+        View::make('Tilaus_lisays.html', array('olutera' => $olutera, 'pakkaustyypit' => $pakkaustyypit, 'yritysasiakkaat' => $yritysasiakkaat));
     }
     
     public static function saveNew(){

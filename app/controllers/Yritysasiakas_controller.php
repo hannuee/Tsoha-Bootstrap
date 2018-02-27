@@ -1,6 +1,6 @@
 <?php
 
-class CorporateCustomerController extends BaseController{
+class YritysasiakasController extends BaseController{
     
     // ASIAKASTIETOSIVUT:
     
@@ -8,14 +8,14 @@ class CorporateCustomerController extends BaseController{
         self::check_user_logged_in();
         
         $yritysasiakas = self::get_user_logged_in();
-        View::make('corporate_customer_show.html', array('yritysasiakas' => $yritysasiakas));
+        View::make('Yritysasiakas_esittely.html', array('yritysasiakas' => $yritysasiakas));
     }
     
     public static function edit(){
         self::check_user_logged_in();
         
         $yritysasiakas = self::get_user_logged_in();
-        View::make('corporate_customer_edit.html', array('yritysasiakas' => $yritysasiakas));
+        View::make('Yritysasiakas_muokkaus.html', array('yritysasiakas' => $yritysasiakas));
     }
     
     public static function update(){
@@ -53,27 +53,27 @@ class CorporateCustomerController extends BaseController{
         self::check_admin_logged_in();
         
         $yritysasiakkaat = Yritysasiakas::all();
-        View::make('corporate_customer_list_admin.html', array('yritysasiakkaat' => $yritysasiakkaat));
+        View::make('Yritysasiakas_listaus_tyontekijalle.html', array('yritysasiakkaat' => $yritysasiakkaat));
     }
     
     public static function showAdmin($id){
         self::check_admin_logged_in();
         
         $yritysasiakas = Yritysasiakas::one($id);
-        View::make('corporate_customer_show.html', array('yritysasiakas' => $yritysasiakas));
+        View::make('Yritysasiakas_esittely.html', array('yritysasiakas' => $yritysasiakas));
     }
     
     public static function editAdmin($id){
         self::check_admin_logged_in();
         
         $yritysasiakas = Yritysasiakas::one($id);
-        View::make('corporate_customer_edit.html', array('yritysasiakas' => $yritysasiakas));
+        View::make('Yritysasiakas_muokkaus.html', array('yritysasiakas' => $yritysasiakas));
     }
     
     public static function newAdmin(){
         self::check_admin_logged_in();
         
-        View::make('corporate_customer_new_admin.html');
+        View::make('Yritysasiakas_lisays_tyontekijalle.html');
     }
     
     public static function saveNewAdmin(){

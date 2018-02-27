@@ -1,19 +1,19 @@
 <?php
 
-class BeerBatchController extends BaseController{
+class OluteraController extends BaseController{
     
     public static function index(){
         self::check_user_logged_in();
         
         $oluterat = Olutera::allAvailableWithMargin(400);
-        View::make('beer_batch_list.html', array('oluterat' => $oluterat));
+        View::make('Olutera_listaus.html', array('oluterat' => $oluterat));
     }
     
     public static function indexAdmin(){
         self::check_admin_logged_in();
         
         $oluterat = Olutera::all();
-        View::make('beer_batch_list.html', array('oluterat' => $oluterat));
+        View::make('Olutera_listaus.html', array('oluterat' => $oluterat));
     }
 
     public static function showAdmin($id){
@@ -37,7 +37,7 @@ class BeerBatchController extends BaseController{
             $tilausrivit[] = $tilausrivi;
         }
         
-        View::make('beer_batch_show_admin.html', array('olutera' => $olutera, 'tilausrivit' => $tilausrivit));
+        View::make('Olutera_esittely_tyontekijalle.html', array('olutera' => $olutera, 'tilausrivit' => $tilausrivit));
     }
     
     public static function saveNewAdmin(){
