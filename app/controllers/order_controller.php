@@ -148,7 +148,7 @@ class OrderController extends BaseController{
         
         // Vapautetaan kyseinen litramäärä oluterästä.
         $olutera = Olutera::one($params['olutera_id']);
-        $olutera->vapaana = $olutera->vapaana * 100 - $senttilitraa;
+        $olutera->vapaana = $olutera->vapaana * 100 + $senttilitraa;
         $olutera->updateAmountAvailable();
         
         Tilaus::delete($params['tilaus_id']); // PITÄSKÖ LAITTAA RETURNING ID?? JA TARKISTUS TÄTEN ETTÄ KAIKKI SUJU OK?
