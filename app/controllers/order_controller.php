@@ -42,9 +42,9 @@ class OrderController extends BaseController{
         $yritysasiakas_id;
         $onkoTyontekija = FALSE;
         if(isset($_SESSION['user'])){  // Yritysasiakas tekee itselleen.
-            $yritysasiakas_id = $_SESSION['user'];
+            $yritysasiakas_id = intval($_SESSION['user']);
         } elseif(isset($_SESSION['admin'])){  // Työntekijä tekee pienpanimolle tai yritysasiakkaalle.
-            $yritysasiakas_id = $params['yritysasiakas_id'];
+            $yritysasiakas_id = intval($params['yritysasiakas_id']);
             $onkoTyontekija = TRUE;
         } else {  // Lomakkeen lähetys ei-kirjautuneelta käyttäjältä.
             View::make('login.html', array('error' => 'Yrittämällesi sivulle pääsee vain sisäänkirjautuneet yritysasiakkaat!'));
