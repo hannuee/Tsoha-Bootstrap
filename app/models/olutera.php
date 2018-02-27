@@ -105,7 +105,7 @@ class Olutera extends BaseModel{
                 'UPDATE Olutera SET vapaana=:vapaana WHERE id=:id');
         $query->execute(array('vapaana' => $this->vapaana, 'id' => $this->id));
     }
-    
+
     public function delete(){
         $query = DB::connection()->prepare(
                 'DELETE FROM Olutera WHERE id=:id');

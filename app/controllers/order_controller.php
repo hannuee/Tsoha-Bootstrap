@@ -123,4 +123,37 @@ class OrderController extends BaseController{
         
         Redirect::to('/', array('message' => 'Tilaus lähetetty onnistuneesti!', 'errors' => $debugInfo));
     }
+    
+    public static function updateAsDelivered($id){
+        self::check_admin_logged_in();
+        
+        $params = $_POST;
+        
+        Tilaus::updateDeliveryStatus($params['tilaus_id']); // PITÄSKÖ LAITTAA RETURNING ID?? JA TARKISTUS TÄTEN ETTÄ KAIKKI SUJU OK?
+ 
+        Redirect::to('/hallinnointi/oluterat/' . $params['olutera_id'], array('message' => 'Tilaus merkitty toimitetuksi!'));
+    }
+    
+    public static function delete(){
+        self::check_admin_logged_in();
+        
+        $params = $_POST;
+        
+        // Lasketaan montako litraa pitää vapauttaa oluterästä.
+        $senttilitraa = 0;
+        $pakkaustyypitJaLukumaarat = Pakkaustyyppi::allForOrder($params['tilaus_id']);
+        foreach($pakkaustyypitJaLukumaarat as $pakkaustyyppiJalukumaara){
+            $senttilitraa += $pakkaustyyppiJalukumaara[0]->vetoisuus * $pakkaustyyppiJalukumaara[1];
+        }
+        
+        // Vapautetaan kyseinen litramäärä oluterästä.
+        $olutera = Olutera::one($params['olutera_id']);
+        $olutera->vapaana = $olutera->vapaana * 100 - $senttilitraa;
+        $olutera->updateAmountAvailable();
+        
+        Tilaus::delete($params['tilaus_id']); // PITÄSKÖ LAITTAA RETURNING ID?? JA TARKISTUS TÄTEN ETTÄ KAIKKI SUJU OK?
+ 
+        Redirect::to('/hallinnointi/oluterat/' . $params['olutera_id'], array('message' => 'Tilaus poistettu! ' . $senttilitraa));
+    }
+    
 }

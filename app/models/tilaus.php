@@ -36,6 +36,18 @@ class Tilaus extends BaseModel{
         $this->id = $row['id'];
     }
     
+    public static function updateDeliveryStatus($id){
+        $query = DB::connection()->prepare(
+                'UPDATE Tilaus SET toimitettu=1 WHERE id=:id');
+        $query->execute(array('id' => $id));
+    }
+    
+    public static function delete($id){
+        $query = DB::connection()->prepare(
+                'DELETE FROM Tilaus WHERE id=:id LIMIT 1');
+        $query->execute(array('id' => $id));
+    }
+    
     public function validate_olutera_id(){
         $errors = array();
         

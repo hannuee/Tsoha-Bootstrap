@@ -30,7 +30,7 @@ class Pakkaustyyppi extends BaseModel{
      * pakkaustyyppi-olio ja toinen alkio kertoo näiden pakkaustyypin pakkausten lukumäärän.
      */
     public static function allForOrder($id){
-        $query = DB::connection()->prepare('SELECT * FROM TilausPakkaustyyppi WHERE tilaus_id = ' . $id);
+        $query = DB::connection()->prepare('SELECT * FROM TilausPakkaustyyppi WHERE tilaus_id = ' . $id);  // TÄÄ TilausPakkaustyyppiin??
         $query->execute();
         $rows = $query->fetchAll();
         

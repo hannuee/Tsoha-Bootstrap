@@ -70,6 +70,14 @@
       OrderController::admin($id);
   });
   
+  $routes->post('/hallinnointi/tilaukset/toimitettu', function($id) {
+      OrderController::updateAsDelivered();
+  });
+  
+  $routes->post('/hallinnointi/tilaukset/poista', function($id) {
+      OrderController::delete();
+  });
+  
   $routes->get('/hallinnointi/pakkaustyypit', function() {
       PackageTypeController::indexAdmin();
   });
