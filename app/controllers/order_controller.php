@@ -51,12 +51,12 @@ class OrderController extends BaseController{
         }
         
         
-        $osatilaukset = array();   // Muuta nimi tilauspakkaustyypiksi????????????????????
+        $osatilaukset = array();   // Muuta nimi tilauspakkaustyypiksiJaLkm????????????????????
         $allErrors = array();
         
         // Otetaan talteen lomakkeen tiedot: pakkaustyyppien id:t ja kyseisten pakkaustyyppien määrät.
         foreach($params as $key => $value){
-            if(strstr($key, "quantity")){
+            if(strstr($key, "quantity") && $value != 0){
                 $pakkaustyyppi_id = str_replace("quantity", "", $key);
                 $lukumaara = $value;
                 
