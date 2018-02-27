@@ -72,94 +72,56 @@
       {% for tilausrivi in tilausrivit %}
       
       <tr>
-          {% for solu in tilausrivi %}
           
-            {% if solu.yrityksen_nimi %} 
-            
             <td>
                 <table class="table table-striped table-bordered">
                     <tbody>
                       <tr>
-                        <td>TOIMII: {{tilausrivi[0].yrityksen_nimi}} testi: {{tilausrivi['yritysasiakas'].yrityksen_nimi}}</td> 
+                          <td><a href="{{base_path}}/hallinnointi/yritysasiakkaat/{{tilausrivi[0].id}}">{{tilausrivi[0].yrityksen_nimi}}</a></td> 
                       </tr>
                       <tr>
-                        <td>123456-7</td>
+                        <td>{{tilausrivi[0].puhelinnumero}}</td>
                       </tr>
                       <tr>
-                        <td>Koodikatu 1, 11010 Helsinki</td>
-                      </tr>
-                      <tr>
-                        <td>Koodikatu 1, 11010 Helsinki</td>
-                      </tr>
-                      <tr>
-                        <td>Koodikatu 1, 11010 Helsinki</td>
-                      </tr>
-                      <tr>
-                        <td>050 5550888</td>
-                      </tr>
-                      <tr>
-                        <td>se@on.se</td>
+                        <td>{{tilausrivi[0].toimitusosoite}}</td>
                       </tr>
                     </tbody>
                 </table>
             </td>
             
-            {% elseif solu.tilausajankohta %}
-            
           <td>
             <table class="table table-striped table-bordered">
               <tbody>
                 <tr>
-                  <td>TOIMII: {{solu.tilausajankohta}}</td> 
+                  <td>{{tilausrivi[1].tilausajankohta}}</td> 
                 </tr>
                 <tr>
-                  <td>Ei toimitettu</td>
+                  <td>Toimitettu: {{tilausrivi[1].toimitettu}}</td>
                 </tr>
                 <tr>
-                  <td>Soita baarimikolle kun saavut paikalle.</td>
+                  <td>Ohjeet: {{tilausrivi[1].tomitusohjeet}}</td>
                 </tr>
               </tbody>
             </table>              
           </td>
             
-            {% else %}
-          
           <td>
+            
+            {% for pakkaustyyppiJaLkm in tilausrivi[2] %}
             <table class="table table-striped table-bordered">
               <tbody>
                 <tr>
-                  <td>Keg</td> 
+                  <td>{{pakkaustyyppiJaLkm[0].pakkaustyypin_nimi}} x pakkaustyyppiJaLkm[1]</td> 
                 </tr>
                 <tr>
-                  <td>20 €/kpl</td>
-                </tr>
-                <tr>
-                  <td>10 €/kpl</td>
-                </tr>
-                <tr>
-                  <td>20 litraa</td>
-                </tr>
-                <tr>
-                  <td>3 kpl</td>
-                </tr>
-                <tr>
-                  <td>60 €</td>
-                </tr>
-                <tr>
-                  <td>30 €</td>
-                </tr>
-                <tr>
-                  <td>525 €</td>
-                </tr>                      
+                  <td>({{pakkaustyyppiJaLkm[0].vetoisuus}} l, {{pakkaustyyppiJaLkm[0].hinta}} €, Pantti: {{pakkaustyyppiJaLkm[0].pantti}})</td>
+                </tr>                   
               </tbody>
-            </table>                 
+            </table>
+            {% endfor %}
+            
           </td>
             
-            {% endif %}
-          
-          {% endfor %}
-          
-          
         <td>
             <a class="btn btn-danger" href="#">Poista tilaus</a>
             <br/>
