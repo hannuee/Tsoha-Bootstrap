@@ -124,7 +124,7 @@ class OrderController extends BaseController{
         Redirect::to('/', array('message' => 'Tilaus lähetetty onnistuneesti!', 'errors' => $debugInfo));
     }
     
-    public static function updateAsDelivered($id){
+    public static function updateAsDelivered(){
         self::check_admin_logged_in();
         
         $params = $_POST;
