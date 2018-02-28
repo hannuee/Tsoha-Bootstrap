@@ -2,7 +2,9 @@
 
 class TilausController extends BaseController{
     
-    public static function index($id){
+    // Näkymien kontrollointi:
+    
+    public static function lisays($id){
         self::check_user_logged_in();
         
         $olutera = Olutera::oneAvailableWithMargin($id, 400);
@@ -11,7 +13,7 @@ class TilausController extends BaseController{
         View::make('Tilaus_lisays.html', array('olutera' => $olutera, 'pakkaustyypit' => $pakkaustyypit));
     }
  
-    public static function admin($id){
+    public static function lisaysLisavaihtoehdoin($id){
         self::check_admin_logged_in();
         
         $olutera = Olutera::one($id);
@@ -31,7 +33,10 @@ class TilausController extends BaseController{
         View::make('Tilaus_lisays.html', array('olutera' => $olutera, 'pakkaustyypit' => $pakkaustyypit, 'yritysasiakkaat' => $yritysasiakkaat));
     }
     
-    public static function saveNew(){
+    
+    // Lomakkeiden käsittely:
+    
+    public static function lisaaUusi(){
         $debugInfo = array();
         $debugInfo = array_merge($debugInfo, array("Debug-työkalu:"));
         
@@ -156,7 +161,7 @@ class TilausController extends BaseController{
         }
     }
     
-    public static function updateAsDelivered(){
+    public static function muokkaaToimitetuksi(){
         self::check_admin_logged_in();
         
         $params = $_POST;
@@ -166,7 +171,7 @@ class TilausController extends BaseController{
         Redirect::to('/hallinnointi/oluterat/' . $params['olutera_id'], array('message' => 'Tilaus merkitty toimitetuksi!'));
     }
     
-    public static function delete(){
+    public static function poista(){
         self::check_admin_logged_in();
         
         $params = $_POST;

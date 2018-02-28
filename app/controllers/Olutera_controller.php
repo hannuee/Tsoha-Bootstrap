@@ -2,21 +2,25 @@
 
 class OluteraController extends BaseController{
     
-    public static function index(){
+    // Näkymien kontrollointi:
+    
+    public static function listausMarginaalilla(){
         self::check_user_logged_in();
         
         $oluterat = Olutera::allAvailableWithMargin(400);
         View::make('Olutera_listaus.html', array('oluterat' => $oluterat));
     }
     
-    public static function indexAdmin(){
+    public static function listaus(){
         self::check_admin_logged_in();
         
         $oluterat = Olutera::all();
         View::make('Olutera_listaus.html', array('oluterat' => $oluterat));
     }
 
-    public static function showAdmin($id){
+    // Esittelee Oluterän sekä oluterään liittyvät tilaukset.
+    // Myös oluterän ja tilausten muokkaus ja poisto.
+    public static function esittely($id){  
         self::check_admin_logged_in();
         
         $olutera = Olutera::one($id);  // Entä jos ei löydy, esim. virheellinen id? sitten ei renderöidä batchpagea!
@@ -40,7 +44,10 @@ class OluteraController extends BaseController{
         View::make('Olutera_esittely_tyontekijalle.html', array('olutera' => $olutera, 'tilausrivit' => $tilausrivit));
     }
     
-    public static function saveNewAdmin(){
+    
+    // Lomakkeiden käsittely:
+    
+    public static function lisaaUusi(){
         self::check_admin_logged_in();     
         
         $params = $_POST;
@@ -67,7 +74,7 @@ class OluteraController extends BaseController{
         }
     }
     
-    public static function updateDateAdmin(){
+    public static function muokkaaValmistumispaivamaaraa(){
         self::check_admin_logged_in();
         
         $params = $_POST;
@@ -84,7 +91,7 @@ class OluteraController extends BaseController{
         }
     }
     
-    public static function deleteAdmin(){
+    public static function poista(){
         self::check_admin_logged_in();
         
         $params = $_POST;

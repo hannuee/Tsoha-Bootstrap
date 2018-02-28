@@ -21,15 +21,15 @@
   
 
   $routes->get('/', function() {
-      OluteraController::index();
+      OluteraController::listausMarginaalilla();
   });
   
   $routes->get('/tilaukset/uusi/:id', function($id) {
-      TilausController::index($id);
+      TilausController::lisays($id);
   });
   
   $routes->post('/tilaukset/uusi', function() {
-      TilausController::saveNew();
+      TilausController::lisaaUusi();
   });
   
   $routes->get('/omattiedot', function() {
@@ -47,47 +47,47 @@
   
   
   $routes->get('/hallinnointi/oluterat', function() {
-      OluteraController::indexAdmin();
+      OluteraController::listaus();
   });
   
   $routes->post('/hallinnointi/oluterat/uusi', function() {
-      OluteraController::saveNewAdmin();
+      OluteraController::lisaaUusi();
   });
   
   $routes->post('/hallinnointi/oluterat/uusipvm', function() {
-      OluteraController::updateDateAdmin();
+      OluteraController::muokkaaValmistumispaivamaaraa();
   });
   
   $routes->post('/hallinnointi/oluterat/poisto', function() {
-      OluteraController::deleteAdmin();
+      OluteraController::poista();
   });
   
   $routes->get('/hallinnointi/oluterat/:id', function($id) {
-      OluteraController::showAdmin($id);
+      OluteraController::esittely($id);
   });
   
   $routes->get('/hallinnointi/tilaukset/uusi/:id', function($id) {
-      TilausController::admin($id);
+      TilausController::lisaysLisavaihtoehdoin($id);
   });
   
   $routes->post('/hallinnointi/tilaukset/toimitettu', function() {
-      TilausController::updateAsDelivered();
+      TilausController::muokkaaToimitetuksi();
   });
   
   $routes->post('/hallinnointi/tilaukset/poista', function() {
-      TilausController::delete();
+      TilausController::poista();
   });
   
   $routes->get('/hallinnointi/pakkaustyypit', function() {
-      PakkaustyyppiController::indexAdmin();
+      PakkaustyyppiController::listaus();
   });
   
   $routes->post('/hallinnointi/pakkaustyypit/uusi', function() {
-      PakkaustyyppiController::saveNewAdmin();
+      PakkaustyyppiController::lisaaUusi();
   });
   
   $routes->post('/hallinnointi/pakkaustyypit/muutasaatavilla', function() {
-      PakkaustyyppiController::updateAvailabilityAdmin();
+      PakkaustyyppiController::muokkaaSaatavuusstatusta();
   });
   
   $routes->get('/hallinnointi/yritysasiakkaat', function() {

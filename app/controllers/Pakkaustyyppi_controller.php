@@ -2,14 +2,19 @@
 
 class PakkaustyyppiController extends BaseController{
     
-    public static function indexAdmin(){
+    // Näkymien kontrollointi:
+    
+    public static function listaus(){
         self::check_admin_logged_in();
         
         $pakkaustyypit = Pakkaustyyppi::all();
         View::make('Pakkaustyyppi_listaus_tyontekijalle.html', array('pakkaustyypit' => $pakkaustyypit));
     }
     
-    public static function saveNewAdmin(){
+    
+    // Lomakkeiden käsittely:
+    
+    public static function lisaaUusi(){
         self::check_admin_logged_in();     
         
         $params = $_POST;
@@ -36,7 +41,7 @@ class PakkaustyyppiController extends BaseController{
         }
     }
     
-    public static function updateAvailabilityAdmin(){
+    public static function muokkaaSaatavuusstatusta(){
         self::check_admin_logged_in();
         
         $params = $_POST;
