@@ -33,15 +33,15 @@
   });
   
   $routes->get('/omattiedot', function() {
-      YritysasiakasController::show();
+      YritysasiakasController::esittely();
   });
   
   $routes->get('/omattiedot/muokkaa', function() {
-      YritysasiakasController::edit();
+      YritysasiakasController::muokkaus();
   }); 
   
   $routes->post('/omattiedot/tallenna', function() {
-      YritysasiakasController::update();
+      YritysasiakasController::muokkaa();
   }); 
   
   
@@ -91,26 +91,26 @@
   });
   
   $routes->get('/hallinnointi/yritysasiakkaat', function() {
-      YritysasiakasController::indexAdmin();
+      YritysasiakasController::listaus();
   });
   
   $routes->get('/hallinnointi/yritysasiakkaat/teeuusi', function() {
-      YritysasiakasController::newAdmin();
+      YritysasiakasController::lisays();
   });
   
   $routes->post('/hallinnointi/yritysasiakkaat/uusi', function() {
-      YritysasiakasController::saveNewAdmin();
+      YritysasiakasController::lisaaUusi();
   });
   
   $routes->post('/hallinnointi/yritysasiakkaat/muokkaa', function() {
-      YritysasiakasController::updateAdmin();
+      YritysasiakasController::muokkaaLisavaihtoehdoin();
   });
   
   $routes->get('/hallinnointi/yritysasiakkaat/muokkaa/:id', function($id) {
-      YritysasiakasController::editAdmin($id);
+      YritysasiakasController::muokkausLisavaihtoehdoin($id);
   });
   
   $routes->get('/hallinnointi/yritysasiakkaat/:id', function($id) {
-      YritysasiakasController::showAdmin($id);
+      YritysasiakasController::esittelyLisatiedoin($id);
   });
   

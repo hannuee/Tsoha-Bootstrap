@@ -2,23 +2,57 @@
 
 class YritysasiakasController extends BaseController{
     
-    // ASIAKASTIETOSIVUT:
+    // Näkymien kontrollointi:
     
-    public static function show(){  
+    public static function login(){
+        View::make('login.html');
+    }
+    
+    public static function esittely(){  
         self::check_user_logged_in();
         
         $yritysasiakas = self::get_user_logged_in();
         View::make('Yritysasiakas_esittely.html', array('yritysasiakas' => $yritysasiakas));
     }
     
-    public static function edit(){
+    public static function muokkaus(){
         self::check_user_logged_in();
         
         $yritysasiakas = self::get_user_logged_in();
         View::make('Yritysasiakas_muokkaus.html', array('yritysasiakas' => $yritysasiakas));
     }
     
-    public static function update(){
+    public static function listaus(){
+        self::check_admin_logged_in();
+        
+        $yritysasiakkaat = Yritysasiakas::all();
+        View::make('Yritysasiakas_listaus_tyontekijalle.html', array('yritysasiakkaat' => $yritysasiakkaat));
+    }
+    
+    public static function esittelyLisatiedoin($id){
+        self::check_admin_logged_in();
+        
+        $yritysasiakas = Yritysasiakas::one($id);
+        View::make('Yritysasiakas_esittely.html', array('yritysasiakas' => $yritysasiakas));
+    }
+    
+    public static function muokkausLisavaihtoehdoin($id){
+        self::check_admin_logged_in();
+        
+        $yritysasiakas = Yritysasiakas::one($id);
+        View::make('Yritysasiakas_muokkaus.html', array('yritysasiakas' => $yritysasiakas));
+    }
+    
+    public static function lisays(){
+        self::check_admin_logged_in();
+        
+        View::make('Yritysasiakas_lisays_tyontekijalle.html');
+    }
+    
+    
+    // Lomakkeiden käsittely:
+    
+    public static function muokkaa(){
         self::check_user_logged_in();
         
         $params = $_POST;
@@ -49,34 +83,7 @@ class YritysasiakasController extends BaseController{
         }
     }
     
-    public static function indexAdmin(){
-        self::check_admin_logged_in();
-        
-        $yritysasiakkaat = Yritysasiakas::all();
-        View::make('Yritysasiakas_listaus_tyontekijalle.html', array('yritysasiakkaat' => $yritysasiakkaat));
-    }
-    
-    public static function showAdmin($id){
-        self::check_admin_logged_in();
-        
-        $yritysasiakas = Yritysasiakas::one($id);
-        View::make('Yritysasiakas_esittely.html', array('yritysasiakas' => $yritysasiakas));
-    }
-    
-    public static function editAdmin($id){
-        self::check_admin_logged_in();
-        
-        $yritysasiakas = Yritysasiakas::one($id);
-        View::make('Yritysasiakas_muokkaus.html', array('yritysasiakas' => $yritysasiakas));
-    }
-    
-    public static function newAdmin(){
-        self::check_admin_logged_in();
-        
-        View::make('Yritysasiakas_lisays_tyontekijalle.html');
-    }
-    
-    public static function saveNewAdmin(){
+    public static function lisaaUusi(){
         self::check_admin_logged_in();
         
         $params = $_POST;
@@ -126,7 +133,7 @@ class YritysasiakasController extends BaseController{
         }
     }
     
-    public static function updateAdmin(){
+    public static function muokkaaLisavaihtoehdoin(){
         self::check_admin_logged_in();
         
         $params = $_POST;
@@ -172,13 +179,6 @@ class YritysasiakasController extends BaseController{
             'aktiivinen' => $params['aktiivinen'],
             'tyontekija' => $params['tyontekija'])));
         }
-    }
-    
-    
-    // KIRJAUTUMISSIVU:
-    
-    public static function login(){
-        View::make('login.html');
     }
     
     public static function handle_login(){
