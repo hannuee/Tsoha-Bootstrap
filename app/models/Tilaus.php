@@ -48,6 +48,26 @@ class Tilaus extends BaseModel{
         $query->execute(array('id' => $id));
     }
     
+    
+    public function oliomuuttujatLomakemuodostaTietokantamuotoon(){
+//        // Erän koko:
+//        $this->eran_koko = str_replace(' ', '', $this->eran_koko);
+//        $this->eran_koko = str_replace(',', '.', $this->eran_koko);  // Muutetaan , -> . jotta käyttäjä voi käyttää kumpaa tahansa.
+//        $this->eran_koko = floatval($this->eran_koko);
+//        $this->eran_koko = intval($this->eran_koko*100);  // Muunto senttilitroiksi ja katkaistaan mahdolliset senttilitrojen murto-osat pois muuttamalla integeriksi.
+//        // Vapaana:
+//        $this->vapaana = str_replace(' ', '', $this->vapaana);
+//        $this->vapaana = str_replace(',', '.', $this->vapaana);  // Muutetaan , -> . jotta käyttäjä voi käyttää kumpaa tahansa.
+//        $this->vapaana = floatval($this->vapaana);
+//        $this->vapaana = intval($this->vapaana*100);  // Muunto senttilitroiksi ja katkaistaan mahdolliset senttilitrojen murto-osat pois muuttamalla integeriksi.
+//        // Hinnan muutos:
+//        $this->hinta = str_replace(' ', '', $this->hinta);
+//        $this->hinta = str_replace(',', '.', $this->hinta);  // Muutetaan , -> . jotta käyttäjä voi käyttää kumpaa tahansa.
+//        $this->hinta = floatval($this->hinta);
+//        $this->hinta = intval($this->hinta*100);  // Muutetaan hinta senteiksi ja katkaistaan mahdolliset sentin murto-osat pois muuttamalla integeriksi.
+    }
+    
+    
     public function validate_olutera_id(){
         $errors = array();
         

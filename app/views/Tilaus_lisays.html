@@ -29,7 +29,7 @@
   
   <h1>Tilauksen koostaminen</h1>
   
-  <form method="post" action="{{base_path}}/tilaukset/uusi" oninput="
+  <form method="post" action="{{base_path}}/{% if user_logged_in %}tilaukset/uusi{% elseif admin_logged_in %}hallinnointi/tilaukset/uusi{% endif %}" oninput="
         function parseFloatNoNan(str) {
             var num = parseFloat(str);
             if(isNaN(num)){

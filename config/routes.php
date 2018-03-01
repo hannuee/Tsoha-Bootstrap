@@ -24,12 +24,12 @@
       OluteraController::listausMarginaalilla();
   });
   
-  $routes->get('/tilaukset/uusi/:id', function($id) {
-      TilausController::lisays($id);
+  $routes->post('/tilaukset/uusi', function() {
+      // PUUTTUU
   });
   
-  $routes->post('/tilaukset/uusi', function() {
-      TilausController::lisaaUusi();
+  $routes->get('/tilaukset/uusi/:id', function($id) {
+      TilausController::lisays($id);
   });
   
   $routes->get('/omattiedot', function() {
@@ -64,6 +64,10 @@
   
   $routes->get('/hallinnointi/oluterat/:id', function($id) {
       OluteraController::esittely($id);
+  });
+  
+  $routes->post('/hallinnointi/tilaukset/uusi', function() {
+      TilausController::lisaaUusi();
   });
   
   $routes->get('/hallinnointi/tilaukset/uusi/:id', function($id) {

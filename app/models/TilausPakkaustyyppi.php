@@ -19,6 +19,11 @@ class TilausPakkaustyyppi extends BaseModel{
                 'lukumaara' => $this->lukumaara));
     }
     
+    public function oliomuuttujatLomakemuodostaTietokantamuotoon(){
+        $this->pakkaustyyppi_id = intval($this->pakkaustyyppi_id);
+        $this->lukumaara = intval($this->lukumaara);
+    }
+    
     public function validate_pakkaustyyppi_id(){
         $errors = array();
         
