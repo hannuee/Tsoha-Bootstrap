@@ -19,7 +19,6 @@ class Yritysasiakas extends BaseModel{
         $yritysasiakkaat = array();
         foreach($rows as $row){
             $yritysasiakas = new Yritysasiakas($row);
-            //$yritysasiakas->instanceVariablesToViewForm();
             $yritysasiakkaat[] = $yritysasiakas;
         }
         return $yritysasiakkaat;
@@ -32,7 +31,6 @@ class Yritysasiakas extends BaseModel{
         
         if($row){
             $yritysasiakas = new Yritysasiakas($row);
-            //$yritysasiakas->instanceVariablesToViewForm();
             return $yritysasiakas;
         }
         return null;

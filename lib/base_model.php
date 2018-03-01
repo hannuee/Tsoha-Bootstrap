@@ -15,6 +15,16 @@
       }
     }
     
+    /**
+     * Olioilla oltava metodi oliomuuttujien muuttamiseen tietokantamuotoon.
+     * @param type $taulukkoBmOlioita
+     */
+    public static function olioidenMuuttujatTietokantamuodostaEsitysmuotoon($taulukkoBmOlioita){
+        foreach($taulukkoBmOlioita as $bmOlio){
+            $bmOlio->oliomuuttujatTietokantamuodostaEsitysmuotoon();
+        }
+    }
+    
     public static function validate_string_length($string, $lengthMin, $lengthMax){
         $len = strlen($string);
         if($lengthMin <= $len && $len <= $lengthMax){

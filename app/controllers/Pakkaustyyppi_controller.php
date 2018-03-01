@@ -8,6 +8,8 @@ class PakkaustyyppiController extends BaseController{
         self::check_admin_logged_in();
         
         $pakkaustyypit = Pakkaustyyppi::all();
+        BaseModel::olioidenMuuttujatTietokantamuodostaEsitysmuotoon($pakkaustyypit);
+        
         View::make('Pakkaustyyppi_listaus_tyontekijalle.html', array('pakkaustyypit' => $pakkaustyypit));
     }
     
@@ -29,6 +31,7 @@ class PakkaustyyppiController extends BaseController{
         $errors = $pakkaustyyppi->errors();
         
         if(count($errors) == 0){  // Syötteet valideja.
+            $pakkaustyyppi->oliomuuttujatLomakemuodostaTietokantamuotoon();
             $pakkaustyyppi->save();
             Redirect::to('/hallinnointi/pakkaustyypit', array('message' => 'Uusi pakkaustyyppi lisätty onnistuneesti!'));
         } else {                  // Syötteet ei-valideja.
@@ -47,6 +50,7 @@ class PakkaustyyppiController extends BaseController{
         $params = $_POST;
         
         $pakkaustyyppi = Pakkaustyyppi::one($params['id']);
+        $pakkaustyyppi->oliomuuttujatTietokantamuodostaEsitysmuotoon();
         if($pakkaustyyppi->saatavilla == 1){
             $pakkaustyyppi->saatavilla = 0;
         } else {

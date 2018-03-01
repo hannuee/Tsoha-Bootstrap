@@ -8,6 +8,7 @@ class OluteraController extends BaseController{
         self::check_user_logged_in();
         
         $oluterat = Olutera::allAvailableWithMargin(400);
+        BaseModel::olioidenMuuttujatTietokantamuodostaEsitysmuotoon($oluterat);
         View::make('Olutera_listaus.html', array('oluterat' => $oluterat));
     }
     
@@ -15,6 +16,7 @@ class OluteraController extends BaseController{
         self::check_admin_logged_in();
         
         $oluterat = Olutera::all();
+        BaseModel::olioidenMuuttujatTietokantamuodostaEsitysmuotoon($oluterat);
         View::make('Olutera_listaus.html', array('oluterat' => $oluterat));
     }
 
@@ -24,6 +26,7 @@ class OluteraController extends BaseController{
         self::check_admin_logged_in();
         
         $olutera = Olutera::one($id);  // Entä jos ei löydy, esim. virheellinen id? sitten ei renderöidä batchpagea!
+        $olutera->oliomuuttujatTietokantamuodostaEsitysmuotoon();
         
         $tilausrivit = array();
         
@@ -62,6 +65,7 @@ class OluteraController extends BaseController{
         $errors = $olutera->errors();
         
         if(count($errors) == 0){  // Syötteet valideja.
+            $olutera->oliomuuttujatLomakemuodostaTietokantamuotoon();
             $olutera->save();
             Redirect::to('/hallinnointi/oluterat', array('message' => 'Uusi oluterä lisätty onnistuneesti!'));
         } else {                  // Syötteet ei-valideja.
@@ -80,6 +84,7 @@ class OluteraController extends BaseController{
         $params = $_POST;
         
         $olutera = Olutera::one($params['id']);
+        $olutera->oliomuuttujatTietokantamuodostaEsitysmuotoon();
         $olutera->valmistuminen = $params['valmistuminen'];
         $errors = $olutera->errors();
  

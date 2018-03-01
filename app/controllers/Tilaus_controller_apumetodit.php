@@ -70,6 +70,7 @@ class TilausControllerApumetodit {
         $pakkausErrors = array();
         foreach($tilausPakkaustyypit as $tilausPakkaustyyppi){
             $pakkaustyyppi = Pakkaustyyppi::one($tilausPakkaustyyppi->pakkaustyyppi_id);
+            $pakkaustyyppi->oliomuuttujatTietokantamuodostaEsitysmuotoon();
             if(is_null($pakkaustyyppi)){
                 $pakkausErrors = array_merge($pakkausErrors, array("Lomake sisälsi virheellisen pakkaustyypin ID:n: " . $tilausPakkaustyyppi->pakkaustyyppi_id));
             } elseif($pakkaustyyppi->saatavilla == 0){
@@ -92,6 +93,7 @@ class TilausControllerApumetodit {
         // Tarkistetaan että oluterän ID ok ja että oluterässä riittävästi vapaana olutta.
         $oluteraErrors = array();
         $olutera = Olutera::one($tilaus->olutera_id);
+        $olutera->oliomuuttujatTietokantamuodostaEsitysmuotoon();
         $olutera->vapaana = $olutera->vapaana * 100;  // OLUTERÄ NYT SENTTILITROISSA!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         if(is_null($olutera)){
             $oluteraErrors[] = "Virheellinen oluterän ID!";  // REDIRECT EI-LOMAKKEESEEN!!!??
@@ -108,7 +110,7 @@ class TilausControllerApumetodit {
         return $olutera;
     }
     
-    public static function lisaaUusiTilaus($senttilitroja, $tilaus, $tilausPakkaustyypit, $olutera, $debugInfo){
+    public static function lisaaUusiTilaus($senttilitroja, $tilaus, $tilausPakkaustyypit, $olutera){
         // Tallennetaan Tilaus-olio, TilausPakkaustyyppi-oliot(ja tallennetaan niihin tilaus_id) sekä vähennetään kyseisen oluterän vapaana olevan oluen määrää.
         $olutera->vapaana -= $senttilitroja;
         $olutera->updateAmountAvailable();
@@ -120,7 +122,7 @@ class TilausControllerApumetodit {
             $tilausPakkaustyyppi->save();
         }
         
-        Redirect::to('/hallinnointi/oluterat', array('message' => 'Tilaus lähetetty onnistuneesti!', 'errors' => $debugInfo));
+        Redirect::to('/hallinnointi/oluterat', array('message' => 'Tilaus lähetetty onnistuneesti!'));
     }
     
 }

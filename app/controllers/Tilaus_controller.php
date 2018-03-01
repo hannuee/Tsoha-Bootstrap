@@ -8,7 +8,9 @@ class TilausController extends BaseController{
         self::check_user_logged_in();
         
         $olutera = Olutera::oneAvailableWithMargin($id, 400);
+        $olutera->oliomuuttujatTietokantamuodostaEsitysmuotoon();
         $pakkaustyypit = Pakkaustyyppi::allAvailable();
+        BaseModel::olioidenMuuttujatTietokantamuodostaEsitysmuotoon($pakkaustyypit);
         
         View::make('Tilaus_lisays.html', array('olutera' => $olutera, 'pakkaustyypit' => $pakkaustyypit));
     }
@@ -17,7 +19,9 @@ class TilausController extends BaseController{
         self::check_admin_logged_in();
         
         $olutera = Olutera::one($id);
+        $olutera->oliomuuttujatTietokantamuodostaEsitysmuotoon();
         $pakkaustyypit = Pakkaustyyppi::allAvailable();
+        BaseModel::olioidenMuuttujatTietokantamuodostaEsitysmuotoon($pakkaustyypit);
         
         $yritysasiakkaatKaikki = Yritysasiakas::all();
         // Poistetaan kaikki työntekijät, näin sisäänkirjautunut työntekijä voi varata
@@ -37,22 +41,16 @@ class TilausController extends BaseController{
     // Lomakkeiden käsittely:
     
     public static function lisaaUusi(){
-        $debugInfo = array();
-        $debugInfo[] = "Debug-työkalu:";
-        
-        
         self::check_admin_logged_in();
         
         $params = $_POST;
         
         $tilausPakkaustyypit = TilausControllerApumetodit::tilausPakkaustyyppiMallienTiedotLomakkeesta($params);
         $tilaus = TilausControllerApumetodit::tilausMallinTiedotLomakkeesta($params);
-        
         $senttilitroja = TilausControllerApumetodit::senttilitrojenLaskeminenJaPakkaustyyppienTarkistus($tilausPakkaustyypit, $params);
-        
         $olutera = TilausControllerApumetodit::tarkistaOluteranIdJaVapaanOluenMaara($senttilitroja, $tilaus, $params);
         
-        TilausControllerApumetodit::lisaaUusiTilaus($senttilitroja, $tilaus, $tilausPakkaustyypit, $olutera, $debugInfo);
+        TilausControllerApumetodit::lisaaUusiTilaus($senttilitroja, $tilaus, $tilausPakkaustyypit, $olutera);
     }
     
     public static function muokkaaToimitetuksi(){
@@ -79,6 +77,7 @@ class TilausController extends BaseController{
         
         // Vapautetaan kyseinen litramäärä oluterästä.
         $olutera = Olutera::one($params['olutera_id']);
+        $olutera->oliomuuttujatTietokantamuodostaEsitysmuotoon();
         $olutera->vapaana = $olutera->vapaana * 100 + $senttilitraa;
         $olutera->updateAmountAvailable();
         

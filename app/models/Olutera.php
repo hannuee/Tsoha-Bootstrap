@@ -21,7 +21,6 @@ class Olutera extends BaseModel{
         $oluterat = array();
         foreach($rows as $row){
             $olutera = new Olutera($row);
-            $olutera->instanceVariablesToViewForm();
             $oluterat[] = $olutera;
         }
         return $oluterat;
@@ -35,7 +34,6 @@ class Olutera extends BaseModel{
         $oluterat = array();
         foreach($rows as $row){
             $olutera = new Olutera($row);
-            $olutera->instanceVariablesToViewForm();
             $oluterat[] = $olutera;
         }
         return $oluterat;
@@ -52,7 +50,6 @@ class Olutera extends BaseModel{
         
         if($row){
             $olutera = new Olutera($row);
-            $olutera->instanceVariablesToViewForm();
             return $olutera;
         }
         return null;
@@ -65,15 +62,12 @@ class Olutera extends BaseModel{
         
         if($row){
             $olutera = new Olutera($row);
-            $olutera->instanceVariablesToViewForm();
             return $olutera;
         }
         return null;
     }
     
     public function save(){
-        $this->instanceVariablesToDatabaseForm();
-        
         $query = DB::connection()->prepare(
                 'INSERT INTO Olutera (oluen_nimi, valmistuminen, eran_koko, vapaana, hinta)
                  VALUES (:oluen_nimi, :valmistuminen, :eran_koko, :vapaana, :hinta)
@@ -86,18 +80,12 @@ class Olutera extends BaseModel{
                 'hinta' => $this->hinta));
         $row = $query->fetch();
         $this->id = $row['id'];
-        
-        $this->instanceVariablesToViewForm();  // Selkeyden vuoksi pidetään oliomuuttujat aina esitysmuodossa vaikka niitä ei käytettäisikään enää.
     }
     
     public function updateDate(){
-        $this->instanceVariablesToDatabaseForm();  // Turha, mutta selkeyden vuoksi.
-        
         $query = DB::connection()->prepare(
                 'UPDATE Olutera SET valmistuminen=:valmistuminen WHERE id=:id');
         $query->execute(array('valmistuminen' => $this->valmistuminen, 'id' => $this->id));
-        
-        $this->instanceVariablesToViewForm();  // Selkeyden vuoksi pidetään oliomuuttujat aina esitysmuodossa vaikka niitä ei käytettäisikään enää.
     }
     
     public function updateAmountAvailable(){
@@ -120,7 +108,7 @@ class Olutera extends BaseModel{
      * Olettaa että oliomuuttujat ovat siinä muodossa missä ne on HTML lomakkeesta saatu
      * ja että oliomuuttujien arvot on validoitu.
      */
-    public function instanceVariablesToDatabaseForm(){
+    public function oliomuuttujatLomakemuodostaTietokantamuotoon(){
         // Erän koko:
         $this->eran_koko = str_replace(' ', '', $this->eran_koko);
         $this->eran_koko = str_replace(',', '.', $this->eran_koko);  // Muutetaan , -> . jotta käyttäjä voi käyttää kumpaa tahansa.
@@ -138,7 +126,7 @@ class Olutera extends BaseModel{
         $this->hinta = intval($this->hinta*100);  // Muutetaan hinta senteiksi ja katkaistaan mahdolliset sentin murto-osat pois muuttamalla integeriksi.
     }
     
-    public function instanceVariablesToViewForm(){
+    public function oliomuuttujatTietokantamuodostaEsitysmuotoon(){
         $this->eran_koko = $this->eran_koko / 100;  // Muutetaan erän koko cl --> l.
         $this->vapaana = $this->vapaana / 100;      // Muutetaan vapaana cl --> l.
         $this->hinta = $this->hinta / 100;          // Muutetaan senttihinta "eurot,sentit"-muotoiseksi desimaalihinnaksi.

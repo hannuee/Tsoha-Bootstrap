@@ -17,7 +17,6 @@ class Pakkaustyyppi extends BaseModel{
         $pakkaustyypit = array();
         foreach($rows as $row){
             $pakkaustyyppi = new Pakkaustyyppi($row);
-            $pakkaustyyppi->instanceVariablesToViewForm();
             $pakkaustyypit[] = $pakkaustyyppi;
         }
         return $pakkaustyypit;
@@ -37,6 +36,7 @@ class Pakkaustyyppi extends BaseModel{
         $pakkaustyypitMaarilla = array();
         foreach($rows as $row){
             $pakkaustyyppi = self::one($row['pakkaustyyppi_id']);
+            $pakkaustyyppi->oliomuuttujatTietokantamuodostaEsitysmuotoon();  // FUNTI LOKAATIO!!!!!!!!!!!!
             
             $pakkaustyyppiMaaralla = array();
             $pakkaustyyppiMaaralla[] = $pakkaustyyppi;
@@ -55,7 +55,6 @@ class Pakkaustyyppi extends BaseModel{
         $pakkaustyypit = array();
         foreach($rows as $row){
             $pakkaustyyppi = new Pakkaustyyppi($row);
-            $pakkaustyyppi->instanceVariablesToViewForm();
             $pakkaustyypit[] = $pakkaustyyppi;
         }
         return $pakkaustyypit;
@@ -68,15 +67,12 @@ class Pakkaustyyppi extends BaseModel{
         
         if($row){
             $pakkaustyyppi = new Pakkaustyyppi($row);
-            $pakkaustyyppi->instanceVariablesToViewForm();
             return $pakkaustyyppi;
         }
         return null;
     }
     
     public function save(){
-        $this->instanceVariablesToDatabaseForm();
-        
         $query = DB::connection()->prepare(
                 'INSERT INTO Pakkaustyyppi (pakkaustyypin_nimi, vetoisuus, hinta, pantti, saatavilla)
                  VALUES (:pakkaustyypin_nimi, :vetoisuus, :hinta, :pantti, :saatavilla)
@@ -89,18 +85,12 @@ class Pakkaustyyppi extends BaseModel{
                 'saatavilla' => $this->saatavilla));
         $row = $query->fetch();
         $this->id = $row['id'];
-        
-        $this->instanceVariablesToViewForm();  // Selkeyden vuoksi pidetään oliomuuttujat aina esitysmuodossa vaikka niitä ei käytettäisikään enää.
     }
     
     public function updateAvailability(){
-        $this->instanceVariablesToDatabaseForm();  // Turha, mutta selkeyden vuoksi.
-        
         $query = DB::connection()->prepare(
                 'UPDATE Pakkaustyyppi SET saatavilla=:saatavilla WHERE id=:id');
         $query->execute(array('saatavilla' => $this->saatavilla, 'id' => $this->id));
-        
-        $this->instanceVariablesToViewForm();  // Selkeyden vuoksi pidetään oliomuuttujat aina esitysmuodossa vaikka niitä ei käytettäisikään enää.
     }
     
     
@@ -111,7 +101,7 @@ class Pakkaustyyppi extends BaseModel{
      * Olettaa että oliomuuttujat ovat siinä muodossa missä ne on HTML lomakkeesta saatu
      * ja että oliomuuttujien arvot on validoitu.
      */
-    public function instanceVariablesToDatabaseForm(){
+    public function oliomuuttujatLomakemuodostaTietokantamuotoon(){
         // Vetoisuus:
         $this->vetoisuus = str_replace(' ', '', $this->vetoisuus);
         $this->vetoisuus = str_replace(',', '.', $this->vetoisuus);  // Muutetaan , -> . jotta käyttäjä voi käyttää kumpaa tahansa.
@@ -129,7 +119,7 @@ class Pakkaustyyppi extends BaseModel{
         $this->pantti = intval($this->pantti*100);  // Muutetaan hinta senteiksi ja katkaistaan mahdolliset sentin murto-osat pois muuttamalla integeriksi.
     }
     
-    public function instanceVariablesToViewForm(){
+    public function oliomuuttujatTietokantamuodostaEsitysmuotoon(){
         $this->vetoisuus = $this->vetoisuus / 100;  // Muutetaan erän koko cl --> l.
         $this->hinta = $this->hinta / 100;          // Muutetaan senttihinta "eurot,sentit"-muotoiseksi desimaalihinnaksi.
         $this->pantti = $this->pantti / 100;        // Muutetaan senttihinta "eurot,sentit"-muotoiseksi desimaalihinnaksi.
