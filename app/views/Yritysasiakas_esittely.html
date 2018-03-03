@@ -3,9 +3,9 @@
 
 <h2>{{yritysasiakas.yrityksen_nimi}}</h2>&nbsp;&nbsp;
 
-{% if user_logged_in %}
+{% if user_name %}
 <a class="btn btn-default btn-sm" href="{{base_path}}/omattiedot/muokkaa">Muokkaa</a><br/>
-{% elseif admin_logged_in %}
+{% elseif admin_name %}
 <a class="btn btn-default btn-sm" href="{{base_path}}/hallinnointi/yritysasiakkaat/muokkaa/{{yritysasiakas.id}}">Muokkaa</a><br/>
 {% endif %}
 
@@ -17,7 +17,7 @@
 <label>Sähköposti: </label>{{yritysasiakas.sahkoposti}}<br/>
 <label>Salasana: </label>{{yritysasiakas.salasana}}<br/>
 
-{% if admin_logged_in %}
+{% if admin_name %}
 <label>Voimassaolo: </label>
         {% if yritysasiakas.aktiivinen == 1 %}
             <label class="label label-success">Kyllä</label>

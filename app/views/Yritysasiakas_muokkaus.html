@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 {% block content %}
 
-{% if user_logged_in %}
+{% if user_name %}
 <h2>{{yritysasiakas.yrityksen_nimi}}</h2>
 <label>Y-tunnus: </label>{{yritysasiakas.y_tunnus}}<br/>
   <form method="post" action="{{base_path}}/omattiedot/tallenna">
-{% elseif admin_logged_in %}
+{% elseif admin_name %}
   <form method="post" action="{{base_path}}/hallinnointi/yritysasiakkaat/muokkaa">
     {% if attributes %}
     <input class="form-control" name="id" type="hidden" value="{{attributes.id}}">
@@ -79,7 +79,7 @@
       {% endif %}
     </div>
 
-{% if admin_logged_in %}
+{% if admin_name %}
     <div class="checkbox">
       <label>
       {% if attributes %}

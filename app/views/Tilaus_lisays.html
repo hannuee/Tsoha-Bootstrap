@@ -29,7 +29,7 @@
   
   <h1>Tilauksen koostaminen</h1>
   
-  <form method="post" action="{{base_path}}/{% if user_logged_in %}tilaukset/uusi{% elseif admin_logged_in %}hallinnointi/tilaukset/uusi{% endif %}" oninput="
+  <form method="post" action="{{base_path}}/{% if user_name %}tilaukset/uusi{% elseif admin_name %}hallinnointi/tilaukset/uusi{% endif %}" oninput="
         function parseFloatNoNan(str) {
             var num = parseFloat(str);
             if(isNaN(num)){
@@ -54,7 +54,7 @@
         ">
   <input class="form-control" name="olutera_id" value="{{olutera.id}}" type="hidden">
   
-  {% if admin_logged_in %} 
+  {% if admin_name %} 
   <div class="form-group">
     <select class="form-control" name="yritysasiakas_id">
         <option value="{{admin_logged_in.id}}">Varaa olutta pois myynnistä</option>

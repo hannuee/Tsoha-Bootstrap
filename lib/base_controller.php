@@ -23,6 +23,20 @@
 
         return null;
     }
+    
+    public static function get_user_name_if_logged_in(){
+        if(isset($_SESSION['user'])){
+          return $_SESSION['name'];
+        }
+        return null;
+    }
+    
+    public static function get_admin_name_if_logged_in(){
+        if(isset($_SESSION['admin'])){
+          return $_SESSION['name'];
+        }
+        return null;
+    }
 
     public static function check_user_logged_in(){
         if(!isset($_SESSION['user'])){

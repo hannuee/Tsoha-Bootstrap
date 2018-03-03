@@ -25,7 +25,7 @@
     <nav class="navbar navbar-default" role="navigation">
       <div class="container-fluid">
           
-        {% if user_logged_in %}
+        {% if user_name %}
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navigation">
             <span class="sr-only">Toggle navigation</span>
@@ -47,7 +47,7 @@
             <button type="submit" class="btn btn-default">Kirjaudu ulos</button>
           </form>
         </div>
-        {% elseif admin_logged_in %}
+        {% elseif admin_name %}
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navigation">
             <span class="sr-only">Toggle navigation</span>

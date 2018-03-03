@@ -195,9 +195,11 @@ class YritysasiakasController extends BaseController{
             View::make('login.html', array('error' => 'Väärä käyttäjätunnus tai salasana!', 'email' => $params['email']));
         } elseif ($corporate_customer->tyontekija == 1) {  // Jos kyseessä työntekijä.
             $_SESSION['admin'] = $corporate_customer->id;
+            $_SESSION['name'] = $corporate_customer->yrityksen_nimi;
             Redirect::to('/hallinnointi/oluterat', array('message' => 'Tervetuloa takaisin ' . $corporate_customer->yrityksen_nimi . '!'));
         } elseif ($corporate_customer->tyontekija == 0) {  // Jos kyseessä normaali yritysasiakas.
             $_SESSION['user'] = $corporate_customer->id;
+            $_SESSION['name'] = $corporate_customer->yrityksen_nimi;
             Redirect::to('/', array('message' => 'Tervetuloa takaisin ' . $corporate_customer->yrityksen_nimi . '!'));
         }
     }
@@ -205,6 +207,7 @@ class YritysasiakasController extends BaseController{
     public static function logout(){
         $_SESSION['user'] = null;
         $_SESSION['admin'] = null;
+        $_SESSION['name'] = null;
         Redirect::to('/kirjautuminen', array('message' => 'Olet kirjautunut ulos!'));
     }
     
