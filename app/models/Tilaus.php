@@ -44,8 +44,10 @@ class Tilaus extends BaseModel{
     
     public static function delete($id){
         $query = DB::connection()->prepare(
-                'DELETE FROM Tilaus WHERE id=:id');
+                'DELETE FROM Tilaus WHERE id=:id RETURNING olutera_id');
         $query->execute(array('id' => $id));
+        $row = $query->fetch();
+        return $row['olutera_id'];
     }
     
     

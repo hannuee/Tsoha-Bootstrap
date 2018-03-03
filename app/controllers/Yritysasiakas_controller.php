@@ -89,12 +89,12 @@ class YritysasiakasController extends BaseController{
         $params = $_POST;
         
         $aktiivinen;
-        $tyontekija;
         if(isset($params['aktiivinen'])){
             $aktiivinen = 1;
         } else {
             $aktiivinen = 0;
         }
+        $tyontekija;
         if(isset($params['tyontekija'])){
             $tyontekija = 1;
         } else {

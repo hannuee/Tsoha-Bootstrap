@@ -2,6 +2,10 @@
 
 class TilausControllerApumetodit {
     
+    public static function tarkistaOluteranId(){
+        
+    }
+    
     /**
      * Apumetodi joka erottelee lähetetystä tilauslomakkeesta pakkaustyyppien id:t ja niiden lukumäärät,
      * validoi nämä tiedot ja sitten palauttaa nämä tiedot TilausPakkaustyyppi-liitostaulumalleina.

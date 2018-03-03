@@ -28,7 +28,7 @@ class TilausPakkaustyyppi extends BaseModel{
         $errors = array();
         
         if(!BaseModel::validate_non_negative_string_integer($this->pakkaustyyppi_id)){
-          // Tämä virheilmoitus annetaan vain jos lähetetyn HTML-lomakkeen kenttien id:itä on muokattu.
+          // Tämä virheilmoitus annetaan vain jos lähetetyn HTML-lomakkeen kenttien name:ja on muokattu.
           $errors[] = 'Tekninen ongelma tilauksen vastaanottamisessa!';
         }
 

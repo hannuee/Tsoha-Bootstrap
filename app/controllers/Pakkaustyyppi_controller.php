@@ -49,15 +49,8 @@ class PakkaustyyppiController extends BaseController{
         
         $params = $_POST;
         
-        $pakkaustyyppi = Pakkaustyyppi::one($params['id']);
-        $pakkaustyyppi->oliomuuttujatTietokantamuodostaEsitysmuotoon();
-        if($pakkaustyyppi->saatavilla == 1){
-            $pakkaustyyppi->saatavilla = 0;
-        } else {
-            $pakkaustyyppi->saatavilla = 1;
-        }
+        Pakkaustyyppi::updateAvailability($params['id']);
         
-        $pakkaustyyppi->updateAvailability();
         Redirect::to('/hallinnointi/pakkaustyypit', array('message' => 'Saatavuusstatus muutettu onnistuneesti!'));
     }
     

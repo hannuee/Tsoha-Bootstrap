@@ -87,10 +87,11 @@ class Pakkaustyyppi extends BaseModel{
         $this->id = $row['id'];
     }
     
-    public function updateAvailability(){
+    
+    public static function updateAvailability($id){
         $query = DB::connection()->prepare(
-                'UPDATE Pakkaustyyppi SET saatavilla=:saatavilla WHERE id=:id');
-        $query->execute(array('saatavilla' => $this->saatavilla, 'id' => $this->id));
+                'UPDATE Pakkaustyyppi SET saatavilla=CASE saatavilla WHEN 1 THEN 0 ELSE 1 END WHERE id=:id');
+        $query->execute(array('id' => $id));
     }
     
     

@@ -82,22 +82,22 @@ class Olutera extends BaseModel{
         $this->id = $row['id'];
     }
     
-    public function updateDate(){
+    public static function updateDate($id, $valmistuminen){
         $query = DB::connection()->prepare(
                 'UPDATE Olutera SET valmistuminen=:valmistuminen WHERE id=:id');
-        $query->execute(array('valmistuminen' => $this->valmistuminen, 'id' => $this->id));
+        $query->execute(array('valmistuminen' => $valmistuminen, 'id' => $id));
     }
     
-    public function updateAmountAvailable(){
+    public static function updateAmountAvailable($id, $senttilitraa){
         $query = DB::connection()->prepare(
-                'UPDATE Olutera SET vapaana=:vapaana WHERE id=:id');
-        $query->execute(array('vapaana' => $this->vapaana, 'id' => $this->id));
+                'UPDATE Olutera SET vapaana=vapaana+:senttilitraa WHERE id=:id');
+        $query->execute(array('senttilitraa' => $senttilitraa, 'id' => $id));
     }
 
-    public function delete(){
+    public static function delete($id){
         $query = DB::connection()->prepare(
                 'DELETE FROM Olutera WHERE id=:id');
-        $query->execute(array('id' => $this->id));
+        $query->execute(array('id' => $id));
     }
     
 
