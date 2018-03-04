@@ -64,7 +64,6 @@ class Yritysasiakas extends BaseModel{
                     yrityksen_nimi=:yrityksen_nimi, y_tunnus=:y_tunnus, osoite=:osoite, toimitusosoite=:toimitusosoite, laskutusosoite=:laskutusosoite, 
                     puhelinnumero=:puhelinnumero, sahkoposti=:sahkoposti, salasana=:salasana, aktiivinen=:aktiivinen, tyontekija=:tyontekija WHERE id=:id');
         $query->execute(array(
-                'id' => $this->id,
                 'yrityksen_nimi' => $this->yrityksen_nimi,
                 'y_tunnus' => $this->y_tunnus,
                 'osoite' => $this->osoite,
@@ -74,7 +73,23 @@ class Yritysasiakas extends BaseModel{
                 'sahkoposti' => $this->sahkoposti,
                 'salasana' => $this->salasana,
                 'aktiivinen' => $this->aktiivinen,
-                'tyontekija' => $this->tyontekija));
+                'tyontekija' => $this->tyontekija,
+                'id' => $this->id));
+    }
+    
+    public static function updateForCustomer(){
+        $query = DB::connection()->prepare(
+                'UPDATE Yritysasiakas SET 
+                    osoite=:osoite, toimitusosoite=:toimitusosoite, laskutusosoite=:laskutusosoite, 
+                    puhelinnumero=:puhelinnumero, sahkoposti=:sahkoposti, salasana=:salasana WHERE id=:id');
+        $query->execute(array(
+                'osoite' => $this->osoite,
+                'toimitusosoite' => $this->toimitusosoite,
+                'laskutusosoite' => $this->laskutusosoite,
+                'puhelinnumero' => $this->puhelinnumero,
+                'sahkoposti' => $this->sahkoposti,
+                'salasana' => $this->salasana,
+                'id' => $this->id));
     }
     
     public static function find($id){
@@ -100,6 +115,20 @@ class Yritysasiakas extends BaseModel{
           return $yritysasiakas;
         }
         return null;
+    }
+    
+    public function validate_id(){  // Tämä validointi ei mene läpi vain jos POST-dataa muokataan tai tapahtuu jotain odottamatonta.
+        $errors = array();
+        
+        if(BaseModel::validate_non_negative_string_integer($this->id)){
+          if(!BaseModel::validate_bounds_of_string_integer($this->id, 1, 2147483647)){
+              $errors[] = 'Tapahtui tekninen virhe!';
+          }
+        } else {
+            $errors[] = 'Tapahtui tekninen virhe!';
+        }
+
+        return $errors;
     }
     
     public function validate_yrityksen_nimi(){
