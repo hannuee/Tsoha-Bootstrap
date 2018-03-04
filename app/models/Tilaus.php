@@ -36,18 +36,23 @@ class Tilaus extends BaseModel{
         $this->id = $row['id'];
     }
     
-    public static function updateDeliveryStatus($id){
+    public static function updateDeliveryStatus(){
         $query = DB::connection()->prepare(
                 'UPDATE Tilaus SET toimitettu=1 WHERE id=:id');
-        $query->execute(array('id' => $id));
+        $query->execute(array('id' => $this->id));
     }
     
-    public static function delete($id){
+    public function delete(){
         $query = DB::connection()->prepare(
                 'DELETE FROM Tilaus WHERE id=:id RETURNING olutera_id');
-        $query->execute(array('id' => $id));
+        $query->execute(array('id' => $this->id));
         $row = $query->fetch();
-        return $row['olutera_id'];
+        
+        if($row){
+            return $row['olutera_id'];
+        }
+        
+        return null;
     }
     
     
@@ -69,6 +74,19 @@ class Tilaus extends BaseModel{
 //        $this->hinta = intval($this->hinta*100);  // Muutetaan hinta senteiksi ja katkaistaan mahdolliset sentin murto-osat pois muuttamalla integeriksi.
     }
     
+    public function validate_id(){  // Tämä validointi ei mene läpi vain jos POST-dataa muokataan tai tapahtuu jotain odottamatonta.
+        $errors = array();
+        
+        if(BaseModel::validate_non_negative_string_integer($this->id)){
+          if(!BaseModel::validate_bounds_of_string_integer($this->id, 1, 2147483647)){
+              $errors[] = 'Tapahtui tekninen virhe!';
+          }
+        } else {
+            $errors[] = 'Tapahtui tekninen virhe!';
+        }
+
+        return $errors;
+    }
     
     public function validate_olutera_id(){
         $errors = array();

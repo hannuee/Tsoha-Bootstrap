@@ -96,7 +96,7 @@ class TilausControllerApumetodit {
     public static function tarkistaOluteranIdJaVapaanOluenMaara($senttilitroja, $tilaus, $params){
         // Tarkistetaan että oluterän ID ok ja että oluterässä riittävästi vapaana olutta.
         $oluteraErrors = array();
-        $olutera = Olutera::one($tilaus->olutera_id);
+        $olutera = Olutera::one($tilaus->olutera_id);  // ERRORCHECKKKKKKKKKKKKKK
         $olutera->oliomuuttujatTietokantamuodostaEsitysmuotoon();
         $olutera->vapaana = $olutera->vapaana * 100;  // OLUTERÄ NYT SENTTILITROISSA!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         if(is_null($olutera)){

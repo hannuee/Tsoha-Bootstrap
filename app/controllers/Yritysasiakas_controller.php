@@ -82,35 +82,6 @@ class YritysasiakasController extends BaseController{
         
         $yritysasiakas->updateForCustomer();
         Redirect::to('/omattiedot', array('message' => 'Tiedot päivitetty onnistuneesti'));
-        
-//        self::check_user_logged_in();
-//        
-//        $params = $_POST;
-//        // $_SESSION['user']
-//        $yritysasiakas = self::get_user_logged_in();
-//        
-//        $yritysasiakas->osoite = $params['osoite'];
-//        $yritysasiakas->toimitusosoite = $params['toimitusosoite'];
-//        $yritysasiakas->laskutusosoite = $params['laskutusosoite'];
-//        $yritysasiakas->puhelinnumero = $params['puhelinnumero'];
-//        $yritysasiakas->sahkoposti = $params['sahkoposti'];
-//        $yritysasiakas->salasana = $params['salasana'];
-//
-//        $errors = $yritysasiakas->errors();
-// 
-//        if(count($errors) == 0){  // Syötteet valideja.
-//            $yritysasiakas->update();
-//            Redirect::to('/omattiedot', array('message' => 'Tiedot päivitetty onnistuneesti'));
-//        } else {                  // Syötteet ei-valideja.
-//            Redirect::to('/omattiedot/muokkaa', array('errors' => $errors, 'attributes' => 
-//                array(
-//            'osoite' => $params['osoite'],
-//            'toimitusosoite' => $params['toimitusosoite'],
-//            'laskutusosoite' => $params['laskutusosoite'],
-//            'puhelinnumero' => $params['puhelinnumero'],
-//            'sahkoposti' => $params['sahkoposti'],
-//            'salasana' => $params['salasana'])));
-//        }
     }
     
     public static function lisaaUusi(){
@@ -142,12 +113,9 @@ class YritysasiakasController extends BaseController{
             'aktiivinen' => $aktiivinen,
             'tyontekija' => $tyontekija));
 
+        
         $errors = $yritysasiakas->errors();
- 
-        if(count($errors) == 0){  // Syötteet valideja.
-            $yritysasiakas->save();
-            Redirect::to('/hallinnointi/yritysasiakkaat/' . $yritysasiakas->id, array('message' => 'Tiedot päivitetty onnistuneesti'));
-        } else {                  // Syötteet ei-valideja.
+        if(count($errors) != 0){
             Redirect::to('/hallinnointi/yritysasiakkaat/uusi', array('errors' => $errors, 'attributes' => 
                 array(
             'yrityksen_nimi' => $params['yrityksen_nimi'],
@@ -161,6 +129,10 @@ class YritysasiakasController extends BaseController{
             'aktiivinen' => $params['aktiivinen'],
             'tyontekija' => $params['tyontekija'])));
         }
+        
+        
+        $yritysasiakas->save();
+        Redirect::to('/hallinnointi/yritysasiakkaat/' . $yritysasiakas->id, array('message' => 'Tiedot päivitetty onnistuneesti'));
     }
     
     public static function muokkaaLisavaihtoehdoin(){
@@ -192,7 +164,7 @@ class YritysasiakasController extends BaseController{
         
         $idSyntaxError = $yritysasiakas->customErrors(array('validate_id'));
         if(count($idSyntaxError) != 0){
-            Redirect::to('/hallinnointi/oluterat' . $yritysasiakas->id, array('errors' => $idSyntaxError));
+            Redirect::to('/hallinnointi/oluterat', array('errors' => $idSyntaxError));
         }
         
         $errors = $yritysasiakas->errors();

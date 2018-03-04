@@ -62,13 +62,10 @@ class OluteraController extends BaseController{
             'vapaana' => $params['eran_koko'],  // vapaana = eran_koko, koska koko erä on tietenkin vapaana kun erä luodaan. 
             'hinta' => $params['hinta']
         ));
-        $errors = $olutera->errors();
         
-        if(count($errors) == 0){  // Syötteet valideja.
-            $olutera->oliomuuttujatLomakemuodostaTietokantamuotoon();
-            $olutera->save();
-            Redirect::to('/hallinnointi/oluterat', array('message' => 'Uusi oluterä lisätty onnistuneesti!'));
-        } else {                  // Syötteet ei-valideja.
+        
+        $errors = $olutera->errors();
+        if(count($errors) != 0){
             Redirect::to('/hallinnointi/oluterat', array('errors' => $errors, 'attributes' => 
                 array(
             'oluen_nimi' => $params['oluen_nimi'],
@@ -76,6 +73,11 @@ class OluteraController extends BaseController{
             'eran_koko' => $params['eran_koko'],
             'hinta' => $params['hinta'])));
         }
+        
+        
+        $olutera->oliomuuttujatLomakemuodostaTietokantamuotoon();
+        $olutera->save();
+        Redirect::to('/hallinnointi/oluterat', array('message' => 'Uusi oluterä lisätty onnistuneesti!'));
     }
     
     public static function muokkaaValmistumispaivamaaraa(){
@@ -83,12 +85,25 @@ class OluteraController extends BaseController{
         
         $params = $_POST;
         
-        // Lisää erillinen validaattori id:lle ja valmistumiselle???, muuten ei suoriteta, ainakaan valmistumisen osalta.
-        Olutera::updateDate($params['id'], $params['valmistuminen']);
- 
-        Redirect::to('/hallinnointi/oluterat/' . $params['id'], array('message' => 'Valmistumispäivämäärä muutettu onnistuneesti!'));
+        $olutera = new Olutera(array(
+            'id' => $params['id'],
+            'valmistuminen' => $params['valmistuminen']
+        ));
         
-        //Redirect::to('/hallinnointi/oluterat/' . $params['id'], array('errors' => $errors)
+        
+        $idSyntaxError = $olutera->customErrors(array('validate_id'));
+        if(count($idSyntaxError) != 0){
+            Redirect::to('/hallinnointi/oluterat', array('errors' => $idSyntaxError));
+        }
+        
+        $valmistuminenError = $olutera->customErrors(array('validate_valmistuminen'));
+        if(count($valmistuminenError) != 0){
+            Redirect::to('/hallinnointi/oluterat' . $params['id'], array('errors' => $valmistuminenError));
+        }
+        
+        
+        $olutera->updateDate();
+        Redirect::to('/hallinnointi/oluterat/' . $params['id'], array('message' => 'Valmistumispäivämäärä muutettu onnistuneesti!'));
     }
     
     public static function poista(){
@@ -96,9 +111,18 @@ class OluteraController extends BaseController{
         
         $params = $_POST;
         
-        // Lisää erillinen validaattori id:lle?????
-        Olutera::delete($params['id']);
- 
+        $olutera = new Olutera(array(
+            'id' => $params['id']
+        ));
+        
+        
+        $idSyntaxError = $olutera->customErrors(array('validate_id'));
+        if(count($idSyntaxError) != 0){
+            Redirect::to('/hallinnointi/oluterat', array('errors' => $idSyntaxError));
+        }
+        
+        
+        $olutera->delete();
         Redirect::to('/hallinnointi/oluterat', array('message' => 'Oluterä ja sen tilaukset on poistettu onnistuneesti!'));
     }
     

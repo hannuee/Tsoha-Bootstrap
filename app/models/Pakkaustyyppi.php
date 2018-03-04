@@ -88,10 +88,10 @@ class Pakkaustyyppi extends BaseModel{
     }
     
     
-    public static function updateAvailability($id){
+    public function updateAvailability(){
         $query = DB::connection()->prepare(
                 'UPDATE Pakkaustyyppi SET saatavilla=CASE saatavilla WHEN 1 THEN 0 ELSE 1 END WHERE id=:id');
-        $query->execute(array('id' => $id));
+        $query->execute(array('id' => $this->id));
     }
     
     
@@ -128,6 +128,20 @@ class Pakkaustyyppi extends BaseModel{
     
     
     // Validaattorit:
+    
+    public function validate_id(){  // Tämä validointi ei mene läpi vain jos POST-dataa muokataan tai tapahtuu jotain odottamatonta.
+        $errors = array();
+        
+        if(BaseModel::validate_non_negative_string_integer($this->id)){
+          if(!BaseModel::validate_bounds_of_string_integer($this->id, 1, 2147483647)){
+              $errors[] = 'Tapahtui tekninen virhe!';
+          }
+        } else {
+            $errors[] = 'Tapahtui tekninen virhe!';
+        }
+
+        return $errors;
+    }
     
     public function validate_pakkaustyypin_nimi(){
         $errors = array();

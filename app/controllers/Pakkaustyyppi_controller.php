@@ -28,13 +28,10 @@ class PakkaustyyppiController extends BaseController{
             'pantti' => $params['pantti'], 
             'saatavilla' => 1  // Oletetaan että pakkaustyypit ovat saatavilla kun ne lisätään ensimmäisen kerran.  
         ));
-        $errors = $pakkaustyyppi->errors();
         
-        if(count($errors) == 0){  // Syötteet valideja.
-            $pakkaustyyppi->oliomuuttujatLomakemuodostaTietokantamuotoon();
-            $pakkaustyyppi->save();
-            Redirect::to('/hallinnointi/pakkaustyypit', array('message' => 'Uusi pakkaustyyppi lisätty onnistuneesti!'));
-        } else {                  // Syötteet ei-valideja.
+        
+        $errors = $pakkaustyyppi->errors();
+        if(count($errors) != 0){
             Redirect::to('/hallinnointi/pakkaustyypit', array('errors' => $errors, 'attributes' => 
                 array(
             'pakkaustyypin_nimi' => $params['pakkaustyypin_nimi'],
@@ -42,6 +39,11 @@ class PakkaustyyppiController extends BaseController{
             'hinta' => $params['hinta'],
             'pantti' => $params['pantti'])));
         }
+        
+        
+        $pakkaustyyppi->oliomuuttujatLomakemuodostaTietokantamuotoon();
+        $pakkaustyyppi->save();
+        Redirect::to('/hallinnointi/pakkaustyypit', array('message' => 'Uusi pakkaustyyppi lisätty onnistuneesti!'));
     }
     
     public static function muokkaaSaatavuusstatusta(){
@@ -49,8 +51,18 @@ class PakkaustyyppiController extends BaseController{
         
         $params = $_POST;
         
-        Pakkaustyyppi::updateAvailability($params['id']);
+        $pakkaustyyppi = new Pakkaustyyppi(array(
+            'id' => $params['id']
+        ));
         
+        
+        $idSyntaxError = $pakkaustyyppi->customErrors(array('validate_id'));
+        if(count($idSyntaxError) != 0){
+            Redirect::to('/hallinnointi/pakkaustyypit', array('errors' => $idSyntaxError));
+        }
+        
+        
+        $pakkaustyyppi->updateAvailability();
         Redirect::to('/hallinnointi/pakkaustyypit', array('message' => 'Saatavuusstatus muutettu onnistuneesti!'));
     }
     

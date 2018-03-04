@@ -82,22 +82,28 @@ class Olutera extends BaseModel{
         $this->id = $row['id'];
     }
     
-    public static function updateDate($id, $valmistuminen){
+    public function updateDate(){
         $query = DB::connection()->prepare(
                 'UPDATE Olutera SET valmistuminen=:valmistuminen WHERE id=:id');
-        $query->execute(array('valmistuminen' => $valmistuminen, 'id' => $id));
+        $query->execute(array('valmistuminen' => $this->valmistuminen, 'id' => $this->id));
     }
     
-    public static function updateAmountAvailable($id, $senttilitraa){
+    public function updateAmountAvailable(){
+        $query = DB::connection()->prepare(
+                'UPDATE Olutera SET vapaana=:vapaana WHERE id=:id');
+        $query->execute(array('vapaana' => $this->vapaana, 'id' => $this->id));
+    }
+    
+    public static function updateAmountAvailableReduce($id, $senttilitraa){
         $query = DB::connection()->prepare(
                 'UPDATE Olutera SET vapaana=vapaana+:senttilitraa WHERE id=:id');
         $query->execute(array('senttilitraa' => $senttilitraa, 'id' => $id));
     }
 
-    public static function delete($id){
+    public function delete(){
         $query = DB::connection()->prepare(
                 'DELETE FROM Olutera WHERE id=:id');
-        $query->execute(array('id' => $id));
+        $query->execute(array('id' => $this->id));
     }
     
 
@@ -134,6 +140,20 @@ class Olutera extends BaseModel{
     
     
     // Validaattorit:
+    
+    public function validate_id(){  // Tämä validointi ei mene läpi vain jos POST-dataa muokataan tai tapahtuu jotain odottamatonta.
+        $errors = array();
+        
+        if(BaseModel::validate_non_negative_string_integer($this->id)){
+          if(!BaseModel::validate_bounds_of_string_integer($this->id, 1, 2147483647)){
+              $errors[] = 'Tapahtui tekninen virhe!';
+          }
+        } else {
+            $errors[] = 'Tapahtui tekninen virhe!';
+        }
+
+        return $errors;
+    }
     
     public function validate_oluen_nimi(){
         $errors = array();

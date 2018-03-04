@@ -58,8 +58,20 @@ class TilausController extends BaseController{
         
         $params = $_POST;
         
-        Tilaus::updateDeliveryStatus($params['tilaus_id']); // PITÄSKÖ LAITTAA RETURNING ID?? JA TARKISTUS TÄTEN ETTÄ KAIKKI SUJU OK?
- 
+        $tilaus = new Tilaus(array(
+            'id' => $params['tilaus_id']
+        ));
+        
+        
+        $idSyntaxError = $tilaus->customErrors(array('validate_id'));
+        if(count($idSyntaxError) != 0){
+            Redirect::to('/hallinnointi/oluterat', array('errors' => $idSyntaxError));
+        }
+        
+        // TARKASTA VIÄLÄ LUULTAVASTI OLUTERÄ ID!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        
+        
+        $tilaus->updateDeliveryStatus();        
         Redirect::to('/hallinnointi/oluterat/' . $params['olutera_id'], array('message' => 'Tilaus merkitty toimitetuksi!'));
     }
     
@@ -68,46 +80,32 @@ class TilausController extends BaseController{
         
         $params = $_POST;
         
+        $tilaus = new Tilaus(array(
+            'id' => $params['tilaus_id']
+        ));
+        
+        
+        $idSyntaxError = $tilaus->customErrors(array('validate_id'));
+        if(count($idSyntaxError) != 0){
+            Redirect::to('/hallinnointi/oluterat', array('errors' => $idSyntaxError));
+        }
+        
+        
         // Lasketaan montako litraa pitää vapauttaa oluterästä.
         $senttilitraa = 0;
-        $pakkaustyypitJaLukumaarat = Pakkaustyyppi::allForOrder($params['tilaus_id']);
+        $pakkaustyypitJaLukumaarat = Pakkaustyyppi::allForOrder($tilaus->id);
         foreach($pakkaustyypitJaLukumaarat as $pakkaustyyppiJalukumaara){
             $senttilitraa += $pakkaustyyppiJalukumaara[0]->vetoisuus * 100 * $pakkaustyyppiJalukumaara[1];
         }
         
-        $olutera_id = Tilaus::delete($params['tilaus_id']);
         
-        // Vapautetaan kyseinen litramäärä oluterästä. JOS TILAUKSEN POISTO ONNISTUU!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        Olutera::updateAmountAvailable($olutera_id, $senttilitraa);
- 
-        Redirect::to('/hallinnointi/oluterat/' . $olutera_id, array('message' => 'Tilaus poistettu! ' . $senttilitraa));
-        
-        
-        
-//        self::check_admin_logged_in();
-//        
-//        $params = $_POST;
-//        
-//        // Lasketaan montako litraa pitää vapauttaa oluterästä.
-//        $senttilitraa = 0;
-//        $pakkaustyypitJaLukumaarat = Pakkaustyyppi::allForOrder($params['tilaus_id']);
-//        foreach($pakkaustyypitJaLukumaarat as $pakkaustyyppiJalukumaara){
-//            $senttilitraa += $pakkaustyyppiJalukumaara[0]->vetoisuus * 100 * $pakkaustyyppiJalukumaara[1];
-//        }
-//        
-//        // Vapautetaan kyseinen litramäärä oluterästä.
-//        $olutera = Olutera::one($params['olutera_id']);
-//        $olutera->oliomuuttujatTietokantamuodostaEsitysmuotoon();
-//        $olutera->vapaana = $olutera->vapaana * 100 + $senttilitraa;
-//        $olutera->updateAmountAvailable();
-//        
-//        Tilaus::delete($params['tilaus_id']); // PITÄSKÖ LAITTAA RETURNING ID?? JA TARKISTUS TÄTEN ETTÄ KAIKKI SUJU OK?
-//        
-//        // ^ RETURNING OLUTERA_ID NIIN VOIDAAN SITTEN JOS TILAUKSEN POISTO ONNISTUU NIIN POISTAA
-//        //   KYSEISESTÄ OLUTERÄSTÄ LASKETUT SENTTILITRAT.
-//        //   updateAmountAvailable() STAATTISEKS JOS VAAN MAHDOLLISTA. Pitäs toimia tyyliin: vapaana = vapaana + senttilitrat.
-// 
-//        Redirect::to('/hallinnointi/oluterat/' . $params['olutera_id'], array('message' => 'Tilaus poistettu! ' . $senttilitraa)); 
+        $olutera_id = $tilaus->delete();
+        if(is_null($olutera_id)){
+            Redirect::to('/hallinnointi/oluterat', array('errors' => array('Tapahtui tekninen virhe!')));  // Koita testata tää virheviesti jotenkin.
+        }
+       
+        Olutera::updateAmountAvailableReduce($olutera_id, $senttilitraa);
+        Redirect::to('/hallinnointi/oluterat/' . $olutera_id, array('message' => 'Tilaus poistettu! ' . $senttilitraa));    
     }
     
 }
