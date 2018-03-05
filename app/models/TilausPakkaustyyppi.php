@@ -27,9 +27,12 @@ class TilausPakkaustyyppi extends BaseModel{
     public function validate_pakkaustyyppi_id(){
         $errors = array();
         
-        if(!BaseModel::validate_non_negative_string_integer($this->pakkaustyyppi_id)){
-          // Tämä virheilmoitus annetaan vain jos lähetetyn HTML-lomakkeen kenttien name:ja on muokattu.
-          $errors[] = 'Tekninen ongelma tilauksen vastaanottamisessa!';
+        if(BaseModel::validate_non_negative_string_integer($this->pakkaustyyppi_id)){
+          if(!BaseModel::validate_bounds_of_string_integer($this->pakkaustyyppi_id, 1, 2147483647)){
+              $errors[] = 'Tapahtui tekninen virhe!';
+          }
+        } else {
+            $errors[] = 'Tapahtui tekninen virhe!';
         }
 
         return $errors;

@@ -71,11 +71,13 @@ class TilausController extends BaseController{
         
         $params = $_POST;
         
+        // Tietojen ottaminen lähetetystä lomakkeesta & Tarkistuksia.
         $olutera = TilausControllerApumetodit::tarkistaLomakkeestaOluteraIdJaPalautaOlutera($params);
         TilausControllerApumetodit::tarkistaLomakkeestaYritysasiakasId($params);
-        $tilausPakkaustyypit = TilausControllerApumetodit::tilausPakkaustyyppiMallienTiedotLomakkeesta($params);
-        $tilaus = TilausControllerApumetodit::tilausMallinTiedotLomakkeesta($params);
+        $tilausPakkaustyypit = TilausControllerApumetodit::tilausPakkaustyyppiMallienTiedotLomakkeesta($params);  // Eli montako kappaletta kutakin pakkausta.
+        $tilaus = TilausControllerApumetodit::toimitusohjeetLomakkeestaJaPalautaTilaus($params);
         
+        // Tarkistuksia. (Apumetodit saavat lomakkeen tiedot ainoastaan virheestä johtuvaa uudelleenohjausta varten.)
         $senttilitroja = TilausControllerApumetodit::senttilitrojenLaskeminenJaPakkaustyyppienTarkistus($tilausPakkaustyypit, $params);
         TilausControllerApumetodit::tarkistaVapaanOluenMaara($senttilitroja, $olutera, $params);
         

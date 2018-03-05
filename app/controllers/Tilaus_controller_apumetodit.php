@@ -62,29 +62,13 @@ class TilausControllerApumetodit {
         return $pakkaustyypitJaMaarat;
     }
     
-    /**
-     * Apumetodi joka erottelee lähetetystä tilauslomakkeesta toimitusohjeet, oluterän id:n ja yritysasiakkaan id:n,
-     * validoi nämä tiedot ja sitten palauttaa nämä tiedot Tilaus-malleina.
-     * @param type $params Lähetetyn lomakkeen sisältö POST-muodossa.
-     * @return \Tilaus Tilaus-mallin.
-     */
-    public static function tilausMallinTiedotLomakkeesta($params){
-        $tilausajankohta = new DateTime();
-        $tilausajankohta->format('Y-m-d');   // TOISTASEKS HOIDETTU SQL NOW():LLA.!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        // Tilausolion teko ja samalla Oluterä id:n syntax check
+    public static function toimitusohjeetLomakkeestaJaPalautaTilaus($params){
         $tilaus = new Tilaus(array(
-            'tilausajankohta' => $tilausajankohta,
             'toimitettu' => 0,
             'toimitusohjeet' => $params['toimitusohjeet'],
             'olutera_id' => $params['olutera_id'],
             'yritysasiakas_id' => $params['yritysasiakas_id']
         ));
-        $tilausErrors = $tilaus->errors();   // instanceVariablesToDatabaseForm() seuraavaks ???????????????????????????
-        
-        // Jos erroreita oluterän id:ssä niin redirect etusivulle, koska ei tietoa oluterän id:stä.  ON TIEDOSSA, KORJAA TÄÄÄÄ!!!!!
-        if(count($tilausErrors) != 0){
-            Redirect::to('/', array('errors' => $tilausErrors));
-        }
         
         return $tilaus;
     }
@@ -122,6 +106,8 @@ class TilausControllerApumetodit {
         }
         // ^TODO: ATTRIBUUTIT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     }
+    
+    
     
     public static function lisaaUusiTilaus($senttilitroja, $tilaus, $tilausPakkaustyypit, $olutera){
         // Tallennetaan Tilaus-olio, TilausPakkaustyyppi-oliot(ja tallennetaan niihin tilaus_id) sekä vähennetään kyseisen oluterän vapaana olevan oluen määrää.

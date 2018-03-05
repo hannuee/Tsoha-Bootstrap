@@ -207,7 +207,7 @@ class YritysasiakasController extends BaseController{
         }
         
         
-        $idSyntaxError = $yritysasiakas->customErrors(array('validate_id'));
+        $idSyntaxError = $yritysasiakas->customErrors(array('validate_id'));   //????????????????
         if(count($idSyntaxError) != 0){
             Redirect::to('/hallinnointi/oluterat', array('errors' => $idSyntaxError));
         }

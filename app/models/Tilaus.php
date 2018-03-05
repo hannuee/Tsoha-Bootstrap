@@ -6,7 +6,7 @@ class Tilaus extends BaseModel{
     
     public function __construct($attributes) {
         parent::__construct($attributes);
-        $this->validators = array('validate_olutera_id'); // MUISTA VALIDAATTORIT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        $this->validators = array();
     }
     
     public static function allForBeerBatch($id){
@@ -63,49 +63,32 @@ class Tilaus extends BaseModel{
     }
     
     
-    public function oliomuuttujatLomakemuodostaTietokantamuotoon(){
-//        // Erän koko:
-//        $this->eran_koko = str_replace(' ', '', $this->eran_koko);
-//        $this->eran_koko = str_replace(',', '.', $this->eran_koko);  // Muutetaan , -> . jotta käyttäjä voi käyttää kumpaa tahansa.
-//        $this->eran_koko = floatval($this->eran_koko);
-//        $this->eran_koko = intval($this->eran_koko*100);  // Muunto senttilitroiksi ja katkaistaan mahdolliset senttilitrojen murto-osat pois muuttamalla integeriksi.
-//        // Vapaana:
-//        $this->vapaana = str_replace(' ', '', $this->vapaana);
-//        $this->vapaana = str_replace(',', '.', $this->vapaana);  // Muutetaan , -> . jotta käyttäjä voi käyttää kumpaa tahansa.
-//        $this->vapaana = floatval($this->vapaana);
-//        $this->vapaana = intval($this->vapaana*100);  // Muunto senttilitroiksi ja katkaistaan mahdolliset senttilitrojen murto-osat pois muuttamalla integeriksi.
-//        // Hinnan muutos:
-//        $this->hinta = str_replace(' ', '', $this->hinta);
-//        $this->hinta = str_replace(',', '.', $this->hinta);  // Muutetaan , -> . jotta käyttäjä voi käyttää kumpaa tahansa.
-//        $this->hinta = floatval($this->hinta);
-//        $this->hinta = intval($this->hinta*100);  // Muutetaan hinta senteiksi ja katkaistaan mahdolliset sentin murto-osat pois muuttamalla integeriksi.
-    }
-    
-    public function validate_id(){  // Tämä validointi ei mene läpi vain jos POST-dataa muokataan tai tapahtuu jotain odottamatonta.
-        $errors = array();
-        
-        if(BaseModel::validate_non_negative_string_integer($this->id)){
-          if(!BaseModel::validate_bounds_of_string_integer($this->id, 1, 2147483647)){
-              $errors[] = 'Tapahtui tekninen virhe!';
-          }
-        } else {
-            $errors[] = 'Tapahtui tekninen virhe!';
-        }
-
-        return $errors;
-    }
-    
-    public function validate_olutera_id(){
-        $errors = array();
-        
-        if(!BaseModel::validate_non_negative_string_integer($this->olutera_id)){
-          // Tämä virheilmoitus annetaan vain jos lähetetyn HTML-lomakkeen olutera_id id:tä on muokattu TAI
-          // jos tilauslomakkeen URL:iin on muutettu manuaalisesti numeron paikalle joku muu kuin numero. 
-          $errors[] = 'Tekninen ongelma tilauksen vastaanottamisessa!';
-        }
-
-        return $errors;
-    }
+    // ALLA LUULTAVASTI TURHAA KAMAA:
+//    public function validate_id(){  // Tämä validointi ei mene läpi vain jos POST-dataa muokataan tai tapahtuu jotain odottamatonta.
+//        $errors = array();
+//        
+//        if(BaseModel::validate_non_negative_string_integer($this->id)){
+//          if(!BaseModel::validate_bounds_of_string_integer($this->id, 1, 2147483647)){
+//              $errors[] = 'Tapahtui tekninen virhe!';
+//          }
+//        } else {
+//            $errors[] = 'Tapahtui tekninen virhe!';
+//        }
+//
+//        return $errors;
+//    }
+//    
+//    public function validate_olutera_id(){
+//        $errors = array();
+//        
+//        if(!BaseModel::validate_non_negative_string_integer($this->olutera_id)){
+//          // Tämä virheilmoitus annetaan vain jos lähetetyn HTML-lomakkeen olutera_id id:tä on muokattu TAI
+//          // jos tilauslomakkeen URL:iin on muutettu manuaalisesti numeron paikalle joku muu kuin numero. 
+//          $errors[] = 'Tekninen ongelma tilauksen vastaanottamisessa!';
+//        }
+//
+//        return $errors;
+//    }
     
 }
 
