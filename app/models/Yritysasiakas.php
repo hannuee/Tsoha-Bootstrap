@@ -55,14 +55,21 @@ class Yritysasiakas extends BaseModel{
                 'aktiivinen' => $this->aktiivinen,
                 'tyontekija' => $this->tyontekija));
         $row = $query->fetch();
+        
+        if(!$row){
+            return FALSE;
+        }
+        
         $this->id = $row['id'];
+        return TRUE;
     }
     
     public function update(){
         $query = DB::connection()->prepare(
                 'UPDATE Yritysasiakas SET 
                     yrityksen_nimi=:yrityksen_nimi, y_tunnus=:y_tunnus, osoite=:osoite, toimitusosoite=:toimitusosoite, laskutusosoite=:laskutusosoite, 
-                    puhelinnumero=:puhelinnumero, sahkoposti=:sahkoposti, salasana=:salasana, aktiivinen=:aktiivinen, tyontekija=:tyontekija WHERE id=:id');
+                    puhelinnumero=:puhelinnumero, sahkoposti=:sahkoposti, salasana=:salasana, aktiivinen=:aktiivinen, tyontekija=:tyontekija WHERE id=:id 
+                    RETURNING id');
         $query->execute(array(
                 'yrityksen_nimi' => $this->yrityksen_nimi,
                 'y_tunnus' => $this->y_tunnus,
@@ -75,13 +82,21 @@ class Yritysasiakas extends BaseModel{
                 'aktiivinen' => $this->aktiivinen,
                 'tyontekija' => $this->tyontekija,
                 'id' => $this->id));
+        $row = $query->fetch();
+        
+        if(!$row){
+            return FALSE;
+        }
+        
+        $this->id = $row['id'];
+        return TRUE;
     }
     
-    public static function updateForCustomer(){
+    public function updateForCustomer(){
         $query = DB::connection()->prepare(
                 'UPDATE Yritysasiakas SET 
                     osoite=:osoite, toimitusosoite=:toimitusosoite, laskutusosoite=:laskutusosoite, 
-                    puhelinnumero=:puhelinnumero, sahkoposti=:sahkoposti, salasana=:salasana WHERE id=:id');
+                    puhelinnumero=:puhelinnumero, sahkoposti=:sahkoposti, salasana=:salasana WHERE id=:id RETURNING id');
         $query->execute(array(
                 'osoite' => $this->osoite,
                 'toimitusosoite' => $this->toimitusosoite,
@@ -90,6 +105,13 @@ class Yritysasiakas extends BaseModel{
                 'sahkoposti' => $this->sahkoposti,
                 'salasana' => $this->salasana,
                 'id' => $this->id));
+        $row = $query->fetch();
+        
+        if(!$row){
+            return FALSE;
+        }
+        
+        return TRUE;
     }
     
     public static function find($id){

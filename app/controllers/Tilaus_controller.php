@@ -7,8 +7,21 @@ class TilausController extends BaseController{
     public static function lisays($id){
         self::check_user_logged_in();
         
+        
+        $idSyntaxError = BaseModel::validate_id_directly($id);
+        if(count($idSyntaxError) != 0){
+            Redirect::to('/', array('errors' => $idSyntaxError));
+        }
+        
         $olutera = Olutera::oneAvailableWithMargin($id, 400);
+        if(is_null($olutera)){
+            Redirect::to('/', array('errors' => array('Etsimääsi oluterää ei löytynyt!')));
+        }
+        
+        
         $olutera->oliomuuttujatTietokantamuodostaEsitysmuotoon();
+        
+        
         $pakkaustyypit = Pakkaustyyppi::allAvailable();
         BaseModel::olioidenMuuttujatTietokantamuodostaEsitysmuotoon($pakkaustyypit);
         
@@ -18,8 +31,21 @@ class TilausController extends BaseController{
     public static function lisaysLisavaihtoehdoin($id){
         self::check_admin_logged_in();
         
+        
+        $idSyntaxError = BaseModel::validate_id_directly($id);
+        if(count($idSyntaxError) != 0){
+            Redirect::to('/hallinnointi/oluterat', array('errors' => $idSyntaxError));
+        }
+        
+        
         $olutera = Olutera::one($id);
+        if(is_null($olutera)){
+            Redirect::to('/hallinnointi/oluterat', array('errors' => array('Etsimääsi oluterää ei löytynyt!')));
+        }
+        
         $olutera->oliomuuttujatTietokantamuodostaEsitysmuotoon();
+        
+        
         $pakkaustyypit = Pakkaustyyppi::allAvailable();
         BaseModel::olioidenMuuttujatTietokantamuodostaEsitysmuotoon($pakkaustyypit);
         
@@ -45,10 +71,13 @@ class TilausController extends BaseController{
         
         $params = $_POST;
         
+        $olutera = TilausControllerApumetodit::tarkistaLomakkeestaOluteraIdJaPalautaOlutera($params);
+        TilausControllerApumetodit::tarkistaLomakkeestaYritysasiakasId($params);
         $tilausPakkaustyypit = TilausControllerApumetodit::tilausPakkaustyyppiMallienTiedotLomakkeesta($params);
         $tilaus = TilausControllerApumetodit::tilausMallinTiedotLomakkeesta($params);
+        
         $senttilitroja = TilausControllerApumetodit::senttilitrojenLaskeminenJaPakkaustyyppienTarkistus($tilausPakkaustyypit, $params);
-        $olutera = TilausControllerApumetodit::tarkistaOluteranIdJaVapaanOluenMaara($senttilitroja, $tilaus, $params);
+        TilausControllerApumetodit::tarkistaVapaanOluenMaara($senttilitroja, $olutera, $params);
         
         TilausControllerApumetodit::lisaaUusiTilaus($senttilitroja, $tilaus, $tilausPakkaustyypit, $olutera);
     }
@@ -56,22 +85,22 @@ class TilausController extends BaseController{
     public static function muokkaaToimitetuksi(){
         self::check_admin_logged_in();
         
-        $params = $_POST;
-        
-        $tilaus = new Tilaus(array(
-            'id' => $params['tilaus_id']
-        ));
+        $params = $_POST;   
         
         
-        $idSyntaxError = $tilaus->customErrors(array('validate_id'));
+        $idSyntaxError = BaseModel::validate_id_directly($params['tilaus_id']);
         if(count($idSyntaxError) != 0){
             Redirect::to('/hallinnointi/oluterat', array('errors' => $idSyntaxError));
         }
+    
         
-        // TARKASTA VIÄLÄ LUULTAVASTI OLUTERÄ ID!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        // Oluterä_id:tä turha tarkastaa, se laitetaan lomakkeessa mukana vain redirectiä varten, ja sivut joihin redirectetään
+        // osaavat händlätä virheelliset oluterä_id:t.
+        $onnistuiko = Tilaus::updateDeliveryStatus($params['tilaus_id']);       
+        if(!$onnistuiko){
+            Redirect::to('/hallinnointi/oluterat/' . $params['olutera_id'], array('errors' => array('Tapahtui virhe merkittäessä tilausta toimitetuksi!')));
+        }
         
-        
-        $tilaus->updateDeliveryStatus();        
         Redirect::to('/hallinnointi/oluterat/' . $params['olutera_id'], array('message' => 'Tilaus merkitty toimitetuksi!'));
     }
     
@@ -80,12 +109,8 @@ class TilausController extends BaseController{
         
         $params = $_POST;
         
-        $tilaus = new Tilaus(array(
-            'id' => $params['tilaus_id']
-        ));
         
-        
-        $idSyntaxError = $tilaus->customErrors(array('validate_id'));
+        $idSyntaxError = BaseModel::validate_id_directly($params['tilaus_id']);
         if(count($idSyntaxError) != 0){
             Redirect::to('/hallinnointi/oluterat', array('errors' => $idSyntaxError));
         }
@@ -93,18 +118,18 @@ class TilausController extends BaseController{
         
         // Lasketaan montako litraa pitää vapauttaa oluterästä.
         $senttilitraa = 0;
-        $pakkaustyypitJaLukumaarat = Pakkaustyyppi::allForOrder($tilaus->id);
+        $pakkaustyypitJaLukumaarat = Pakkaustyyppi::allForOrder($params['tilaus_id']);
         foreach($pakkaustyypitJaLukumaarat as $pakkaustyyppiJalukumaara){
             $senttilitraa += $pakkaustyyppiJalukumaara[0]->vetoisuus * 100 * $pakkaustyyppiJalukumaara[1];
         }
         
         
-        $olutera_id = $tilaus->delete();
+        $olutera_id = Tilaus::delete($params['tilaus_id']);
         if(is_null($olutera_id)){
-            Redirect::to('/hallinnointi/oluterat', array('errors' => array('Tapahtui tekninen virhe!')));  // Koita testata tää virheviesti jotenkin.
+            Redirect::to('/hallinnointi/oluterat', array('errors' => array('Tapahtui virhe poistettaessa tilausta!')));
         }
        
-        Olutera::updateAmountAvailableReduce($olutera_id, $senttilitraa);
+        Olutera::updateAmountAvailableReduce($olutera_id, $senttilitraa);  // SAMAAN TRANSAKTIOON????????????????????????????? SELVITÄ TIETOKANTAKIRJASTON TRANSAKTIOSÄÄNNÖT.
         Redirect::to('/hallinnointi/oluterat/' . $olutera_id, array('message' => 'Tilaus poistettu! ' . $senttilitraa));    
     }
     

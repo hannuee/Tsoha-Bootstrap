@@ -79,13 +79,26 @@ class Olutera extends BaseModel{
                 'vapaana' => $this->vapaana,
                 'hinta' => $this->hinta));
         $row = $query->fetch();
+        
+        if(!$row){
+            return FALSE;
+        }
+        
         $this->id = $row['id'];
+        return TRUE;
     }
     
-    public function updateDate(){
+    public static function updateDate($id, $valmistuminen){
         $query = DB::connection()->prepare(
-                'UPDATE Olutera SET valmistuminen=:valmistuminen WHERE id=:id');
-        $query->execute(array('valmistuminen' => $this->valmistuminen, 'id' => $this->id));
+                'UPDATE Olutera SET valmistuminen=:valmistuminen WHERE id=:id RETURNING id');
+        $query->execute(array('valmistuminen' => $valmistuminen, 'id' => $id));
+        $row = $query->fetch();
+        
+        if(!$row){
+            return FALSE;
+        }
+        
+        return TRUE;
     }
     
     public function updateAmountAvailable(){
@@ -100,10 +113,17 @@ class Olutera extends BaseModel{
         $query->execute(array('senttilitraa' => $senttilitraa, 'id' => $id));
     }
 
-    public function delete(){
+    public static function delete($id){
         $query = DB::connection()->prepare(
-                'DELETE FROM Olutera WHERE id=:id');
-        $query->execute(array('id' => $this->id));
+                'DELETE FROM Olutera WHERE id=:id RETURNING id');
+        $query->execute(array('id' => $id));
+        $row = $query->fetch();
+        
+        if(!$row){
+            return FALSE;
+        }
+        
+        return TRUE;
     }
     
 
@@ -150,6 +170,16 @@ class Olutera extends BaseModel{
           }
         } else {
             $errors[] = 'Tapahtui tekninen virhe!';
+        }
+
+        return $errors;
+    }
+    
+    public static function validate_valmistuminen_staattinen($valmistuminen){
+        $errors = array();
+        
+        if(!BaseModel::validate_date($valmistuminen)){
+          $errors[] = 'Päivämäärä on virheellisessä muodossa!';
         }
 
         return $errors;

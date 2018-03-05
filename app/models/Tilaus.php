@@ -36,16 +36,23 @@ class Tilaus extends BaseModel{
         $this->id = $row['id'];
     }
     
-    public static function updateDeliveryStatus(){
+    public static function updateDeliveryStatus($id){
         $query = DB::connection()->prepare(
-                'UPDATE Tilaus SET toimitettu=1 WHERE id=:id');
-        $query->execute(array('id' => $this->id));
+                'UPDATE Tilaus SET toimitettu=1 WHERE id=:id RETURNING id');
+        $query->execute(array('id' => $id));
+        $row = $query->fetch();
+        
+        if(!$row){
+            return FALSE;
+        }
+        
+        return TRUE;
     }
     
-    public function delete(){
+    public static function delete($id){
         $query = DB::connection()->prepare(
                 'DELETE FROM Tilaus WHERE id=:id RETURNING olutera_id');
-        $query->execute(array('id' => $this->id));
+        $query->execute(array('id' => $id));
         $row = $query->fetch();
         
         if($row){

@@ -42,7 +42,14 @@ class PakkaustyyppiController extends BaseController{
         
         
         $pakkaustyyppi->oliomuuttujatLomakemuodostaTietokantamuotoon();
-        $pakkaustyyppi->save();
+        
+        
+        $onnistuiko = $pakkaustyyppi->save();
+        if(!$onnistuiko){
+            Redirect::to('/hallinnointi/pakkaustyypit', array('errors' => array('Tapahtui virhe tallennettaessa pakkaustyyppiä!')));
+        }
+        
+        
         Redirect::to('/hallinnointi/pakkaustyypit', array('message' => 'Uusi pakkaustyyppi lisätty onnistuneesti!'));
     }
     
@@ -51,18 +58,18 @@ class PakkaustyyppiController extends BaseController{
         
         $params = $_POST;
         
-        $pakkaustyyppi = new Pakkaustyyppi(array(
-            'id' => $params['id']
-        ));
         
-        
-        $idSyntaxError = $pakkaustyyppi->customErrors(array('validate_id'));
+        $idSyntaxError = BaseModel::validate_id_directly($params['id']);
         if(count($idSyntaxError) != 0){
             Redirect::to('/hallinnointi/pakkaustyypit', array('errors' => $idSyntaxError));
         }
         
         
-        $pakkaustyyppi->updateAvailability();
+        $onnistuiko = Pakkaustyyppi::updateAvailability($params['id']);
+        if(!$onnistuiko){
+            Redirect::to('/hallinnointi/pakkaustyypit', array('errors' => array('Tapahtui virhe muuttaessa pakkaustyypin saatavuutta!')));
+        }
+        
         Redirect::to('/hallinnointi/pakkaustyypit', array('message' => 'Saatavuusstatus muutettu onnistuneesti!'));
     }
     

@@ -2,9 +2,31 @@
 
 class TilausControllerApumetodit {
     
-    public static function tarkistaOluteranId(){
-        
+    public static function tarkistaLomakkeestaOluteraIdJaPalautaOlutera($params){
+       $idSyntaxError = BaseModel::validate_id_directly($params['olutera_id']);
+       if(count($idSyntaxError) != 0){
+           Redirect::to('/hallinnointi/oluterat', array('errors' => $idSyntaxError));
+       }
+
+       $olutera = Olutera::one($params['olutera_id']); 
+       if(is_null($olutera)){
+           Redirect::to('/hallinnointi/oluterat', array('errors' => array('Tekninen virhe!')));
+       } 
+
+       return $olutera;
     }
+    
+    public static function tarkistaLomakkeestaYritysasiakasId($params){
+        $idSyntaxError = BaseModel::validate_id_directly($params['yritysasiakas_id']);
+        if(count($idSyntaxError) != 0){
+            Redirect::to('/hallinnointi/oluterat', array('errors' => $idSyntaxError));
+        }
+         
+        $yritysasiakas = Yritysasiakas::one($params['yritysasiakas_id']); 
+        if(is_null($yritysasiakas)){
+            Redirect::to('/hallinnointi/oluterat', array('errors' => array('Tekninen virhe!')));
+        }
+     }
     
     /**
      * Apumetodi joka erottelee lähetetystä tilauslomakkeesta pakkaustyyppien id:t ja niiden lukumäärät,
@@ -59,7 +81,7 @@ class TilausControllerApumetodit {
         ));
         $tilausErrors = $tilaus->errors();   // instanceVariablesToDatabaseForm() seuraavaks ???????????????????????????
         
-        // Jos erroreita oluterän id:ssä niin redirect etusivulle, koska ei tietoa oluterän id:stä.
+        // Jos erroreita oluterän id:ssä niin redirect etusivulle, koska ei tietoa oluterän id:stä.  ON TIEDOSSA, KORJAA TÄÄÄÄ!!!!!
         if(count($tilausErrors) != 0){
             Redirect::to('/', array('errors' => $tilausErrors));
         }
@@ -73,14 +95,14 @@ class TilausControllerApumetodit {
         // Lasketaan samalla paljonko olutta on senttilitroissa tilattu.
         $pakkausErrors = array();
         foreach($tilausPakkaustyypit as $tilausPakkaustyyppi){
+            
             $pakkaustyyppi = Pakkaustyyppi::one($tilausPakkaustyyppi->pakkaustyyppi_id);
-            $pakkaustyyppi->oliomuuttujatTietokantamuodostaEsitysmuotoon();
             if(is_null($pakkaustyyppi)){
-                $pakkausErrors = array_merge($pakkausErrors, array("Lomake sisälsi virheellisen pakkaustyypin ID:n: " . $tilausPakkaustyyppi->pakkaustyyppi_id));
+                $pakkausErrors = array_merge($pakkausErrors, array('Tekninen virhe!'));
             } elseif($pakkaustyyppi->saatavilla == 0){
                 $pakkausErrors = array_merge($pakkausErrors, array("Pakkaustyyppi " . $pakkaustyyppi->pakkaustyypin_nimi . " ei valitettavasti enää ole saatavilla."));
             } else {
-                $senttilitroja += $tilausPakkaustyyppi->lukumaara * $pakkaustyyppi->vetoisuus * 100;  // MUUNTOJA!!!!?!?!?!?!?????????????!?!?!?!?!?
+                $senttilitroja += $tilausPakkaustyyppi->lukumaara * $pakkaustyyppi->vetoisuus;
             }
         }
         
@@ -93,25 +115,12 @@ class TilausControllerApumetodit {
         return $senttilitroja;
     }
     
-    public static function tarkistaOluteranIdJaVapaanOluenMaara($senttilitroja, $tilaus, $params){
-        // Tarkistetaan että oluterän ID ok ja että oluterässä riittävästi vapaana olutta.
-        $oluteraErrors = array();
-        $olutera = Olutera::one($tilaus->olutera_id);  // ERRORCHECKKKKKKKKKKKKKK
-        $olutera->oliomuuttujatTietokantamuodostaEsitysmuotoon();
-        $olutera->vapaana = $olutera->vapaana * 100;  // OLUTERÄ NYT SENTTILITROISSA!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        if(is_null($olutera)){
-            $oluteraErrors[] = "Virheellinen oluterän ID!";  // REDIRECT EI-LOMAKKEESEEN!!!??
-        } elseif($olutera->vapaana < $senttilitroja){
-            $oluteraErrors[] = "Oluterässä ei tarpeeksi litroja vapaana!";
-        }
-        
+    public static function tarkistaVapaanOluenMaara($senttilitroja, $olutera, $params){
         // Jos erroreita oluterässä niin redirect errormessagein takas tilauslomakkeeseen.
-        if(count($oluteraErrors) != 0){
-            Redirect::to('/tilaukset/uusi/' . $params['olutera_id'], array('errors' => $oluteraErrors));
+        if($olutera->vapaana < $senttilitroja){
+            Redirect::to('/tilaukset/uusi/' . $params['olutera_id'], array('errors' => array('Oluterässä ei ole tarpeeksi olutta!')));
         }
         // ^TODO: ATTRIBUUTIT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        
-        return $olutera;
     }
     
     public static function lisaaUusiTilaus($senttilitroja, $tilaus, $tilausPakkaustyypit, $olutera){
@@ -119,7 +128,7 @@ class TilausControllerApumetodit {
         $olutera->vapaana -= $senttilitroja;
         $olutera->updateAmountAvailable();
         
-        $tilaus->save();
+        $tilaus->save();      // TRANSACTION?????????????????????
         
         foreach($tilausPakkaustyypit as $tilausPakkaustyyppi){
             $tilausPakkaustyyppi->tilaus_id = $tilaus->id;

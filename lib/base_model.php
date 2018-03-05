@@ -50,6 +50,22 @@
         }
     }
     
+    public static function validate_id_directly($id){  // Tämä validointi ei mene läpi vain jos POST-dataa muokataan tai tapahtuu jotain odottamatonta.
+        $errors = array();
+        
+        if(BaseModel::validate_non_negative_string_integer($id)){
+          if(!BaseModel::validate_bounds_of_string_integer($id, 1, 2147483647)){
+              $errors[] = 'Tapahtui tekninen virhe!';
+          }
+        } else {
+            $errors[] = 'Tapahtui tekninen virhe!';
+        }
+
+        return $errors;
+    }
+    
+    
+    
     public static function validate_string_length($string, $lengthMin, $lengthMax){
         $len = strlen($string);
         if($lengthMin <= $len && $len <= $lengthMax){
