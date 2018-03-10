@@ -81,7 +81,7 @@ class TilausController extends BaseController{
         $senttilitroja = TilausControllerApumetodit::senttilitrojenLaskeminenJaPakkaustyyppienTarkistus($tilausPakkaustyypit, $params);
         TilausControllerApumetodit::tarkistaVapaanOluenMaara($senttilitroja, $olutera, $params);
         
-        TilausControllerApumetodit::lisaaUusiTilaus($senttilitroja, $tilaus, $tilausPakkaustyypit, $olutera);
+        TilausControllerApumetodit::lisaaUusiTilaus($senttilitroja, $tilaus, $tilausPakkaustyypit, $olutera, $params);
     }
     
     public static function muokkaaToimitetuksi(){
@@ -131,7 +131,7 @@ class TilausController extends BaseController{
             Redirect::to('/hallinnointi/oluterat', array('errors' => array('Tapahtui virhe poistettaessa tilausta!')));
         }
        
-        Olutera::updateAmountAvailableReduce($olutera_id, $senttilitraa);  // SAMAAN TRANSAKTIOON????????????????????????????? SELVITÄ TIETOKANTAKIRJASTON TRANSAKTIOSÄÄNNÖT.
+        Olutera::updateAmountAvailableAdd($olutera_id, $senttilitraa);  // SAMAAN TRANSAKTIOON????????????????????????????? SELVITÄ TIETOKANTAKIRJASTON TRANSAKTIOSÄÄNNÖT.
         Redirect::to('/hallinnointi/oluterat/' . $olutera_id, array('message' => 'Tilaus poistettu! ' . $senttilitraa));    
     }
     

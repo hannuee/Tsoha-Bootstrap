@@ -15,6 +15,19 @@
       }
     }
     
+    public static function beginTransaction(){
+        $connection = DB::connection();
+        $onnistuiko = $connection->beginTransaction();
+        if(!$onnistuiko){
+            return false;
+        }
+        return $connection;
+    }
+    
+    public static function commit($connection){
+        $connection->commit();
+    }
+    
     public function errors(){
       // Lisätään $errors muuttujaan kaikki virheilmoitukset taulukkona
       $errors = array();

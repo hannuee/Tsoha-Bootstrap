@@ -9,15 +9,25 @@ class TilausPakkaustyyppi extends BaseModel{
         $this->validators = array('validate_pakkaustyyppi_id', 'validate_lukumaara');
     }
     
-    public function save(){
-        $query = DB::connection()->prepare(
+    public function saveTRANS($connection){
+        $query = $connection->prepare(
                 'INSERT INTO TilausPakkaustyyppi (tilaus_id, pakkaustyyppi_id, lukumaara)
-                 VALUES (:tilaus_id, :pakkaustyyppi_id, :lukumaara)');
+                 VALUES (:tilaus_id, :pakkaustyyppi_id, :lukumaara) 
+                 RETURNING tilaus_id');
         $query->execute(array(
                 'tilaus_id' => $this->tilaus_id,
                 'pakkaustyyppi_id' => $this->pakkaustyyppi_id, 
                 'lukumaara' => $this->lukumaara));
+        $row = $query->fetch();
+        
+        if(!$row){
+            $connection->rollBack();
+            return FALSE;
+        }
+        
+        return TRUE;
     }
+    
     
     public function oliomuuttujatLomakemuodostaTietokantamuotoon(){
         $this->pakkaustyyppi_id = intval($this->pakkaustyyppi_id);

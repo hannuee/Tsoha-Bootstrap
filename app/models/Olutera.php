@@ -101,17 +101,30 @@ class Olutera extends BaseModel{
         return TRUE;
     }
     
-    public function updateAmountAvailable(){
+    public static function updateAmountAvailableReduce($id, $senttilitraa){
         $query = DB::connection()->prepare(
-                'UPDATE Olutera SET vapaana=:vapaana WHERE id=:id');
-        $query->execute(array('vapaana' => $this->vapaana, 'id' => $this->id));
+                'UPDATE Olutera SET vapaana=vapaana-:senttilitraa WHERE id=:id');
+        $query->execute(array('senttilitraa' => $senttilitraa, 'id' => $id));
     }
     
-    public static function updateAmountAvailableReduce($id, $senttilitraa){
+    public static function updateAmountAvailableReduceTRANS($id, $senttilitraa, $connection){
+        $query = $connection->prepare(
+                'UPDATE Olutera SET vapaana=vapaana-:senttilitraa WHERE id=:id');
+        $onnistuiko = $query->execute(array('senttilitraa' => $senttilitraa, 'id' => $id));
+        
+        if(!$onnistuiko){
+            $connection->rollBack();
+            return FALSE;
+        }
+        return TRUE;
+    }
+    
+    public static function updateAmountAvailableAdd($id, $senttilitraa){
         $query = DB::connection()->prepare(
                 'UPDATE Olutera SET vapaana=vapaana+:senttilitraa WHERE id=:id');
         $query->execute(array('senttilitraa' => $senttilitraa, 'id' => $id));
     }
+    
 
     public static function delete($id){
         $query = DB::connection()->prepare(

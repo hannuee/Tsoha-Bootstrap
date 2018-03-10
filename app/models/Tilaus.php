@@ -22,8 +22,8 @@ class Tilaus extends BaseModel{
         return $tilaukset;
     }
     
-    public function save(){
-        $query = DB::connection()->prepare(
+    public function saveTRANS($connection){
+        $query = $connection->prepare(
                 'INSERT INTO Tilaus (tilausajankohta, toimitettu, toimitusohjeet, olutera_id, yritysasiakas_id)
                  VALUES (current_date, :toimitettu, :toimitusohjeet, :olutera_id, :yritysasiakas_id)
                  RETURNING id');
@@ -33,7 +33,14 @@ class Tilaus extends BaseModel{
                 'olutera_id' => $this->olutera_id,
                 'yritysasiakas_id' => $this->yritysasiakas_id));
         $row = $query->fetch();
+        
+        if(!$row){
+            $connection->rollBack();
+            return FALSE;
+        }
+        
         $this->id = $row['id'];
+        return TRUE;
     }
     
     public static function updateDeliveryStatus($id){

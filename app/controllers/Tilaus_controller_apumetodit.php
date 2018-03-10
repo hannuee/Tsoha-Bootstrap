@@ -92,7 +92,7 @@ class TilausControllerApumetodit {
         
         // Jos erroreita pakkaustyypeissä niin redirect errormessagein takas tilauslomakkeeseen.
         if(count($pakkausErrors) != 0){
-            Redirect::to('/tilaukset/uusi/' . $params['olutera_id'], array('errors' => $pakkausErrors));
+            Redirect::to('/hallinnointi/tilaukset/uusi/' . $params['olutera_id'], array('errors' => $pakkausErrors));
         }
         // ^TODO: ATTRIBUUTIT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         
@@ -102,24 +102,42 @@ class TilausControllerApumetodit {
     public static function tarkistaVapaanOluenMaara($senttilitroja, $olutera, $params){
         // Jos erroreita oluterässä niin redirect errormessagein takas tilauslomakkeeseen.
         if($olutera->vapaana < $senttilitroja){
-            Redirect::to('/tilaukset/uusi/' . $params['olutera_id'], array('errors' => array('Oluterässä ei ole tarpeeksi olutta!')));
+            Redirect::to('/hallinnointi/tilaukset/uusi/' . $params['olutera_id'], array('errors' => array('Oluterässä ei ole tarpeeksi olutta!')));
         }
         // ^TODO: ATTRIBUUTIT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     }
     
     
-    
-    public static function lisaaUusiTilaus($senttilitroja, $tilaus, $tilausPakkaustyypit, $olutera){
-        // Tallennetaan Tilaus-olio, TilausPakkaustyyppi-oliot(ja tallennetaan niihin tilaus_id) sekä vähennetään kyseisen oluterän vapaana olevan oluen määrää.
-        $olutera->vapaana -= $senttilitroja;
-        $olutera->updateAmountAvailable();
+    // Tallennetaan Tilaus-olio, TilausPakkaustyyppi-oliot(ja tallennetaan niihin tilaus_id) sekä vähennetään kyseisen oluterän vapaana olevan oluen määrää.
+    public static function lisaaUusiTilaus($senttilitroja, $tilaus, $tilausPakkaustyypit, $olutera, $params){
+        // Aloitetaan transaktio.
+        $connection = BaseModel::beginTransaction();
+        if(!$connection){
+            Redirect::to('/hallinnointi/tilaukset/uusi/' . $params['olutera_id'], array('errors' => array('Tekninen virhe!')));
+        }
         
-        $tilaus->save();      // TRANSACTION?????????????????????
+        //Olutera::updateAmountAvailableReduce($olutera->id, $senttilitroja);
+        $onnistuiko = Olutera::updateAmountAvailableReduceTRANS($olutera->id, $senttilitroja, $connection);
+        if(!$onnistuiko){
+            Redirect::to('/hallinnointi/tilaukset/uusi/' . $params['olutera_id'], array('errors' => array('Tekninen virhe!')));
+        }
+        
+        $onnistuiko = $tilaus->saveTRANS($connection);
+        if(!$onnistuiko){
+            Redirect::to('/hallinnointi/tilaukset/uusi/' . $params['olutera_id'], array('errors' => array('Tekninen virhe!')));
+        }
         
         foreach($tilausPakkaustyypit as $tilausPakkaustyyppi){
             $tilausPakkaustyyppi->tilaus_id = $tilaus->id;
-            $tilausPakkaustyyppi->save();
+            $tilausPakkaustyyppi->saveTRANS($connection);
+            
+            if(!$onnistuiko){
+                Redirect::to('/hallinnointi/tilaukset/uusi/' . $params['olutera_id'], array('errors' => array('Tekninen virhe!')));
+            }
         }
+        
+        // Lopetetaan transaktio.
+        BaseModel::commit($connection);
         
         Redirect::to('/hallinnointi/oluterat', array('message' => 'Tilaus lähetetty onnistuneesti!'));
     }
