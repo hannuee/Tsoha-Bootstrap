@@ -56,16 +56,33 @@ class TilausController extends BaseController{
         $params = $_POST;
         
         // Tietojen ottaminen lähetetystä lomakkeesta & Tarkistuksia.
-        $olutera = TilausControllerApumetodit::tarkistaLomakkeestaOluteraIdJaPalautaOlutera($params);
-        TilausControllerApumetodit::tarkistaLomakkeestaYritysasiakasId($params);
-        $tilausPakkaustyypit = TilausControllerApumetodit::tilausPakkaustyyppiMallienTiedotLomakkeesta($params);  // Eli montako kappaletta kutakin pakkausta.
-        $tilaus = TilausControllerApumetodit::toimitusohjeetLomakkeestaJaPalautaTilaus($params);
+        $olutera = TilausControllerApumetodit::tarkistaLomakkeestaOluteraIdJaPalautaOlutera($params, '/hallinnointi/oluterat');
+        TilausControllerApumetodit::tarkistaLomakkeestaYritysasiakasId($params, '/hallinnointi/oluterat');
+        $tilausPakkaustyypit = TilausControllerApumetodit::tilausPakkaustyyppiMallienTiedotLomakkeesta($params, '/hallinnointi/tilaukset/uusi/');  // Eli montako kappaletta kutakin pakkausta.
+        $tilaus = TilausControllerApumetodit::toimitusohjeetLomakkeestaJaPalautaTilaus($params, $params['yritysasiakas_id']);
         
         // Tarkistuksia. (Apumetodit saavat lomakkeen tiedot ainoastaan virheestä johtuvaa uudelleenohjausta varten.)
-        $senttilitroja = TilausControllerApumetodit::senttilitrojenLaskeminenJaPakkaustyyppienTarkistus($tilausPakkaustyypit, $params);
-        TilausControllerApumetodit::tarkistaVapaanOluenMaara($senttilitroja, $olutera, $params);
+        $senttilitroja = TilausControllerApumetodit::senttilitrojenLaskeminenJaPakkaustyyppienTarkistus($tilausPakkaustyypit, $params, '/hallinnointi/tilaukset/uusi/');
+        TilausControllerApumetodit::tarkistaVapaanOluenMaara($senttilitroja, $olutera, $params, '/hallinnointi/tilaukset/uusi/');
         
-        TilausControllerApumetodit::lisaaUusiTilaus($senttilitroja, $tilaus, $tilausPakkaustyypit, $olutera, $params);
+        TilausControllerApumetodit::lisaaUusiTilaus($senttilitroja, $tilaus, $tilausPakkaustyypit, $olutera, $params, '/hallinnointi/tilaukset/uusi/', '/hallinnointi/oluterat');
+    }
+    
+    public static function lisaaUusiAsiakkaalta(){
+        self::check_user_logged_in();
+        
+        $params = $_POST;
+        
+        // Tietojen ottaminen lähetetystä lomakkeesta & Tarkistuksia.
+        $olutera = TilausControllerApumetodit::tarkistaLomakkeestaOluteraIdJaPalautaOlutera($params, '/');
+        $tilausPakkaustyypit = TilausControllerApumetodit::tilausPakkaustyyppiMallienTiedotLomakkeesta($params, '/tilaukset/uusi/');  // Eli montako kappaletta kutakin pakkausta.
+        $tilaus = TilausControllerApumetodit::toimitusohjeetLomakkeestaJaPalautaTilaus($params, $_SESSION['user']);
+        
+        // Tarkistuksia. (Apumetodit saavat lomakkeen tiedot ainoastaan virheestä johtuvaa uudelleenohjausta varten.)
+        $senttilitroja = TilausControllerApumetodit::senttilitrojenLaskeminenJaPakkaustyyppienTarkistus($tilausPakkaustyypit, $params, '/tilaukset/uusi/');
+        TilausControllerApumetodit::tarkistaVapaanOluenMaara($senttilitroja, $olutera, $params, '/tilaukset/uusi/');
+        
+        TilausControllerApumetodit::lisaaUusiTilaus($senttilitroja, $tilaus, $tilausPakkaustyypit, $olutera, $params, '/tilaukset/uusi/', '/');
     }
     
     public static function muokkaaToimitetuksi(){

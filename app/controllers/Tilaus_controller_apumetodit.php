@@ -1,21 +1,21 @@
 <?php
 
-class TilausControllerApumetodit {
+class TilausControllerApumetodit extends BaseController{
     
-    public static function tarkistaLomakkeestaOluteraIdJaPalautaOlutera($params){
-       self::tarkasta_id_ulkoasu($params['olutera_id'], '/hallinnointi/oluterat');
+    public static function tarkistaLomakkeestaOluteraIdJaPalautaOlutera($params, $uudelleenohjaus){
+       self::tarkasta_id_ulkoasu($params['olutera_id'], $uudelleenohjaus);
 
        $olutera = self::tarkasta_onnistuminen(
-                Olutera::one($params['olutera_id']), '/hallinnointi/oluterat', 'Tekninen virhe!', NULL);
+                Olutera::one($params['olutera_id']), $uudelleenohjaus, 'Tekninen virhe!', NULL);
 
        return $olutera;
     }
     
-    public static function tarkistaLomakkeestaYritysasiakasId($params){
-        self::tarkasta_id_ulkoasu($params['yritysasiakas_id'], '/hallinnointi/oluterat');
+    public static function tarkistaLomakkeestaYritysasiakasId($params, $uudelleenohjaus){
+        self::tarkasta_id_ulkoasu($params['yritysasiakas_id'], $uudelleenohjaus);
         
         $yritysasiakas = self::tarkasta_onnistuminen(
-                Yritysasiakas::one($params['yritysasiakas_id']), '/hallinnointi/oluterat', 'Tekninen virhe!', NULL);
+                Yritysasiakas::one($params['yritysasiakas_id']), $uudelleenohjaus, 'Tekninen virhe!', NULL);
      }
     
     /**
@@ -24,7 +24,7 @@ class TilausControllerApumetodit {
      * @param type $params Lähetetyn lomakkeen sisältö POST-muodossa.
      * @return \TilausPakkaustyyppi Lista TilausPakkaustyyppi-liitostaulumalleja.
      */
-    public static function tilausPakkaustyyppiMallienTiedotLomakkeesta($params){
+    public static function tilausPakkaustyyppiMallienTiedotLomakkeesta($params, $uudelleenohjaus){
         $pakkaustyypitJaMaarat = array(); 
         $allErrors = array();
         
@@ -45,24 +45,24 @@ class TilausControllerApumetodit {
         
         // Jos erroreita osatilauksissa niin redirect errormessagein takas tilauslomakkeeseen.
         if(count($allErrors) != 0){
-            Redirect::to('/hallinnointi/tilaukset/uusi/' . $params['olutera_id'], array('errors' => $allErrors, 'attributes' => $params));
+            Redirect::to($uudelleenohjaus . $params['olutera_id'], array('errors' => $allErrors, 'attributes' => $params));
         }
         
         return $pakkaustyypitJaMaarat;
     }
     
-    public static function toimitusohjeetLomakkeestaJaPalautaTilaus($params){
+    public static function toimitusohjeetLomakkeestaJaPalautaTilaus($params, $yritysasiakas_id){
         $tilaus = new Tilaus(array(
             'toimitettu' => 0,
             'toimitusohjeet' => $params['toimitusohjeet'],
             'olutera_id' => $params['olutera_id'],
-            'yritysasiakas_id' => $params['yritysasiakas_id']
+            'yritysasiakas_id' => $yritysasiakas_id
         ));
         
         return $tilaus;
     }
     
-    public static function senttilitrojenLaskeminenJaPakkaustyyppienTarkistus($tilausPakkaustyypit, $params){
+    public static function senttilitrojenLaskeminenJaPakkaustyyppienTarkistus($tilausPakkaustyypit, $params, $uudelleenohjaus){
         $senttilitroja = 0;
         // Tarkastetaan että kaikki pakkaustyypit ovat saatavilla(jos virheellisen lomakkeen "väärennys" TAI pakkauksen saatavuus juuri vaihtunut).
         // Lasketaan samalla paljonko olutta on senttilitroissa tilattu.
@@ -81,42 +81,42 @@ class TilausControllerApumetodit {
         
         // Jos erroreita pakkaustyypeissä niin redirect errormessagein takas tilauslomakkeeseen.
         if(count($pakkausErrors) != 0){
-            Redirect::to('/hallinnointi/tilaukset/uusi/' . $params['olutera_id'], array('errors' => $pakkausErrors, 'attributes' => $params));
+            Redirect::to($uudelleenohjaus . $params['olutera_id'], array('errors' => $pakkausErrors, 'attributes' => $params));
         }
         
         return $senttilitroja;
     }
     
-    public static function tarkistaVapaanOluenMaara($senttilitroja, $olutera, $params){
+    public static function tarkistaVapaanOluenMaara($senttilitroja, $olutera, $params, $uudelleenohjaus){
         // Jos erroreita oluterässä niin redirect errormessagein takas tilauslomakkeeseen.
         if($olutera->vapaana < $senttilitroja){
-            Redirect::to('/hallinnointi/tilaukset/uusi/' . $params['olutera_id'], array('errors' => array('Oluterässä ei ole tarpeeksi olutta!'), 'attributes' => $params));
+            Redirect::to($uudelleenohjaus . $params['olutera_id'], array('errors' => array('Oluterässä ei ole tarpeeksi olutta!'), 'attributes' => $params));
         }
     }
     
     
     // Tallennetaan Tilaus-olio, TilausPakkaustyyppi-oliot(ja tallennetaan niihin tilaus_id) sekä vähennetään kyseisen oluterän vapaana olevan oluen määrää.
-    public static function lisaaUusiTilaus($senttilitroja, $tilaus, $tilausPakkaustyypit, $olutera, $params){
+    public static function lisaaUusiTilaus($senttilitroja, $tilaus, $tilausPakkaustyypit, $olutera, $params, $uudelleenohjaus, $uudelleenohjausOnnistuessa){
         $connection = self::tarkasta_onnistuminen(
-                BaseModel::beginTransaction(), '/hallinnointi/tilaukset/uusi/' . $params['olutera_id'], 'Tekninen virhe!', $params);
+                BaseModel::beginTransaction(), $uudelleenohjaus . $params['olutera_id'], 'Tekninen virhe!', $params);
         
         self::tarkasta_onnistuminen(
-                Olutera::updateAmountAvailableReduceTRANS($olutera->id, $senttilitroja, $connection), '/hallinnointi/tilaukset/uusi/' . $params['olutera_id'], 'Tekninen virhe!', $params);
+                Olutera::updateAmountAvailableReduceTRANS($olutera->id, $senttilitroja, $connection), $uudelleenohjaus . $params['olutera_id'], 'Tekninen virhe!', $params);
 
         self::tarkasta_onnistuminen(
-                $tilaus->saveTRANS($connection), '/hallinnointi/tilaukset/uusi/' . $params['olutera_id'], 'Tekninen virhe!', $params);
+                $tilaus->saveTRANS($connection), $uudelleenohjaus . $params['olutera_id'], 'Tekninen virhe!', $params);
 
         foreach($tilausPakkaustyypit as $tilausPakkaustyyppi){
             $tilausPakkaustyyppi->tilaus_id = $tilaus->id;
             
             self::tarkasta_onnistuminen(
-                $tilausPakkaustyyppi->saveTRANS($connection), '/hallinnointi/tilaukset/uusi/' . $params['olutera_id'], 'Tekninen virhe!', $params);
+                $tilausPakkaustyyppi->saveTRANS($connection), $uudelleenohjaus . $params['olutera_id'], 'Tekninen virhe!', $params);
         }
         
         self::tarkasta_onnistuminen(
-                BaseModel::commit($connection), '/hallinnointi/tilaukset/uusi/' . $params['olutera_id'], 'Tekninen virhe!', $params);
+                BaseModel::commit($connection), $uudelleenohjaus . $params['olutera_id'], 'Tekninen virhe!', $params);
         
-        Redirect::to('/hallinnointi/oluterat', array('message' => 'Tilaus lähetetty onnistuneesti!'));
+        Redirect::to($uudelleenohjausOnnistuessa, array('message' => 'Tilaus lähetetty onnistuneesti!'));
     }
     
 }

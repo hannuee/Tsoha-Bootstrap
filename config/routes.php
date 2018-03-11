@@ -25,7 +25,7 @@
   });
   
   $routes->post('/tilaukset/uusi', function() {
-      // PUUTTUU
+      TilausController::lisaaUusiAsiakkaalta();
   });
   
   $routes->get('/tilaukset/uusi/:id', function($id) {
