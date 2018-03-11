@@ -12,7 +12,7 @@ class YritysasiakasController extends BaseController{
         self::check_user_logged_in();
         
         $yritysasiakas = self::get_user_logged_in();
-        if(is_null($yritysasiakas)){
+        if(!$yritysasiakas){
             View::make('Yritysasiakas_esittely.html', array('errors' => array('Tapahtui virhe haettaessa tietoja!')));
         }
         
@@ -23,7 +23,7 @@ class YritysasiakasController extends BaseController{
         self::check_user_logged_in();
         
         $yritysasiakas = self::get_user_logged_in();
-        if(is_null($yritysasiakas)){
+        if(!$yritysasiakas){
             View::make('Yritysasiakas_muokkaus.html', array('errors' => array('Tapahtui virhe haettaessa tietoja!')));
         }
         
@@ -48,7 +48,7 @@ class YritysasiakasController extends BaseController{
         
         
         $yritysasiakas = Yritysasiakas::one($id);
-        if(is_null($yritysasiakas)){
+        if(!$yritysasiakas){
             View::make('Yritysasiakas_esittely.html', array('errors' => array('Tapahtui virhe haettaessa tietoja!')));
         }
         
@@ -67,7 +67,7 @@ class YritysasiakasController extends BaseController{
         
         
         $yritysasiakas = Yritysasiakas::one($id);
-        if(is_null($yritysasiakas)){
+        if(!$yritysasiakas){
             View::make('Yritysasiakas_muokkaus.html', array('errors' => array('Tapahtui virhe haettaessa tietoja!')));
         }
         

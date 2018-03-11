@@ -29,11 +29,11 @@ class Yritysasiakas extends BaseModel{
         $query->execute(array('id' => $id));
         $row = $query->fetch();
         
-        if($row){
-            $yritysasiakas = new Yritysasiakas($row);
-            return $yritysasiakas;
+        if(!$row){
+            return FALSE;
         }
-        return null;
+        
+        return new Yritysasiakas($row);
     }
 
     public function save(){
@@ -119,11 +119,11 @@ class Yritysasiakas extends BaseModel{
         $query->execute(array('id' => $id));
         $row = $query->fetch();
         
-        if($row){
-            $yritysasiakas = new Yritysasiakas($row);
-            return $yritysasiakas;
+        if(!$row){
+            return FALSE;
         }
-        return null;
+        
+        return new Yritysasiakas($row);
     }
     
     public static function authenticate($email, $password){
@@ -131,12 +131,11 @@ class Yritysasiakas extends BaseModel{
         $query->execute(array('email' => $email, 'password' => $password));
         $row = $query->fetch();
         
-        if($row){
-          $yritysasiakas = new Yritysasiakas($row);
-            
-          return $yritysasiakas;
+        if(!$row){
+            return FALSE;
         }
-        return null;
+        
+        return new Yritysasiakas($row);
     }
     
     public function validate_id(){  // Tämä validointi ei mene läpi vain jos POST-dataa muokataan tai tapahtuu jotain odottamatonta.

@@ -48,11 +48,11 @@ class Olutera extends BaseModel{
         $query->execute(array('id' => $id));
         $row = $query->fetch();
         
-        if($row){
-            $olutera = new Olutera($row);
-            return $olutera;
+        if(!$row){
+            return FALSE;
         }
-        return null;
+        
+        return new Olutera($row);
     }
     
     public static function one($id){
@@ -60,11 +60,11 @@ class Olutera extends BaseModel{
         $query->execute(array('id' => $id));
         $row = $query->fetch();
         
-        if($row){
-            $olutera = new Olutera($row);
-            return $olutera;
+        if(!$row){
+            return FALSE;
         }
-        return null;
+        
+        return new Olutera($row);
     }
     
     public function save(){
@@ -119,10 +119,16 @@ class Olutera extends BaseModel{
         return TRUE;
     }
     
-    public static function updateAmountAvailableAdd($id, $senttilitraa){
-        $query = DB::connection()->prepare(
+    public static function updateAmountAvailableAddTRANS($id, $senttilitraa, $connection){
+        $query = $connection->prepare(
                 'UPDATE Olutera SET vapaana=vapaana+:senttilitraa WHERE id=:id');
-        $query->execute(array('senttilitraa' => $senttilitraa, 'id' => $id));
+        $onnistuiko = $query->execute(array('senttilitraa' => $senttilitraa, 'id' => $id));
+        
+        if(!$onnistuiko){
+            $connection->rollBack();
+            return FALSE;
+        }
+        return TRUE;
     }
     
 

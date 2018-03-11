@@ -19,13 +19,17 @@
         $connection = DB::connection();
         $onnistuiko = $connection->beginTransaction();
         if(!$onnistuiko){
-            return false;
+            return FALSE;
         }
         return $connection;
     }
     
     public static function commit($connection){
-        $connection->commit();
+        $onnistuiko = $connection->commit();
+        if(!$onnistuiko){
+            return FALSE;
+        }
+        return TRUE;
     }
     
     public function errors(){

@@ -56,17 +56,18 @@ class Tilaus extends BaseModel{
         return TRUE;
     }
     
-    public static function delete($id){
-        $query = DB::connection()->prepare(
+    public static function deleteTRANS($id, $connection){
+        $query = $connection->prepare(
                 'DELETE FROM Tilaus WHERE id=:id RETURNING olutera_id');
         $query->execute(array('id' => $id));
         $row = $query->fetch();
         
-        if($row){
-            return $row['olutera_id'];
+        if(!$row){
+            $connection->rollBack();
+            return FALSE;
         }
         
-        return null;
+        return $row['olutera_id'];
     }
     
     

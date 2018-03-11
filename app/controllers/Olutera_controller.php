@@ -37,7 +37,7 @@ class OluteraController extends BaseController{
         $olutera = Olutera::one($id);
         
         
-        if(is_null($olutera)){
+        if(!$olutera){
             Redirect::to('/hallinnointi/oluterat', array('errors' => array('Etsimääsi oluterää ei löytynyt!')));
         }
         

@@ -14,7 +14,7 @@ class TilausController extends BaseController{
         }
         
         $olutera = Olutera::oneAvailableWithMargin($id, 400);
-        if(is_null($olutera)){
+        if(!$olutera){
             Redirect::to('/', array('errors' => array('Etsimääsi oluterää ei löytynyt!')));
         }
         
@@ -39,7 +39,7 @@ class TilausController extends BaseController{
         
         
         $olutera = Olutera::one($id);
-        if(is_null($olutera)){
+        if(!$olutera){
             Redirect::to('/hallinnointi/oluterat', array('errors' => array('Etsimääsi oluterää ei löytynyt!')));
         }
         
@@ -126,12 +126,28 @@ class TilausController extends BaseController{
         }
         
         
-        $olutera_id = Tilaus::delete($params['tilaus_id']);
-        if(is_null($olutera_id)){
-            Redirect::to('/hallinnointi/oluterat', array('errors' => array('Tapahtui virhe poistettaessa tilausta!')));
+        
+        $connection = BaseModel::beginTransaction();
+        if(!$connection){
+            Redirect::to('/hallinnointi/oluterat/' . $params['olutera_id'], array('errors' => array('Virhe poistettaessa tilausta, tilausta ei poistettu!')));
+        }
+        
+        $olutera_id = Tilaus::deleteTRANS($params['tilaus_id'], $connection);
+        if(!$olutera_id){
+            Redirect::to('/hallinnointi/oluterat/' . $params['olutera_id'], array('errors' => array('Virhe poistettaessa tilausta, tilausta ei poistettu!')));
         }
        
-        Olutera::updateAmountAvailableAdd($olutera_id, $senttilitraa);  // SAMAAN TRANSAKTIOON????????????????????????????? SELVITÄ TIETOKANTAKIRJASTON TRANSAKTIOSÄÄNNÖT.
+        $onnistuiko = Olutera::updateAmountAvailableAddTRANS($olutera_id, $senttilitraa, $connection);
+        if(!$onnistuiko){
+            Redirect::to('/hallinnointi/oluterat/' . $params['olutera_id'], array('errors' => array('Virhe poistettaessa tilausta, tilausta ei poistettu!')));
+        }
+        
+        $onnistuiko = BaseModel::commit($connection);
+        if(!$onnistuiko){
+            Redirect::to('/hallinnointi/oluterat/' . $params['olutera_id'], array('errors' => array('Virhe poistettaessa tilausta, tilausta ei poistettu!')));
+        }
+        
+        
         Redirect::to('/hallinnointi/oluterat/' . $olutera_id, array('message' => 'Tilaus poistettu! ' . $senttilitraa));    
     }
     

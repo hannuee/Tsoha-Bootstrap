@@ -65,11 +65,11 @@ class Pakkaustyyppi extends BaseModel{
         $query->execute(array('id' => $id));
         $row = $query->fetch();
         
-        if($row){
-            $pakkaustyyppi = new Pakkaustyyppi($row);
-            return $pakkaustyyppi;
+        if(!$row){
+            return FALSE;
         }
-        return null;
+        
+        return new Pakkaustyyppi($row);
     }
     
     public function save(){

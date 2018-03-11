@@ -9,7 +9,7 @@ class TilausControllerApumetodit {
        }
 
        $olutera = Olutera::one($params['olutera_id']); 
-       if(is_null($olutera)){
+       if(!$olutera){
            Redirect::to('/hallinnointi/oluterat', array('errors' => array('Tekninen virhe!')));
        } 
 
@@ -23,7 +23,7 @@ class TilausControllerApumetodit {
         }
          
         $yritysasiakas = Yritysasiakas::one($params['yritysasiakas_id']); 
-        if(is_null($yritysasiakas)){
+        if(!$yritysasiakas){
             Redirect::to('/hallinnointi/oluterat', array('errors' => array('Tekninen virhe!')));
         }
      }
@@ -81,7 +81,7 @@ class TilausControllerApumetodit {
         foreach($tilausPakkaustyypit as $tilausPakkaustyyppi){
             
             $pakkaustyyppi = Pakkaustyyppi::one($tilausPakkaustyyppi->pakkaustyyppi_id);
-            if(is_null($pakkaustyyppi)){
+            if(!$pakkaustyyppi){
                 $pakkausErrors = array_merge($pakkausErrors, array('Tekninen virhe!'));
             } elseif($pakkaustyyppi->saatavilla == 0){
                 $pakkausErrors = array_merge($pakkausErrors, array("Pakkaustyyppi " . $pakkaustyyppi->pakkaustyypin_nimi . " ei valitettavasti enää ole saatavilla."));
@@ -110,6 +110,7 @@ class TilausControllerApumetodit {
     
     // Tallennetaan Tilaus-olio, TilausPakkaustyyppi-oliot(ja tallennetaan niihin tilaus_id) sekä vähennetään kyseisen oluterän vapaana olevan oluen määrää.
     public static function lisaaUusiTilaus($senttilitroja, $tilaus, $tilausPakkaustyypit, $olutera, $params){
+        
         // Aloitetaan transaktio.
         $connection = BaseModel::beginTransaction();
         if(!$connection){
@@ -137,7 +138,10 @@ class TilausControllerApumetodit {
         }
         
         // Lopetetaan transaktio.
-        BaseModel::commit($connection);
+        $onnistuiko = BaseModel::commit($connection);
+        if(!$onnistuiko){
+            Redirect::to('/hallinnointi/tilaukset/uusi/' . $params['olutera_id'], array('errors' => array('Tekninen virhe!')));
+        }
         
         Redirect::to('/hallinnointi/oluterat', array('message' => 'Tilaus lähetetty onnistuneesti!'));
     }
