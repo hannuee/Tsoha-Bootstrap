@@ -35,8 +35,6 @@ class OluteraController extends BaseController{
         
         
         $olutera = Olutera::one($id);
-        
-        
         if(!$olutera){
             Redirect::to('/hallinnointi/oluterat', array('errors' => array('Etsimääsi oluterää ei löytynyt!')));
         }
@@ -71,23 +69,13 @@ class OluteraController extends BaseController{
         
         $params = $_POST;
         
-        $olutera = new Olutera(array(
-            'oluen_nimi' => $params['oluen_nimi'],
-            'valmistuminen' => $params['valmistuminen'],
-            'eran_koko' => $params['eran_koko'],
-            'vapaana' => $params['eran_koko'],  // vapaana = eran_koko, koska koko erä on tietenkin vapaana kun erä luodaan. 
-            'hinta' => $params['hinta']
-        ));
+        $olutera = new Olutera($params);
+        $olutera->vapaana = $olutera->eran_koko; // vapaana = eran_koko, koska koko erä on tietenkin vapaana kun erä luodaan.
         
         
         $errors = $olutera->errors();
         if(count($errors) != 0){
-            Redirect::to('/hallinnointi/oluterat', array('errors' => $errors, 'attributes' => 
-                array(
-            'oluen_nimi' => $params['oluen_nimi'],
-            'valmistuminen' => $params['valmistuminen'],
-            'eran_koko' => $params['eran_koko'],
-            'hinta' => $params['hinta'])));
+            Redirect::to('/hallinnointi/oluterat', array('errors' => $errors, 'attributes' => $params));
         }
         
         
@@ -114,8 +102,9 @@ class OluteraController extends BaseController{
         
         $valmistuminenError = Olutera::validate_valmistuminen_staattinen($params['valmistuminen']);
         if(count($valmistuminenError) != 0){
-            Redirect::to('/hallinnointi/oluterat/' . $params['id'], array('errors' => $valmistuminenError));  // ATTRIBUUTIT??????
+            Redirect::to('/hallinnointi/oluterat/' . $params['id'], array('errors' => $valmistuminenError, 'attributes' => $params));
         }
+        
         
         
         $onnistuiko = Olutera::updateDate($params['id'], $params['valmistuminen']);

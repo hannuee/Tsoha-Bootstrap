@@ -93,6 +93,10 @@
     }
     
     public static function validate_date($date){
+        if(empty($date)){
+            return false;
+        }
+        
         $dateCheck = date_create($date);
         if($dateCheck != false){
            return true; 
