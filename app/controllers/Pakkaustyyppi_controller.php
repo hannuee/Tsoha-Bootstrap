@@ -21,34 +21,22 @@ class PakkaustyyppiController extends BaseController{
         
         $params = $_POST;
         
-        $pakkaustyyppi = new Pakkaustyyppi(array(
-            'pakkaustyypin_nimi' => $params['pakkaustyypin_nimi'],
-            'vetoisuus' => $params['vetoisuus'],
-            'hinta' => $params['hinta'],
-            'pantti' => $params['pantti'], 
-            'saatavilla' => 1  // Oletetaan että pakkaustyypit ovat saatavilla kun ne lisätään ensimmäisen kerran.  
-        ));
+        $pakkaustyyppi = new Pakkaustyyppi($params);
+        $pakkaustyyppi->saatavilla = 1; // Oletetaan että pakkaustyypit ovat saatavilla kun ne lisätään ensimmäisen kerran.
         
         
         $errors = $pakkaustyyppi->errors();
         if(count($errors) != 0){
-            Redirect::to('/hallinnointi/pakkaustyypit', array('errors' => $errors, 'attributes' => 
-                array(
-            'pakkaustyypin_nimi' => $params['pakkaustyypin_nimi'],
-            'vetoisuus' => $params['vetoisuus'],
-            'hinta' => $params['hinta'],
-            'pantti' => $params['pantti'])));
+            Redirect::to('/hallinnointi/pakkaustyypit', array('errors' => $errors, 'attributes' => $params));
         }
         
         
         $pakkaustyyppi->oliomuuttujatLomakemuodostaTietokantamuotoon();
         
-        
         $onnistuiko = $pakkaustyyppi->save();
         if(!$onnistuiko){
-            Redirect::to('/hallinnointi/pakkaustyypit', array('errors' => array('Tapahtui virhe tallennettaessa pakkaustyyppiä!')));
+            Redirect::to('/hallinnointi/pakkaustyypit', array('errors' => array('Tapahtui virhe tallennettaessa pakkaustyyppiä!'), 'attributes' => $params));
         }
-        
         
         Redirect::to('/hallinnointi/pakkaustyypit', array('message' => 'Uusi pakkaustyyppi lisätty onnistuneesti!'));
     }

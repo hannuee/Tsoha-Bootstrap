@@ -109,7 +109,7 @@ class OluteraController extends BaseController{
         
         $onnistuiko = Olutera::updateDate($params['id'], $params['valmistuminen']);
         if(!$onnistuiko){
-            Redirect::to('/hallinnointi/oluterat/' . $params['id'], array('errors' => array('Tapahtui virhe muuttaessa päivämäärää!')));
+            Redirect::to('/hallinnointi/oluterat/' . $params['id'], array('errors' => array('Tapahtui virhe muuttaessa päivämäärää!'), 'attributes' => $params));
         }
         
         Redirect::to('/hallinnointi/oluterat/' . $params['id'], array('message' => 'Valmistumispäivämäärä muutettu onnistuneesti!'));
@@ -129,7 +129,7 @@ class OluteraController extends BaseController{
         
         $onnistuiko = Olutera::delete($params['id']);
         if(!$onnistuiko){
-            Redirect::to('/hallinnointi/oluterat', array('errors' => array('Tapahtui virhe poistaessa oluterää!')));
+            Redirect::to('/hallinnointi/oluterat/' . $params['id'], array('errors' => array('Tapahtui virhe poistaessa oluterää!')));
         }
         
         Redirect::to('/hallinnointi/oluterat', array('message' => 'Oluterä ja sen tilaukset on poistettu onnistuneesti!'));
