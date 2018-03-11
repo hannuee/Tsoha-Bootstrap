@@ -3,29 +3,19 @@
 class TilausControllerApumetodit {
     
     public static function tarkistaLomakkeestaOluteraIdJaPalautaOlutera($params){
-       $idSyntaxError = BaseModel::validate_id_directly($params['olutera_id']);
-       if(count($idSyntaxError) != 0){
-           Redirect::to('/hallinnointi/oluterat', array('errors' => $idSyntaxError));
-       }
+       self::tarkasta_id_ulkoasu($params['olutera_id'], '/hallinnointi/oluterat');
 
-       $olutera = Olutera::one($params['olutera_id']); 
-       if(!$olutera){
-           Redirect::to('/hallinnointi/oluterat', array('errors' => array('Tekninen virhe!')));
-       } 
+       $olutera = self::tarkasta_onnistuminen(
+                Olutera::one($params['olutera_id']), '/hallinnointi/oluterat', 'Tekninen virhe!', NULL);
 
        return $olutera;
     }
     
     public static function tarkistaLomakkeestaYritysasiakasId($params){
-        $idSyntaxError = BaseModel::validate_id_directly($params['yritysasiakas_id']);
-        if(count($idSyntaxError) != 0){
-            Redirect::to('/hallinnointi/oluterat', array('errors' => $idSyntaxError));
-        }
-         
-        $yritysasiakas = Yritysasiakas::one($params['yritysasiakas_id']); 
-        if(!$yritysasiakas){
-            Redirect::to('/hallinnointi/oluterat', array('errors' => array('Tekninen virhe!')));
-        }
+        self::tarkasta_id_ulkoasu($params['yritysasiakas_id'], '/hallinnointi/oluterat');
+        
+        $yritysasiakas = self::tarkasta_onnistuminen(
+                Yritysasiakas::one($params['yritysasiakas_id']), '/hallinnointi/oluterat', 'Tekninen virhe!', NULL);
      }
     
     /**
@@ -107,38 +97,24 @@ class TilausControllerApumetodit {
     
     // Tallennetaan Tilaus-olio, TilausPakkaustyyppi-oliot(ja tallennetaan niihin tilaus_id) sekä vähennetään kyseisen oluterän vapaana olevan oluen määrää.
     public static function lisaaUusiTilaus($senttilitroja, $tilaus, $tilausPakkaustyypit, $olutera, $params){
+        $connection = self::tarkasta_onnistuminen(
+                BaseModel::beginTransaction(), '/hallinnointi/tilaukset/uusi/' . $params['olutera_id'], 'Tekninen virhe!', $params);
         
-        // Aloitetaan transaktio.
-        $connection = BaseModel::beginTransaction();
-        if(!$connection){
-            Redirect::to('/hallinnointi/tilaukset/uusi/' . $params['olutera_id'], array('errors' => array('Tekninen virhe!'), 'attributes' => $params));
-        }
-        
-        //Olutera::updateAmountAvailableReduce($olutera->id, $senttilitroja);
-        $onnistuiko = Olutera::updateAmountAvailableReduceTRANS($olutera->id, $senttilitroja, $connection);
-        if(!$onnistuiko){
-            Redirect::to('/hallinnointi/tilaukset/uusi/' . $params['olutera_id'], array('errors' => array('Tekninen virhe!'), 'attributes' => $params));
-        }
-        
-        $onnistuiko = $tilaus->saveTRANS($connection);
-        if(!$onnistuiko){
-            Redirect::to('/hallinnointi/tilaukset/uusi/' . $params['olutera_id'], array('errors' => array('Tekninen virhe!'), 'attributes' => $params));
-        }
-        
+        self::tarkasta_onnistuminen(
+                Olutera::updateAmountAvailableReduceTRANS($olutera->id, $senttilitroja, $connection), '/hallinnointi/tilaukset/uusi/' . $params['olutera_id'], 'Tekninen virhe!', $params);
+
+        self::tarkasta_onnistuminen(
+                $tilaus->saveTRANS($connection), '/hallinnointi/tilaukset/uusi/' . $params['olutera_id'], 'Tekninen virhe!', $params);
+
         foreach($tilausPakkaustyypit as $tilausPakkaustyyppi){
             $tilausPakkaustyyppi->tilaus_id = $tilaus->id;
-            $tilausPakkaustyyppi->saveTRANS($connection);
             
-            if(!$onnistuiko){
-                Redirect::to('/hallinnointi/tilaukset/uusi/' . $params['olutera_id'], array('errors' => array('Tekninen virhe!'), 'attributes' => $params));
-            }
+            self::tarkasta_onnistuminen(
+                $tilausPakkaustyyppi->saveTRANS($connection), '/hallinnointi/tilaukset/uusi/' . $params['olutera_id'], 'Tekninen virhe!', $params);
         }
         
-        // Lopetetaan transaktio.
-        $onnistuiko = BaseModel::commit($connection);
-        if(!$onnistuiko){
-            Redirect::to('/hallinnointi/tilaukset/uusi/' . $params['olutera_id'], array('errors' => array('Tekninen virhe!'), 'attributes' => $params));
-        }
+        self::tarkasta_onnistuminen(
+                BaseModel::commit($connection), '/hallinnointi/tilaukset/uusi/' . $params['olutera_id'], 'Tekninen virhe!', $params);
         
         Redirect::to('/hallinnointi/oluterat', array('message' => 'Tilaus lähetetty onnistuneesti!'));
     }

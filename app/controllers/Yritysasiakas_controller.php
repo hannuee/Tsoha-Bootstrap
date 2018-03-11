@@ -35,36 +35,21 @@ class YritysasiakasController extends BaseController{
     public static function esittelyLisatiedoin($id){
         self::check_admin_logged_in();
         
+        self::tarkasta_id_ulkoasu($id, '/hallinnointi/yritysasiakkaat');
         
-        $idSyntaxError = BaseModel::validate_id_directly($id);
-        if(count($idSyntaxError) != 0){
-            Redirect::to('/hallinnointi/yritysasiakkaat', array('errors' => $idSyntaxError));
-        }
-        
-        
-        $yritysasiakas = Yritysasiakas::one($id);
-        if(!$yritysasiakas){
-            View::make('Yritysasiakas_esittely.html', array('errors' => array('Tapahtui virhe haettaessa tietoja!')));
-        }
-        
-        
+        $yritysasiakas = self::tarkasta_onnistuminen(
+                Yritysasiakas::one($id), '/hallinnointi/yritysasiakkaat', 'Tapahtui virhe haettaessa tietoja!', NULL);
+
         View::make('Yritysasiakas_esittely.html', array('yritysasiakas' => $yritysasiakas));
     }
     
     public static function muokkausLisavaihtoehdoin($id){
         self::check_admin_logged_in();
         
+        self::tarkasta_id_ulkoasu($id, '/hallinnointi/yritysasiakkaat');
         
-        $idSyntaxError = BaseModel::validate_id_directly($id);
-        if(count($idSyntaxError) != 0){
-            Redirect::to('/hallinnointi/yritysasiakkaat', array('errors' => $idSyntaxError));
-        }
-        
-        
-        $yritysasiakas = Yritysasiakas::one($id);
-        if(!$yritysasiakas){
-            View::make('Yritysasiakas_muokkaus.html', array('errors' => array('Tapahtui virhe haettaessa tietoja!')));
-        }
+        $yritysasiakas = self::tarkasta_onnistuminen(
+                Yritysasiakas::one($id), '/hallinnointi/yritysasiakkaat', 'Tapahtui virhe haettaessa tietoja!', NULL);
         
         View::make('Yritysasiakas_muokkaus.html', array('yritysasiakas' => $yritysasiakas));
     }
@@ -93,10 +78,8 @@ class YritysasiakasController extends BaseController{
             Redirect::to('/omattiedot/muokkaa', array('errors' => $errors, 'attributes' => $params));
         }
         
-        $onnistuiko = $yritysasiakas->updateForCustomer();
-        if(!$onnistuiko){
-            Redirect::to('/omattiedot/muokkaa', array('errors' => array('Tapahtui virhe päivittäessä tietoja!'), 'attributes' => $params));
-        }
+        self::tarkasta_onnistuminen(
+                $yritysasiakas->updateForCustomer(), '/omattiedot/muokkaa', 'Tapahtui virhe päivittäessä tietoja!', $params);
         
         Redirect::to('/omattiedot', array('message' => 'Tiedot päivitetty onnistuneesti'));
     }
@@ -125,10 +108,8 @@ class YritysasiakasController extends BaseController{
             Redirect::to('/hallinnointi/yritysasiakkaat/teeuusi', array('errors' => $errors, 'attributes' => $params));
         }
         
-        $onnistuiko = $yritysasiakas->save();
-        if(!$onnistuiko){
-            Redirect::to('/hallinnointi/yritysasiakkaat/teeuusi', array('errors' => array('Tapahtui virhe tallennettaessa uutta käyttäjää!'), 'attributes' => $params));
-        }
+        self::tarkasta_onnistuminen(
+                $yritysasiakas->save(), '/hallinnointi/yritysasiakkaat/teeuusi', 'Tapahtui virhe tallennettaessa uutta käyttäjää!', $params);
         
         Redirect::to('/hallinnointi/yritysasiakkaat/' . $yritysasiakas->id, array('message' => 'Tiedot päivitetty onnistuneesti'));
     }
@@ -150,20 +131,16 @@ class YritysasiakasController extends BaseController{
         }
         $yritysasiakas =  new Yritysasiakas($params);
         
-        $idSyntaxError = BaseModel::validate_id_directly($params['id']);
-        if(count($idSyntaxError) != 0){
-            Redirect::to('/hallinnointi/yritysasiakkaat', array('errors' => $idSyntaxError));
-        }
+        
+        self::tarkasta_id_ulkoasu($params['id'], '/hallinnointi/yritysasiakkaat');
         
         $errors = $yritysasiakas->errors();
         if(count($errors) != 0){            
             Redirect::to('/hallinnointi/yritysasiakkaat/muokkaa/' . $params['id'], array('errors' => $errors, 'attributes' => $params));
         }
         
-        $onnistuiko = $yritysasiakas->update();
-        if(!$onnistuiko){
-            Redirect::to('/hallinnointi/yritysasiakkaat/muokkaa/' . $params['id'], array('errors' => array('Tapahtui virhe tallennettaessa muutoksia!'), 'attributes' => $params));
-        }
+        self::tarkasta_onnistuminen(
+                $yritysasiakas->update(), '/hallinnointi/yritysasiakkaat/muokkaa/' . $params['id'], 'Tapahtui virhe tallennettaessa muutoksia!', $params);
         
         Redirect::to('/hallinnointi/yritysasiakkaat/' . $yritysasiakas->id, array('message' => 'Tiedot päivitetty onnistuneesti'));
     }

@@ -27,18 +27,10 @@ class OluteraController extends BaseController{
     public static function esittely($id){  
         self::check_admin_logged_in();
         
+        self::tarkasta_id_ulkoasu($id, '/hallinnointi/oluterat');
         
-        $idSyntaxError = BaseModel::validate_id_directly($id);
-        if(count($idSyntaxError) != 0){
-            Redirect::to('/hallinnointi/oluterat', array('errors' => $idSyntaxError));
-        }
-        
-        
-        $olutera = Olutera::one($id);
-        if(!$olutera){
-            Redirect::to('/hallinnointi/oluterat', array('errors' => array('Etsimääsi oluterää ei löytynyt!')));
-        }
-        
+        $olutera = self::tarkasta_onnistuminen(
+                Olutera::one($id), '/hallinnointi/oluterat', 'Etsimääsi oluterää ei löytynyt!', NULL);
         
         $olutera->oliomuuttujatTietokantamuodostaEsitysmuotoon();
         
@@ -78,13 +70,10 @@ class OluteraController extends BaseController{
             Redirect::to('/hallinnointi/oluterat', array('errors' => $errors, 'attributes' => $params));
         }
         
-        
         $olutera->oliomuuttujatLomakemuodostaTietokantamuotoon();
         
-        $onnistuiko = $olutera->save();
-        if(!$onnistuiko){
-            Redirect::to('/hallinnointi/oluterat', array('errors' => array('Tapahtui virhe tallennettaessa oluterää!')));
-        }
+        self::tarkasta_onnistuminen(
+                $olutera->save(), '/hallinnointi/oluterat', 'Tapahtui virhe tallennettaessa oluterää!', $params);
         
         Redirect::to('/hallinnointi/oluterat', array('message' => 'Uusi oluterä lisätty onnistuneesti!'));
     }
@@ -95,10 +84,7 @@ class OluteraController extends BaseController{
         $params = $_POST;
         
         
-        $idSyntaxError = BaseModel::validate_id_directly($params['id']);
-        if(count($idSyntaxError) != 0){
-            Redirect::to('/hallinnointi/oluterat', array('errors' => $idSyntaxError));
-        }
+        self::tarkasta_id_ulkoasu($params['id'], '/hallinnointi/oluterat');
         
         $valmistuminenError = Olutera::validate_valmistuminen_staattinen($params['valmistuminen']);
         if(count($valmistuminenError) != 0){
@@ -106,11 +92,8 @@ class OluteraController extends BaseController{
         }
         
         
-        
-        $onnistuiko = Olutera::updateDate($params['id'], $params['valmistuminen']);
-        if(!$onnistuiko){
-            Redirect::to('/hallinnointi/oluterat/' . $params['id'], array('errors' => array('Tapahtui virhe muuttaessa päivämäärää!'), 'attributes' => $params));
-        }
+        self::tarkasta_onnistuminen(
+                Olutera::updateDate($params['id'], $params['valmistuminen']), '/hallinnointi/oluterat/' . $params['id'], 'Tapahtui virhe muuttaessa päivämäärää!', $params);
         
         Redirect::to('/hallinnointi/oluterat/' . $params['id'], array('message' => 'Valmistumispäivämäärä muutettu onnistuneesti!'));
     }
@@ -120,17 +103,10 @@ class OluteraController extends BaseController{
         
         $params = $_POST;
             
+        self::tarkasta_id_ulkoasu($params['id'], '/hallinnointi/oluterat');
         
-        $idSyntaxError = BaseModel::validate_id_directly($params['id']);
-        if(count($idSyntaxError) != 0){
-            Redirect::to('/hallinnointi/oluterat', array('errors' => $idSyntaxError));
-        }
-        
-        
-        $onnistuiko = Olutera::delete($params['id']);
-        if(!$onnistuiko){
-            Redirect::to('/hallinnointi/oluterat/' . $params['id'], array('errors' => array('Tapahtui virhe poistaessa oluterää!')));
-        }
+        self::tarkasta_onnistuminen(
+                Olutera::delete($params['id']), '/hallinnointi/oluterat/' . $params['id'], 'Tapahtui virhe poistaessa oluterää!', NULL);
         
         Redirect::to('/hallinnointi/oluterat', array('message' => 'Oluterä ja sen tilaukset on poistettu onnistuneesti!'));
     }

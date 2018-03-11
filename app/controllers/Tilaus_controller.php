@@ -7,20 +7,12 @@ class TilausController extends BaseController{
     public static function lisays($id){
         self::check_user_logged_in();
         
+        self::tarkasta_id_ulkoasu($id, '/');
         
-        $idSyntaxError = BaseModel::validate_id_directly($id);
-        if(count($idSyntaxError) != 0){
-            Redirect::to('/', array('errors' => $idSyntaxError));
-        }
-        
-        $olutera = Olutera::oneAvailableWithMargin($id, 400);
-        if(!$olutera){
-            Redirect::to('/', array('errors' => array('Etsimääsi oluterää ei löytynyt!')));
-        }
-        
+        $olutera = self::tarkasta_onnistuminen(
+                Olutera::oneAvailableWithMargin($id, 400), '/', 'Etsimääsi oluterää ei löytynyt!', NULL);
         
         $olutera->oliomuuttujatTietokantamuodostaEsitysmuotoon();
-        
         
         $pakkaustyypit = Pakkaustyyppi::allAvailable();
         BaseModel::olioidenMuuttujatTietokantamuodostaEsitysmuotoon($pakkaustyypit);
@@ -31,20 +23,12 @@ class TilausController extends BaseController{
     public static function lisaysLisavaihtoehdoin($id){
         self::check_admin_logged_in();
         
+        self::tarkasta_id_ulkoasu($id, '/hallinnointi/oluterat');
         
-        $idSyntaxError = BaseModel::validate_id_directly($id);
-        if(count($idSyntaxError) != 0){
-            Redirect::to('/hallinnointi/oluterat', array('errors' => $idSyntaxError));
-        }
-        
-        
-        $olutera = Olutera::one($id);
-        if(!$olutera){
-            Redirect::to('/hallinnointi/oluterat', array('errors' => array('Etsimääsi oluterää ei löytynyt!')));
-        }
+        $olutera = self::tarkasta_onnistuminen(
+                Olutera::one($id), '/hallinnointi/oluterat', 'Etsimääsi oluterää ei löytynyt!', NULL);
         
         $olutera->oliomuuttujatTietokantamuodostaEsitysmuotoon();
-        
         
         $pakkaustyypit = Pakkaustyyppi::allAvailable();
         BaseModel::olioidenMuuttujatTietokantamuodostaEsitysmuotoon($pakkaustyypit);
@@ -89,19 +73,10 @@ class TilausController extends BaseController{
         
         $params = $_POST;   
         
-        
-        $idSyntaxError = BaseModel::validate_id_directly($params['tilaus_id']);
-        if(count($idSyntaxError) != 0){
-            Redirect::to('/hallinnointi/oluterat', array('errors' => $idSyntaxError));
-        }
+        self::tarkasta_id_ulkoasu($params['tilaus_id'], '/hallinnointi/oluterat');
     
-        
-        // Oluterä_id:tä turha tarkastaa, se laitetaan lomakkeessa mukana vain redirectiä varten, ja sivut joihin redirectetään
-        // osaavat händlätä virheelliset oluterä_id:t.
-        $onnistuiko = Tilaus::updateDeliveryStatus($params['tilaus_id']);       
-        if(!$onnistuiko){
-            Redirect::to('/hallinnointi/oluterat/' . $params['olutera_id'], array('errors' => array('Tapahtui virhe merkittäessä tilausta toimitetuksi!')));
-        }
+        self::tarkasta_onnistuminen(
+                Tilaus::updateDeliveryStatus($params['tilaus_id']), '/hallinnointi/oluterat/' . $params['olutera_id'], 'Tapahtui virhe merkittäessä tilausta toimitetuksi!', NULL);
         
         Redirect::to('/hallinnointi/oluterat/' . $params['olutera_id'], array('message' => 'Tilaus merkitty toimitetuksi!'));
     }
@@ -111,12 +86,7 @@ class TilausController extends BaseController{
         
         $params = $_POST;
         
-        
-        $idSyntaxError = BaseModel::validate_id_directly($params['tilaus_id']);
-        if(count($idSyntaxError) != 0){
-            Redirect::to('/hallinnointi/oluterat', array('errors' => $idSyntaxError));
-        }
-        
+        self::tarkasta_id_ulkoasu($params['tilaus_id'], '/hallinnointi/oluterat');
         
         // Lasketaan montako litraa pitää vapauttaa oluterästä.
         $senttilitraa = 0;
@@ -125,27 +95,18 @@ class TilausController extends BaseController{
             $senttilitraa += $pakkaustyyppiJalukumaara[0]->vetoisuus * 100 * $pakkaustyyppiJalukumaara[1];
         }
         
-        
-        
-        $connection = BaseModel::beginTransaction();
-        if(!$connection){
-            Redirect::to('/hallinnointi/oluterat/' . $params['olutera_id'], array('errors' => array('Virhe poistettaessa tilausta, tilausta ei poistettu!')));
-        }
-        
-        $olutera_id = Tilaus::deleteTRANS($params['tilaus_id'], $connection);
-        if(!$olutera_id){
-            Redirect::to('/hallinnointi/oluterat/' . $params['olutera_id'], array('errors' => array('Virhe poistettaessa tilausta, tilausta ei poistettu!')));
-        }
        
-        $onnistuiko = Olutera::updateAmountAvailableAddTRANS($olutera_id, $senttilitraa, $connection);
-        if(!$onnistuiko){
-            Redirect::to('/hallinnointi/oluterat/' . $params['olutera_id'], array('errors' => array('Virhe poistettaessa tilausta, tilausta ei poistettu!')));
-        }
+        $connection = self::tarkasta_onnistuminen(
+                BaseModel::beginTransaction(), '/hallinnointi/oluterat/' . $params['olutera_id'], 'Virhe poistettaessa tilausta, tilausta ei poistettu!', NULL);
         
-        $onnistuiko = BaseModel::commit($connection);
-        if(!$onnistuiko){
-            Redirect::to('/hallinnointi/oluterat/' . $params['olutera_id'], array('errors' => array('Virhe poistettaessa tilausta, tilausta ei poistettu!')));
-        }
+        $olutera_id = self::tarkasta_onnistuminen(  // Tilausta poistettaessa saadaan tietää luotettavasti mistä oluterästä tilausta poistetaan.
+                Tilaus::deleteTRANS($params['tilaus_id'], $connection), '/hallinnointi/oluterat/' . $params['olutera_id'], 'Virhe poistettaessa tilausta, tilausta ei poistettu!', NULL);
+
+        self::tarkasta_onnistuminen(
+                Olutera::updateAmountAvailableAddTRANS($olutera_id, $senttilitraa, $connection), '/hallinnointi/oluterat/' . $params['olutera_id'], 'Virhe poistettaessa tilausta, tilausta ei poistettu!', NULL);
+        
+        self::tarkasta_onnistuminen(
+                BaseModel::commit($connection), '/hallinnointi/oluterat/' . $params['olutera_id'], 'Virhe poistettaessa tilausta, tilausta ei poistettu!', NULL);
         
         
         Redirect::to('/hallinnointi/oluterat/' . $olutera_id, array('message' => 'Tilaus poistettu! ' . $senttilitraa));    

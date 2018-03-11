@@ -97,7 +97,7 @@
         <td>{{pakkaustyyppi.pantti}} €/kpl</td>
         <td>{{pakkaustyyppi.hinta}} €/kpl</td> 
         <td>{{pakkaustyyppi.vetoisuus}} litraa</td>    
-        <td><input class="form-control" name="quantity{{pakkaustyyppi.id}}" {% if attributes %} value="{{attribute(attributes, 'quantity'~pakkaustyyppi.id)}}" {% else %} value="0" {% endif %} type="number"></td>
+        <td><input class="form-control" name="quantity{{pakkaustyyppi.id}}" min="0" {% if attributes %} value="{{attribute(attributes, 'quantity'~pakkaustyyppi.id)}}" {% else %} value="0" {% endif %} type="number"></td>
         <td><output name="resultPantti{{pakkaustyyppi.id}}" for="quantity{{pakkaustyyppi.id}}"></output>&nbsp;€</td>
         <td><output name="resultPakkaus{{pakkaustyyppi.id}}" for="quantity{{pakkaustyyppi.id}}"></output>&nbsp;€</td> 
         <td><output name="resultOlut{{pakkaustyyppi.id}}" for="quantity{{pakkaustyyppi.id}}"></output>&nbsp;€</td>
@@ -139,15 +139,5 @@
   </table>
   
   </form>
-  
-  {% if errors %}
-    <div class="alert alert-danger">
-      <ul>
-        {% for error in errors %}
-          <li>{{error}}</li>
-        {% endfor %}
-      </ul>
-    </div>
-  {% endif %}
   
 {% endblock %}
