@@ -13,9 +13,7 @@ class TilausControllerApumetodit extends BaseController{
     
     public static function tarkistaLomakkeestaYritysasiakasId($params, $uudelleenohjaus){
         self::tarkasta_id_ulkoasu($params['yritysasiakas_id'], $uudelleenohjaus);
-        
-        $yritysasiakas = self::tarkasta_onnistuminen(
-                Yritysasiakas::one($params['yritysasiakas_id']), $uudelleenohjaus, 'Tekninen virhe!', NULL);
+        // Id:tä turha tarkastaa one-kyselyllä, foreign key määrtelmä varmistaa että tietokantaan ei mene tilausta väärällä foreign keyllä.
      }
     
     /**
