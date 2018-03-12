@@ -23,7 +23,7 @@ class OluteraController extends BaseController{
     }
 
     // Esittelee Oluterän sekä oluterään liittyvät tilaukset.
-    // Myös oluterän ja tilausten muokkaus ja poisto.
+    // Metodin näyttämällä sivulla myös oluterän ja tilausten muokkaus ja poisto.
     public static function esittely($id){  
         self::check_admin_logged_in();
         

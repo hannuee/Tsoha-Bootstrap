@@ -114,18 +114,6 @@ class Yritysasiakas extends BaseModel{
         return TRUE;
     }
     
-    public static function find($id){
-        $query = DB::connection()->prepare('SELECT * FROM Yritysasiakas WHERE id = :id LIMIT 1');
-        $query->execute(array('id' => $id));
-        $row = $query->fetch();
-        
-        if(!$row){
-            return FALSE;
-        }
-        
-        return new Yritysasiakas($row);
-    }
-    
     public static function authenticate($email, $password){
         $query = DB::connection()->prepare('SELECT * FROM Yritysasiakas WHERE sahkoposti=:email AND salasana=:password AND aktiivinen=1 LIMIT 1');
         $query->execute(array('email' => $email, 'password' => $password));

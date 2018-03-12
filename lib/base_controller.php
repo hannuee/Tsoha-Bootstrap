@@ -5,7 +5,7 @@
     public static function get_user_logged_in(){
         if(isset($_SESSION['user'])){
           $id = $_SESSION['user'];
-          $corporate_customer = Yritysasiakas::find($id);
+          $corporate_customer = Yritysasiakas::one($id);
 
           return $corporate_customer;
         }
@@ -16,7 +16,7 @@
     public static function get_admin_logged_in(){
         if(isset($_SESSION['admin'])){
           $id = $_SESSION['admin'];
-          $corporate_customer = Yritysasiakas::find($id);
+          $corporate_customer = Yritysasiakas::one($id);
 
           return $corporate_customer;
         }
