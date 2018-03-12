@@ -2,22 +2,35 @@
 
 Yleisiä linkkejä:
 
-* [Linkki sovellukseeni](https://hawerala.users.cs.helsinki.fi/tsoha-Tilaussovellus/)
+* [Linkki sovellukseeni (Asiakastunnus: se@on.se/passu  Työntekijätunnus: admin@pani.mo/passu)](https://hawerala.users.cs.helsinki.fi/tsoha-Tilaussovellus/)
 * [Linkki dokumentaatiooni](https://github.com/hannuee/Tsoha-Bootstrap/blob/master/doc/dokumentaatio.pdf)
 
-Käyttöliittymä:
+Ominaisuuksia:
+* Kaikki mahdolliset turhat tietokantakyselyt karsittu pois, myös view:hin valmiiksi laitettu sisäänkirjautuneen käyttäjän tietojen hakeminen tietokannasta karsittu pois.
+* POST ja GET datan laajat tarkastukset ja validoinnit.
+* Tietokantaoperaatioiden onnistumisien varsin laajat tarkastukset ja transaktioiden käyttö.
 
-* [MOLEMMILLE: Kirjautuminen (Asiakastunnus: se@on.se/passu  Admin: admin@pani.mo/passu)](https://hawerala.users.cs.helsinki.fi/tsoha-Tilaussovellus/kirjautuminen)
+Oluterä CRUD:
+* C Työntekijän oluterän luominen.
+* R Työntekijän ja Asiakkaan oluterien listaus.
+* U Työntekijän oluterän valmistumispäivämäärän muutos.
+* D Työntekijän oluterän poistaminen.
 
-* [Asiakkaan etusivu (jossa Oluterä-tietokohteen all-metodi(listaus) käytössä)](https://hawerala.users.cs.helsinki.fi/tsoha-Tilaussovellus/)
-* [Asiakkaan tilauslomake (jossa Oluterä-tietokohteen one-metodi(esittely) käytössä)](https://hawerala.users.cs.helsinki.fi/tsoha-Tilaussovellus/tilaukset/uusi/1)
-* [Asiakkaan omien tietojen hallinta](https://hawerala.users.cs.helsinki.fi/tsoha-Tilaussovellus/omattiedot)
+Tilaus CRUD:
+* C Työntekijän ja Asiakkaan tilausten luominen.
+* R Työntekijän oluterän tilausten listaus.
+* U Työntekijän tilauksen merkitseminen toimitetuksi.
+* D Työntekijän tilauksen poistaminen.
 
-* [Työntekijän etusivu (jossa Oluterä-tietokohteen all-metodi ja save-metodi(listaus ja lisäys) käytössä)](https://hawerala.users.cs.helsinki.fi/tsoha-Tilaussovellus/hallinnointi/oluterat)
-* [Työntekijän oluterän tilausten näkeminen (jossa Oluterä-tietokohteen one-metodi, update-metodi ja delete-metodi(esittely, muokkaus ja poisto) käytössä)](https://hawerala.users.cs.helsinki.fi/tsoha-Tilaussovellus/hallinnointi/oluterat/1)
-* [Työntekijän pakkaustyyppien listaus (jossa Pakkaustyyppi-tietokohteen all-metodi, save-metodi ja update-metodi(listaus, lisäys ja muokkaus) käytössä)](https://hawerala.users.cs.helsinki.fi/tsoha-Tilaussovellus/hallinnointi/pakkaustyypit)
-* [Työntekijän tilauslomake](https://hawerala.users.cs.helsinki.fi/tsoha-Tilaussovellus/hallinnointi/tilaukset/uusi/1)
-* [Työntekijän asiakkaiden tietojen hallinta](https://hawerala.users.cs.helsinki.fi/tsoha-Tilaussovellus/hallinnointi/yritysasiakkaat)
+Pakkaustyyppi CRU:
+* C Työntekijän pakkaustyypin luominen.
+* R Työntekijän pakkaustyyppien listaus ja tilauksen yhteydessä työntekijän ja asiakkaan pakkaustyyppien listaus.
+* U Työntekijän pakkaustyypin saatavuuden vaihtaminen.
+
+Yritysasiakas CRU:
+* C Työntekijän tunnusten luominen.
+* R Työntekijän tunnusten listaus.
+* U Työntekijän ja Asiakkaan tunnusten muokkaaminen.
 
 ## Työn aihe
 

@@ -94,7 +94,10 @@
       <!-- Dynaaminen sisältö tulee tähän -->   
       {% block content %}{% endblock %}
       
-         {% if errors %}
+         
+      <br/>
+      
+        {% if errors %}
           <div class="alert alert-danger">
             <ul>
               {% for error in errors %}
@@ -102,6 +105,12 @@
               {% endfor %}
             </ul>
           </div>
+        {% endif %}
+        
+        {% if error %}
+            <div class="alert alert-danger">
+                {{error}}
+            </div>
         {% endif %}
 
         {% if message %}
