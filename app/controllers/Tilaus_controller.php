@@ -4,6 +4,10 @@ class TilausController extends BaseController{
     
     // Näkymien kontrollointi:
     
+    /**
+     * Näyttää oluterän tilauslomakkeen asiakkaalle.
+     * @param type $id Oluterän ID jota asiakas haluaa tilata.
+     */
     public static function lisays($id){
         self::check_user_logged_in();
         
@@ -20,6 +24,10 @@ class TilausController extends BaseController{
         View::make('Tilaus_lisays.html', array('olutera' => $olutera, 'pakkaustyypit' => $pakkaustyypit));
     }
  
+    /**
+     * Näyttää oluterän tilauslomakkeen työntekijälle.
+     * @param type $id Oluterän ID jota työntekijä haluaa tilata pienpanimon omaan käyttöön tai asiakkaalle.
+     */
     public static function lisaysLisavaihtoehdoin($id){
         self::check_admin_logged_in();
         
@@ -50,6 +58,9 @@ class TilausController extends BaseController{
     
     // Lomakkeiden käsittely:
     
+    /**
+     * Lisää uuden tilauksen työntekijältä.
+     */
     public static function lisaaUusi(){
         self::check_admin_logged_in();
         
@@ -68,6 +79,9 @@ class TilausController extends BaseController{
         TilausControllerApumetodit::lisaaUusiTilaus($senttilitroja, $tilaus, $tilausPakkaustyypit, $olutera, $params, '/hallinnointi/tilaukset/uusi/', '/hallinnointi/oluterat');
     }
     
+    /**
+     * Lisää uuden tilauksen asiakkaalta.
+     */
     public static function lisaaUusiAsiakkaalta(){
         self::check_user_logged_in();
         
@@ -85,6 +99,9 @@ class TilausController extends BaseController{
         TilausControllerApumetodit::lisaaUusiTilaus($senttilitroja, $tilaus, $tilausPakkaustyypit, $olutera, $params, '/tilaukset/uusi/', '/');
     }
     
+    /**
+     * Merkitsee tilauksen toimitetuksi.
+     */
     public static function muokkaaToimitetuksi(){
         self::check_admin_logged_in();
         
@@ -98,6 +115,9 @@ class TilausController extends BaseController{
         Redirect::to('/hallinnointi/oluterat/' . $params['olutera_id'], array('message' => 'Tilaus merkitty toimitetuksi!'));
     }
     
+    /**
+     * Poistaa tilauksen.
+     */
     public static function poista(){
         self::check_admin_logged_in();
         

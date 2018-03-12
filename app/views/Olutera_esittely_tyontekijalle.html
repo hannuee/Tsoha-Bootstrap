@@ -79,7 +79,10 @@
                   <td>{{tilausrivi[1].tilausajankohta}}</td> 
                 </tr>
                 <tr>
-                  <td>Toimitettu: {{tilausrivi[1].toimitettu}}</td>
+                  <td>Toimitettu: 
+                    {% if tilausrivi[1].toimitettu == 1 %} Kyllä
+                    {% elseif tilausrivi[1].toimitettu == 0 %} Ei
+                    {% endif %}</td>
                 </tr>
                 <tr>
                   <td>Ohjeet: {{tilausrivi[1].toimitusohjeet}}</td>

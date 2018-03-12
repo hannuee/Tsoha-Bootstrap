@@ -7,13 +7,19 @@
     <h1>Kaikki oluterät</h1>
 {% endif %}
 
+
+
+{% if admin_name %}
+<form method="post" action="{{base_path}}/hallinnointi/oluterat/uusi">
+{% endif %}
+
   <table class="table table-striped table-bordered"> 
     <thead>
       <tr>
         <th>Oluen nimi</th>
         <th>Valmistuminen</th>
         <th>Erän koko</th>
-        <th>Erästä vapaana</th>
+        <th>Vapaana</th>
         <th>Hinta</th>
         {% if user_name %}
         <th></th>
@@ -23,8 +29,30 @@
         {% endif %}
       </tr>
     </thead>
-    <!--Työntekijälle näytetään tietenkin kaikki oluterät, myös loppuunmyydyt-->
     <tbody>
+        
+    {% if admin_name %}
+        <tr> 
+    {% if attributes %}  <!--Virheellisen lomakkeen lähetyksen jälkeen täytetään lomake käyttäjän lähettämillä syötteillä-->
+          <td><input class="form-control" name="oluen_nimi" value="{{attributes.oluen_nimi}}" type="text"></td>
+          <td><input class="form-control" name="valmistuminen" value="{{attributes.valmistuminen}}" type="date"></td>
+          <td><input class="form-control" name="eran_koko" value="{{attributes.eran_koko}}" type="text"></td>
+          <td></td>
+          <td><input class="form-control" name="hinta" value="{{attributes.hinta}}" type="text"></td>
+          <td><button type="submit" class="btn btn-primary">Luo oluterä!</button></td>
+          <td></td>
+    {% else %} <!--Muuten uusi puhdas lomake-->
+          <td><input class="form-control" name="oluen_nimi" placeholder="Oluen nimi" type="text"></td>
+          <td><input class="form-control" name="valmistuminen" type="date"></td>
+          <td><input class="form-control" name="eran_koko" placeholder="litraa" type="text"></td>
+          <td></td>
+          <td><input class="form-control" name="hinta" placeholder="€/litra" type="text"></td>
+          <td><button type="submit" class="btn btn-info">Luo oluterä!</button></td>
+          <td></td>
+    {% endif %}
+        </tr>
+    {% endif %}  
+        
       {% for olutera in oluterat %}
       <tr>
         <td>{{olutera.oluen_nimi}}</td>
@@ -35,37 +63,16 @@
         {% if user_name %}
         <td><a class="btn btn-success" href="{{base_path}}/tilaukset/uusi/{{olutera.id}}">Siirry tilaamaan</a></td>
         {% elseif admin_name %}
-        <th><a class="btn btn-primary" href="{{base_path}}/hallinnointi/oluterat/{{olutera.id}}">Näytä tilaukset</a></th>
-        <th><a class="btn btn-primary" href="{{base_path}}/hallinnointi/tilaukset/uusi/{{olutera.id}}">Siirry tilaamaan</a></th>
+        <th><a class="btn btn-primary" href="{{base_path}}/hallinnointi/oluterat/{{olutera.id}}">Näytä Oluterä &amp; Tilaukset</a></th>
+        <th><a class="btn btn-success" href="{{base_path}}/hallinnointi/tilaukset/uusi/{{olutera.id}}">Siirry tilaamaan</a></th>
         {% endif %}
       </tr>
       {% endfor %}
     </tbody>
   </table>
 
-
-  {% if admin_name %}
-  <form method="post" action="{{base_path}}/hallinnointi/oluterat/uusi">
-  <table class="table table-striped table-bordered"> 
-    <tbody>
-      <tr> 
-  {% if attributes %}  <!--Virheellisen lomakkeen lähetyksen jälkeen täytetään lomake käyttäjän lähettämillä syötteillä-->
-        <td><input class="form-control" name="oluen_nimi" value="{{attributes.oluen_nimi}}" type="text"></td>
-        <td><input class="form-control" name="valmistuminen" value="{{attributes.valmistuminen}}" type="date"></td>
-        <td><input class="form-control" name="eran_koko" value="{{attributes.eran_koko}}" type="text"></td>
-        <td><input class="form-control" name="hinta" value="{{attributes.hinta}}" type="text"></td>
-        <td><button type="submit" class="btn btn-primary">Luo oluterä!</button></td>
-  {% else %} <!--Muuten uusi puhdas lomake-->
-        <td><input class="form-control" name="oluen_nimi" placeholder="Oluen nimi" type="text"></td>
-        <td><input class="form-control" name="valmistuminen" type="date"></td>
-        <td><input class="form-control" name="eran_koko" placeholder="litraa" type="text"></td>
-        <td><input class="form-control" name="hinta" placeholder="€/litra" type="text"></td>
-        <td><button type="submit" class="btn btn-primary">Luo oluterä!</button></td>
-  {% endif %}
-        </tr>
-    </tbody>
-  </table>
-  </form>
-  {% endif %}
+{% if admin_name %}
+</form>
+{% endif %}
 
 {% endblock %}

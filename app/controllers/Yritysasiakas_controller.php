@@ -4,10 +4,16 @@ class YritysasiakasController extends BaseController{
     
     // Näkymien kontrollointi:
     
+    /**
+     * Sisäänkirjautumisnäkymä.
+     */
     public static function login(){
         View::make('login.html');
     }
     
+    /**
+     * Asiakkaan omien tietojen katsominen.
+     */
     public static function esittely(){  
         self::check_user_logged_in();
         
@@ -16,6 +22,9 @@ class YritysasiakasController extends BaseController{
         View::make('Yritysasiakas_esittely.html', array('yritysasiakas' => $yritysasiakas));
     }
     
+    /**
+     * Asiakkaan omien tietojen muokkaaminen.
+     */
     public static function muokkaus(){
         self::check_user_logged_in();
         
@@ -24,6 +33,9 @@ class YritysasiakasController extends BaseController{
         View::make('Yritysasiakas_muokkaus.html', array('yritysasiakas' => $yritysasiakas));
     }
     
+    /**
+     * Listaa KAIKKI käyttäjät.
+     */
     public static function listaus(){
         self::check_admin_logged_in();
         
@@ -32,6 +44,10 @@ class YritysasiakasController extends BaseController{
         View::make('Yritysasiakas_listaus_tyontekijalle.html', array('yritysasiakkaat' => $yritysasiakkaat));
     }
     
+    /**
+     * Käyttäjän tietojen katsominen kaikilla tiedoilla.
+     * @param type $id Käyttäjän ID joka halutaan nähdä.
+     */
     public static function esittelyLisatiedoin($id){
         self::check_admin_logged_in();
         
@@ -43,6 +59,10 @@ class YritysasiakasController extends BaseController{
         View::make('Yritysasiakas_esittely.html', array('yritysasiakas' => $yritysasiakas));
     }
     
+    /**
+     * Käyttäjän tietojen muokkaaminen kaikilla vaihtoehdoilla.
+     * @param type $id Käyttäjän ID joka halutaan ehkä muokata.
+     */
     public static function muokkausLisavaihtoehdoin($id){
         self::check_admin_logged_in();
         
@@ -54,6 +74,9 @@ class YritysasiakasController extends BaseController{
         View::make('Yritysasiakas_muokkaus.html', array('yritysasiakas' => $yritysasiakas));
     }
     
+    /**
+     * Lomake jolla voi luoda uuden käyttäjän.
+     */
     public static function lisays(){
         self::check_admin_logged_in();
         
@@ -63,6 +86,9 @@ class YritysasiakasController extends BaseController{
     
     // Lomakkeiden käsittely:
     
+    /**
+     * Asiakkaan omien tietojen päivitys.
+     */
     public static function muokkaa(){
         self::check_user_logged_in();
         
@@ -84,6 +110,9 @@ class YritysasiakasController extends BaseController{
         Redirect::to('/omattiedot', array('message' => 'Tiedot päivitetty onnistuneesti'));
     }
     
+    /**
+     * Uuden käyttäjän luominen.
+     */
     public static function lisaaUusi(){
         self::check_admin_logged_in();
         
@@ -114,6 +143,9 @@ class YritysasiakasController extends BaseController{
         Redirect::to('/hallinnointi/yritysasiakkaat/' . $yritysasiakas->id, array('message' => 'Tiedot päivitetty onnistuneesti'));
     }
     
+    /**
+     * Käyttäjän tietojen päivitys.
+     */
     public static function muokkaaLisavaihtoehdoin(){
         self::check_admin_logged_in();
         
@@ -145,6 +177,9 @@ class YritysasiakasController extends BaseController{
         Redirect::to('/hallinnointi/yritysasiakkaat/' . $yritysasiakas->id, array('message' => 'Tiedot päivitetty onnistuneesti'));
     }
     
+    /**
+     * Sisäänkirjautumisyrityksen käsittely.
+     */
     public static function handle_login(){
         $params = $_POST;
         
@@ -168,6 +203,9 @@ class YritysasiakasController extends BaseController{
         }
     }
     
+    /**
+     * Uloskirjautumispyynnön toteuttaminen.
+     */
     public static function logout(){
         $_SESSION['user'] = null;
         $_SESSION['admin'] = null;

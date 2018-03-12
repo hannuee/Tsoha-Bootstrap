@@ -4,6 +4,9 @@ class OluteraController extends BaseController{
     
     // Näkymien kontrollointi:
     
+    /**
+     * Listaa myynnissä olevat oluterät, kunhan vähintään 4 litraa erästä vielä vapaana.
+     */
     public static function listausMarginaalilla(){
         self::check_user_logged_in();
         
@@ -13,6 +16,9 @@ class OluteraController extends BaseController{
         View::make('Olutera_listaus.html', array('oluterat' => $oluterat));
     }
     
+    /**
+     * Listaa KAIKKI oluterät. (Paitsi ei niitä tietenkään jotka on poistettu)
+     */
     public static function listaus(){
         self::check_admin_logged_in();
         
@@ -22,8 +28,11 @@ class OluteraController extends BaseController{
         View::make('Olutera_listaus.html', array('oluterat' => $oluterat));
     }
 
-    // Esittelee Oluterän sekä oluterään liittyvät tilaukset.
-    // Metodin näyttämällä sivulla myös oluterän ja tilausten muokkaus ja poisto.
+    /**
+     * Esittelee Oluterän sekä oluterään liittyvät tilaukset.
+     * Metodin näyttämällä sivulla myös oluterän ja tilausten muokkaus ja poisto.
+     * @param type $id Esiteltävän oluterän id.
+     */
     public static function esittely($id){  
         self::check_admin_logged_in();
         
@@ -56,6 +65,9 @@ class OluteraController extends BaseController{
     
     // Lomakkeiden käsittely:
     
+    /**
+     * Lisää uuden oluterän.
+     */
     public static function lisaaUusi(){
         self::check_admin_logged_in();     
         
@@ -78,6 +90,9 @@ class OluteraController extends BaseController{
         Redirect::to('/hallinnointi/oluterat', array('message' => 'Uusi oluterä lisätty onnistuneesti!'));
     }
     
+    /**
+     * Muuttaa oluterän valmistumispäivämäärää.
+     */
     public static function muokkaaValmistumispaivamaaraa(){
         self::check_admin_logged_in();
         
@@ -98,6 +113,9 @@ class OluteraController extends BaseController{
         Redirect::to('/hallinnointi/oluterat/' . $params['id'], array('message' => 'Valmistumispäivämäärä muutettu onnistuneesti!'));
     }
     
+    /**
+     * Poistaa oluterän ja kaikki sen tilaukset.
+     */
     public static function poista(){
         self::check_admin_logged_in();
         

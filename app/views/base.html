@@ -91,7 +91,10 @@
     </nav>
 
     <div id="main-container">
-        {% if errors %}
+      <!-- Dynaaminen sisältö tulee tähän -->   
+      {% block content %}{% endblock %}
+      
+         {% if errors %}
           <div class="alert alert-danger">
             <ul>
               {% for error in errors %}
@@ -106,9 +109,6 @@
             {{message}}
           </div>
         {% endif %}
-          
-      <!-- Dynaaminen sisältö tulee tähän -->   
-      {% block content %}{% endblock %}
     </div>
 
     {% block body %}

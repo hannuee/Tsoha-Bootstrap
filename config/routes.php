@@ -90,8 +90,8 @@
       PakkaustyyppiController::lisaaUusi();
   });
   
-  $routes->post('/hallinnointi/pakkaustyypit/muutasaatavilla', function() {
-      PakkaustyyppiController::muokkaaSaatavuusstatusta();
+  $routes->get('/hallinnointi/pakkaustyypit/muutasaatavilla/:id', function($id) {
+      PakkaustyyppiController::muokkaaSaatavuusstatusta($id);
   });
   
   $routes->get('/hallinnointi/yritysasiakkaat', function() {

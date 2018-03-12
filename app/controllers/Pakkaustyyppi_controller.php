@@ -4,6 +4,9 @@ class PakkaustyyppiController extends BaseController{
     
     // Näkymien kontrollointi:
     
+    /**
+     * Listaa KAIKKI pakkaustyypit.
+     */
     public static function listaus(){
         self::check_admin_logged_in();
         
@@ -16,6 +19,9 @@ class PakkaustyyppiController extends BaseController{
     
     // Lomakkeiden käsittely:
     
+    /**
+     * Lisää uuden pakkaustyypin.
+     */
     public static function lisaaUusi(){
         self::check_admin_logged_in();     
         
@@ -39,15 +45,17 @@ class PakkaustyyppiController extends BaseController{
         Redirect::to('/hallinnointi/pakkaustyypit', array('message' => 'Uusi pakkaustyyppi lisätty onnistuneesti!'));
     }
     
-    public static function muokkaaSaatavuusstatusta(){
+    /**
+     * Vaihtaa pakkaustyypin saatavuutta.
+     * @param type $id Pakkaustyypin ID jonka saatavuutta halutaan vaihtaa.
+     */
+    public static function muokkaaSaatavuusstatusta($id){
         self::check_admin_logged_in();
         
-        $params = $_POST;
-        
-        self::tarkasta_id_ulkoasu($params['id'], '/hallinnointi/pakkaustyypit');
+        self::tarkasta_id_ulkoasu($id, '/hallinnointi/pakkaustyypit');
         
         self::tarkasta_onnistuminen(
-                Pakkaustyyppi::updateAvailability($params['id']), '/hallinnointi/pakkaustyypit', 'Tapahtui virhe muuttaessa pakkaustyypin saatavuutta!', NULL);
+                Pakkaustyyppi::updateAvailability($id), '/hallinnointi/pakkaustyypit', 'Tapahtui virhe muuttaessa pakkaustyypin saatavuutta!', NULL);
         
         Redirect::to('/hallinnointi/pakkaustyypit', array('message' => 'Saatavuusstatus muutettu onnistuneesti!'));
     }

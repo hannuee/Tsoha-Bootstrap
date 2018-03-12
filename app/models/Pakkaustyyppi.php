@@ -120,17 +120,17 @@ class Pakkaustyyppi extends BaseModel{
         $this->vetoisuus = str_replace(' ', '', $this->vetoisuus);
         $this->vetoisuus = str_replace(',', '.', $this->vetoisuus);  // Muutetaan , -> . jotta käyttäjä voi käyttää kumpaa tahansa.
         $this->vetoisuus = floatval($this->vetoisuus);
-        $this->vetoisuus = intval($this->vetoisuus*100);  // Muunto senttilitroiksi ja katkaistaan mahdolliset senttilitrojen murto-osat pois muuttamalla integeriksi.
+        $this->vetoisuus = intval(round($this->vetoisuus*100, 0, PHP_ROUND_HALF_UP));  // Muunto senttilitroiksi ja katkaistaan mahdolliset senttilitrojen murto-osat pois muuttamalla integeriksi.
         // Hinta:
         $this->hinta = str_replace(' ', '', $this->hinta);
         $this->hinta = str_replace(',', '.', $this->hinta);  // Muutetaan , -> . jotta käyttäjä voi käyttää kumpaa tahansa.
         $this->hinta = floatval($this->hinta);
-        $this->hinta = intval($this->hinta*100);  // Muutetaan hinta senteiksi ja katkaistaan mahdolliset sentin murto-osat pois muuttamalla integeriksi.
+        $this->hinta = intval(round($this->hinta*100, 0, PHP_ROUND_HALF_UP));  // Muutetaan hinta senteiksi ja katkaistaan mahdolliset sentin murto-osat pois muuttamalla integeriksi.
         // Pantti:
         $this->pantti = str_replace(' ', '', $this->pantti);
         $this->pantti = str_replace(',', '.', $this->pantti);  // Muutetaan , -> . jotta käyttäjä voi käyttää kumpaa tahansa.
         $this->pantti = floatval($this->pantti);
-        $this->pantti = intval($this->pantti*100);  // Muutetaan hinta senteiksi ja katkaistaan mahdolliset sentin murto-osat pois muuttamalla integeriksi.
+        $this->pantti = intval(round($this->pantti*100, 0, PHP_ROUND_HALF_UP));  // Muutetaan hinta senteiksi ja katkaistaan mahdolliset sentin murto-osat pois muuttamalla integeriksi.
     }
     
     public function oliomuuttujatTietokantamuodostaEsitysmuotoon(){
