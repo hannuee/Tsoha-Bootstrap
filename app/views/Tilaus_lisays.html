@@ -36,21 +36,21 @@
                 num = 0.0;
             }
             return num;
-        }
+        }                       
         
         {% for pakkaustyyppi in pakkaustyypit %}  
-        resultPantti{{pakkaustyyppi.id}}.value=parseFloatNoNan(quantity{{pakkaustyyppi.id}}.value)*parseFloatNoNan({{pakkaustyyppi.pantti}});
-        resultPakkaus{{pakkaustyyppi.id}}.value=parseFloatNoNan(quantity{{pakkaustyyppi.id}}.value)*parseFloatNoNan({{pakkaustyyppi.hinta}});
-        resultOlut{{pakkaustyyppi.id}}.value=parseFloatNoNan(quantity{{pakkaustyyppi.id}}.value)*parseFloatNoNan({{olutera.hinta}})*parseFloatNoNan({{pakkaustyyppi.vetoisuus}});
-        resultLitrat{{pakkaustyyppi.id}}.value=parseFloatNoNan(quantity{{pakkaustyyppi.id}}.value)*parseFloatNoNan({{pakkaustyyppi.vetoisuus}});
+        resultPantti{{pakkaustyyppi.id}}.value=Math.round((parseFloatNoNan(quantity{{pakkaustyyppi.id}}.value)*parseFloatNoNan({{pakkaustyyppi.pantti}}))* 100) / 100;
+        resultPakkaus{{pakkaustyyppi.id}}.value=Math.round((parseFloatNoNan(quantity{{pakkaustyyppi.id}}.value)*parseFloatNoNan({{pakkaustyyppi.hinta}}))* 100) / 100;
+        resultOlut{{pakkaustyyppi.id}}.value=Math.round((parseFloatNoNan(quantity{{pakkaustyyppi.id}}.value)*parseFloatNoNan({{olutera.hinta}})*parseFloatNoNan({{pakkaustyyppi.vetoisuus}}))* 100) / 100;
+        resultLitrat{{pakkaustyyppi.id}}.value=Math.round((parseFloatNoNan(quantity{{pakkaustyyppi.id}}.value)*parseFloatNoNan({{pakkaustyyppi.vetoisuus}}))* 100) / 100;
         {% endfor %}
         
-        resultKaikkiPantit.value={% for pakkaustyyppi in pakkaustyypit %}parseFloat(resultPantti{{pakkaustyyppi.id}}.value) + {% endfor %}0.0;
-        resultKaikkiPakkaukset.value={% for pakkaustyyppi in pakkaustyypit %}parseFloat(resultPakkaus{{pakkaustyyppi.id}}.value) + {% endfor %}0.0;
-        resultKaikkiOluet.value={% for pakkaustyyppi in pakkaustyypit %}parseFloat(resultOlut{{pakkaustyyppi.id}}.value) + {% endfor %}0.0;
-        resultKaikkiLitrat.value={% for pakkaustyyppi in pakkaustyypit %}parseFloat(resultLitrat{{pakkaustyyppi.id}}.value) + {% endfor %}0.0;
+        resultKaikkiPantit.value=Math.round(({% for pakkaustyyppi in pakkaustyypit %}parseFloat(resultPantti{{pakkaustyyppi.id}}.value) + {% endfor %}0.0)* 100) / 100;
+        resultKaikkiPakkaukset.value=Math.round(({% for pakkaustyyppi in pakkaustyypit %}parseFloat(resultPakkaus{{pakkaustyyppi.id}}.value) + {% endfor %}0.0)* 100) / 100;
+        resultKaikkiOluet.value=Math.round(({% for pakkaustyyppi in pakkaustyypit %}parseFloat(resultOlut{{pakkaustyyppi.id}}.value) + {% endfor %}0.0)* 100) / 100;
+        resultKaikkiLitrat.value=Math.round(({% for pakkaustyyppi in pakkaustyypit %}parseFloat(resultLitrat{{pakkaustyyppi.id}}.value) + {% endfor %}0.0)* 100) / 100;
         
-        resultKaikki.value=parseFloat(resultKaikkiPantit.value) + parseFloat(resultKaikkiPakkaukset.value) + parseFloat(resultKaikkiOluet.value);
+        resultKaikki.value=Math.round((parseFloat(resultKaikkiPantit.value) + parseFloat(resultKaikkiPakkaukset.value) + parseFloat(resultKaikkiOluet.value))* 100) / 100;
         ">
   <input class="form-control" name="olutera_id" value="{{olutera.id}}" type="hidden">
   
