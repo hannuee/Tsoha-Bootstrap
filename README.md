@@ -1,8 +1,12 @@
 # Tilaussovellus
 
+## Työn aihe
+
+Tilaussovelluksella pienpanimon yritysasiakkaat(mm. ravintolat ja baarit) voivat tilata helposti ja vaivattomasti pienpanimon tuotteita netin kautta.
+
 Yleisiä linkkejä:
 
-* [Linkki sovellukseeni (Asiakastunnus: se@on.se/passu  Työntekijätunnus: admin@pani.mo/passu)](https://hawerala.users.cs.helsinki.fi/tsoha-Tilaussovellus/)
+* [Linkki sovellukseeni (Asiakastunnus: se@on.se/passu  Työntekijätunnus: admin@pani.mo/passu)](https://hawerala.users.cs.helsinki.fi/tsoha-Tilaussovellus/kirjautuminen)
 * [Linkki dokumentaatiooni](https://github.com/hannuee/Tsoha-Bootstrap/blob/master/doc/dokumentaatio.pdf)
 
 Ominaisuuksia:
@@ -31,7 +35,3 @@ Yritysasiakas CRU:
 * C Työntekijän tunnusten luominen.
 * R Työntekijän tunnusten listaus.
 * U Työntekijän ja Asiakkaan tunnusten muokkaaminen.
-
-## Työn aihe
-
-Tilaussovelluksella pienpanimon yritysasiakkaat(mm. ravintolat ja baarit) voivat tilata helposti ja vaivattomasti pienpanimon tuotteita netin kautta.
