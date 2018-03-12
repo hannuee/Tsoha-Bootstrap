@@ -57,10 +57,10 @@
   {% if admin_name %} 
   <div class="form-group">
     <select class="form-control" name="yritysasiakas_id">
-          {% if attributes and attributes.yritysasiakas_id == admin_logged_in.id %}
-          <option value="{{admin_logged_in.id}}" selected="selected">Varaa olutta pois myynnistä</option>
+          {% if attributes and attributes.yritysasiakas_id == admin_id %}
+          <option value="{{admin_id}}" selected="selected">Varaa olutta pois myynnistä</option>
           {% else %}
-          <option value="{{admin_logged_in.id}}">Varaa olutta pois myynnistä</option>
+          <option value="{{admin_id}}">Varaa olutta pois myynnistä</option>
           {% endif %}
       <optgroup label="Kirjaa tilaus yritysasiakkaalle">
         {% for yritysasiakas in yritysasiakkaat %}

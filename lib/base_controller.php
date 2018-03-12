@@ -37,6 +37,13 @@
         }
         return null;
     }
+    
+    public static function get_admin_id_if_logged_in(){
+        if(isset($_SESSION['admin'])){
+          return $_SESSION['admin'];
+        }
+        return null;
+    }
 
     public static function check_user_logged_in(){
         if(!isset($_SESSION['user'])){

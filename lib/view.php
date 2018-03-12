@@ -13,11 +13,15 @@
         // Asetetaan näkymään base_path-muuttuja index.php:ssa määritellyllä BASE_PATH vakiolla
         $content['base_path'] = BASE_PATH;
 
+        
         // Asetetaan näkymään kirjautuneen käyttäjän nimi.
         $content['user_name'] = BaseController::get_user_name_if_logged_in();
 
         // Asetetaan näkymään kirjautuneen adminin nimi.
         $content['admin_name'] = BaseController::get_admin_name_if_logged_in();
+        
+        // Asetetaan näkymään kirjautuneen adminin id.
+        $content['admin_id'] = BaseController::get_admin_id_if_logged_in();
 
 
         // Tulostetaan Twig:n renderöimä näkymä
